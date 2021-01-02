@@ -42,5 +42,29 @@ namespace eslib_units.Services
             // Assert the outcomes.
             Assert.AreEqual(expectedResult.message, result.message);
         }
+
+        [Test]
+        public void ParseResponse()
+        {            
+            var mockOptions = new Mock<IOptions<ApiOptions>>();
+            var mockHttpClient = new Mock<IHttpClientWrapper>();
+
+            var message = "this should be parsed correctly";
+            var expectedResult = new Response<string>() { message = message };                       
+
+            var response = new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(message)
+            };           
+
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
+
+            // ParseResponse will call ReadAsStringAsync on the underlying HttpContent object.
+            // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
+            var result = dataService.ParseResponse<string>(response);
+
+            Assert.AreEqual(result.message, expectedResult.message);
+        }
     }
 }
