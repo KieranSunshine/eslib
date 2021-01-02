@@ -12,10 +12,8 @@ namespace eslib.Endpoints
         }
 
         public string Ping()
-        {
-            var endpoint = "ping";
-            var url = $"{Constants.apiUrl}/{endpoint}/";
-
+        {            
+            var url = _dataService.GenerateUrl("ping");
             var result = _dataService.Fetch<string>(url).Result;
 
             return result.message;

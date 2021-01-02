@@ -44,6 +44,11 @@ namespace eslib.Services
 
             return response;
         }
+
+        public string GenerateUrl(string endpoint)
+        {
+            return $"{Constants.apiUrl}/{endpoint}";
+        }
     }
 
     public interface IDataService
@@ -51,5 +56,7 @@ namespace eslib.Services
         public Task<Response<T>> Fetch<T>(string url);
 
         public Response<T> ParseResponse<T>(HttpResponseMessage responseMessage);
+
+        public string GenerateUrl(string endpoint);        
     }
 }
