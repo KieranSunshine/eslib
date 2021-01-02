@@ -66,5 +66,22 @@ namespace eslib_units.Services
 
             Assert.AreEqual(result.message, expectedResult.message);
         }
+
+        [Test]
+        public void GenerateUrl()
+        {
+            var mockOptions = new Mock<IOptions<ApiOptions>>();
+            var mockHttpClient = new Mock<IHttpClientWrapper>();
+
+            var baseUrl = "https://esi.evetech.net";
+            var endpoint = "testendpoint";
+            
+
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
+
+            var result = dataService.GenerateUrl(endpoint);
+
+            Assert.AreEqual($"{baseUrl}/{endpoint}", result);
+        }
     }
 }
