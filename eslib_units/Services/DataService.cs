@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace eslib_units.Services
@@ -44,7 +45,7 @@ namespace eslib_units.Services
         }
 
         [Test]
-        public void ParseResponse()
+        public void ParseResponseString()
         {            
             var mockOptions = new Mock<IOptions<ApiOptions>>();
             var mockHttpClient = new Mock<IHttpClientWrapper>();
@@ -68,6 +69,32 @@ namespace eslib_units.Services
         }
 
         [Test]
+        public void ParseResponseObject()
+        {
+            var mockOptions = new Mock<IOptions<ApiOptions>>();
+            var mockHttpClient = new Mock<IHttpClientWrapper>();
+
+            var expectedObject = new FakeType() {
+                SomeId = 42,
+                SomeData = "the meaning of life"
+            };
+            var serializedObject = JsonSerializer.Serialize<FakeType>(expectedObject);
+
+            var response = new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(serializedObject)
+            };
+
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
+
+            var result = dataService.ParseResponse<FakeType>(response);
+
+            Assert.AreEqual(expectedObject.SomeId, result.data.SomeId);
+            Assert.AreEqual(expectedObject.SomeData, result.data.SomeData);
+        }
+
+        [Test]
         public void GenerateUrl()
         {
             var mockOptions = new Mock<IOptions<ApiOptions>>();
@@ -82,6 +109,13 @@ namespace eslib_units.Services
             var result = dataService.GenerateUrl(endpoint);
 
             Assert.AreEqual($"{baseUrl}/{endpoint}", result);
+        }
+
+        private class FakeType
+        {
+            public int SomeId { get; set; }
+
+            public string SomeData { get; set; }
         }
     }
 }

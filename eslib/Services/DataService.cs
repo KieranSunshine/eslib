@@ -1,8 +1,8 @@
 ﻿using eslib.Helpers.Wrappers;
 using eslib.Models;
 using Microsoft.Extensions.Options;
-using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace eslib.Services
@@ -39,7 +39,19 @@ namespace eslib.Services
             {
                 var result = responseMessage.Content.ReadAsStringAsync().Result;
 
-                response.message = result;
+                if (result.Length > 0)
+                {
+                    try
+                    {
+                        // If result is valid json then set the data property.
+                        response.data = JsonSerializer.Deserialize<T>(result);
+                    }
+                    catch (JsonException ex)
+                    {
+                        // If result was not valid Json, set the message property instead.
+                        response.message = result;
+                    }                    
+                }
             }
 
             return response;
