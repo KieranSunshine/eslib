@@ -17,10 +17,10 @@ namespace eslib.Models
         public DateTime DateFounded { get; set; }
 
         [JsonPropertyName("executor_corporation_id")]
-        public int ExecutorCorporationId { get; set; }
+        public int? ExecutorCorporationId { get; set; }
 
         [JsonPropertyName("faction_id")]
-        public int FactionId { get; set; }
+        public int? FactionId { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
