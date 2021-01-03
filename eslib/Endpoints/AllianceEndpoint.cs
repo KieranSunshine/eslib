@@ -24,7 +24,15 @@ namespace eslib.Endpoints
         public Alliance GetAlliance(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Fetch<Models.Alliance>(url).Result;
+            var result = _dataService.Fetch<Alliance>(url).Result;
+
+            return result.data;
+        }
+
+        public int[] GetAllianceCorporationIds(int allianceId)
+        {
+            var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
+            var result = _dataService.Fetch<int[]>(url).Result;
 
             return result.data;
         }

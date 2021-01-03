@@ -56,5 +56,23 @@ namespace eslib_units.Endpoints
 
             Assert.AreEqual(mockResponse.Result.data, result);
         }
+
+        [Test]
+        public void GetAllianceCorporationIds()
+        {
+            var mock = new Mock<IDataService>();
+            var mockResponse = Task.FromResult(new Response<int[]>() { data = new int[100] });
+
+            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+                .Returns("somestring");
+
+            mock.Setup(m => m.Fetch<int[]>(It.IsAny<string>()))
+                .Returns(mockResponse);
+
+            var allianceEndpoint = new AllianceEndpoint(mock.Object);
+            var result = allianceEndpoint.GetAllianceCorporationIds(1);
+
+            Assert.AreEqual(result, mockResponse.Result.data);
+        }
     }
 }
