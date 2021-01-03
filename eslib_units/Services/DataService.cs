@@ -102,13 +102,14 @@ namespace eslib_units.Services
 
             var baseUrl = "https://esi.evetech.net";
             var endpoint = "testendpoint";
+            var parameter = "somevalue";
             
 
             var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
 
-            var result = dataService.GenerateUrl(endpoint);
+            var result = dataService.GenerateUrl(endpoint, parameter);
 
-            Assert.AreEqual($"{baseUrl}/{endpoint}", result);
+            Assert.AreEqual($"{baseUrl}/{endpoint}/{parameter}", result);
         }
 
         private class FakeType
