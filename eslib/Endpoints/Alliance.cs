@@ -19,5 +19,13 @@ namespace eslib.Endpoints
 
             return result.data;
         }
+
+        public Alliance GetAlliance(int allianceId)
+        {
+            var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
+            var result = _dataService.Fetch<Alliance>(url).Result;
+
+            return result.data;
+        }
     }
 }
