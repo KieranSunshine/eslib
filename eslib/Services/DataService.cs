@@ -57,9 +57,11 @@ namespace eslib.Services
             return response;
         }
 
-        public string GenerateUrl(string endpoint)
+        public string GenerateUrl(params string[] parameters)
         {
-            return $"{Constants.apiUrl}/{endpoint}";
+            var url = $"{Constants.apiUrl}/{string.Join("/", parameters)}";
+
+            return url;
         }
     }
 
@@ -69,6 +71,6 @@ namespace eslib.Services
 
         public Response<T> ParseResponse<T>(HttpResponseMessage responseMessage);
 
-        public string GenerateUrl(string endpoint);        
+        public string GenerateUrl(params string[] parameters);        
     }
 }
