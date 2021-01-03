@@ -1,4 +1,5 @@
-﻿using eslib.Services;
+﻿using eslib.Models;
+using eslib.Services;
 
 namespace eslib.Endpoints
 {
@@ -20,7 +21,7 @@ namespace eslib.Endpoints
             return result.data;
         }
 
-        public Models.Alliance GetAlliance(int allianceId)
+        public Alliance GetAlliance(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
             var result = _dataService.Fetch<Models.Alliance>(url).Result;

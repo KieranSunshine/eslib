@@ -22,7 +22,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.Fetch<int[]>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
-            var allianceEndpoint = new eslib.Endpoints.AllianceEndpoint(mock.Object);
+            var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAllianceIds();
 
             Assert.AreEqual(result, mockResponse.Result.data);
@@ -33,7 +33,7 @@ namespace eslib_units.Endpoints
         {
             var mock = new Mock<IDataService>();
 
-            var expectedObject = new eslib.Models.Alliance()
+            var expectedObject = new Alliance()
             {
                 CreatorCorporationId = 1,
                 CreatorId = 2,
@@ -43,16 +43,15 @@ namespace eslib_units.Endpoints
                 Name = "test",
                 Ticker = "test"
             };
-            var mockResponse = Task.FromResult(new Response<eslib.Models.Alliance>() { data = expectedObject });
-            //var expectedJson = JsonSerializer.Serialize(expectedObject);
+            var mockResponse = Task.FromResult(new Response<Alliance>() { data = expectedObject });
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns("somestring/someparam");
 
-            mock.Setup(m => m.Fetch<eslib.Models.Alliance>(It.IsAny<string>()))
+            mock.Setup(m => m.Fetch<Alliance>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
-            var allianceEndpoint = new eslib.Endpoints.AllianceEndpoint(mock.Object);
+            var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAlliance(1);
 
             Assert.AreEqual(mockResponse.Result.data, result);
