@@ -2,12 +2,12 @@
 
 namespace eslib.Endpoints
 {
-    public class Alliance
+    public class AllianceEndpoint
     {
         private readonly IDataService _dataService;
         private readonly string endpoint = "alliances";
 
-        public Alliance(IDataService dataService)
+        public AllianceEndpoint(IDataService dataService)
         {
             _dataService = dataService;
         }

@@ -21,7 +21,7 @@ namespace eslib_units.Endpoints
                 .Returns(mockResponse);
 
             // Create our endpoint and call ping.
-            var metaEndpoint = new Meta(mock.Object);
+            var metaEndpoint = new MetaEndpoint(mock.Object);
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.

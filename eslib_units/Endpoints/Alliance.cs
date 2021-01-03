@@ -22,7 +22,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.Fetch<int[]>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
-            var allianceEndpoint = new eslib.Endpoints.Alliance(mock.Object);
+            var allianceEndpoint = new eslib.Endpoints.AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAllianceIds();
 
             Assert.AreEqual(result, mockResponse.Result.data);
@@ -52,7 +52,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.Fetch<eslib.Models.Alliance>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
-            var allianceEndpoint = new eslib.Endpoints.Alliance(mock.Object);
+            var allianceEndpoint = new eslib.Endpoints.AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAlliance(1);
 
             Assert.AreEqual(mockResponse.Result.data, result);

@@ -2,11 +2,11 @@
 
 namespace eslib.Endpoints
 {
-    public class Meta
+    public class MetaEndpoint
     {
         private readonly IDataService _dataService;
 
-        public Meta(IDataService dataService)
+        public MetaEndpoint(IDataService dataService)
         {
             _dataService = dataService;
         }

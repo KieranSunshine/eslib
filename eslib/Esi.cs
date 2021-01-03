@@ -15,9 +15,9 @@ namespace eslib
             _options = options;
             _dataService = new DataService(_options);
 
-            meta = new Meta(_dataService);
+            meta = new MetaEndpoint(_dataService);
         }
 
-        public readonly Meta meta;
+        public readonly MetaEndpoint meta;
     }
 }
