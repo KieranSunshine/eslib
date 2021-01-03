@@ -74,5 +74,29 @@ namespace eslib_units.Endpoints
 
             Assert.AreEqual(result, mockResponse.Result.data);
         }
+
+        [Test]
+        public void GetAllianceIcon()
+        {
+            var mock = new Mock<IDataService>();
+
+            var expectedObject = new Icon()
+            {
+                Url128px = "some/128px/url",
+                Url64px = "some/64px/url"
+            };
+            var mockResponse = Task.FromResult(new Response<Icon>() { data = expectedObject });
+
+            mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns("somestring/someparam");
+
+            mock.Setup(m => m.Fetch<Icon>(It.IsAny<string>()))
+                .Returns(mockResponse);
+
+            var allianceEndpoint = new AllianceEndpoint(mock.Object);
+            var result = allianceEndpoint.GetAllianceIcon(1);
+
+            Assert.AreEqual(mockResponse.Result.data, result);
+        }
     }
 }
