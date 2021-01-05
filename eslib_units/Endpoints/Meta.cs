@@ -14,7 +14,7 @@ namespace eslib_units.Endpoints
         {
             var mock = new Mock<IDataService>();
 
-            var mockResponse = Task.FromResult(new Response<string>() { message = "ok" });
+            var mockResponse = Task.FromResult(new Response<string>() { data = "ok" });
 
             // Ensure that the call to fetch returns our mocked response.
             mock.Setup(m => m.Fetch<string>(It.IsAny<string>()))
@@ -25,7 +25,7 @@ namespace eslib_units.Endpoints
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.
-            Assert.AreEqual(result, mockResponse.Result.message);
+            Assert.AreEqual(result, mockResponse.Result.data);
         }
     }
 }

@@ -21,12 +21,12 @@ namespace eslib_units.Services
             var mockDataService = new Mock<IDataService>();
 
             // Create a response and set the content property.
-            var message = "ok";
+            var data = "ok";
             var response = new HttpResponseMessage()
             {
-                Content = new StringContent(message)
+                Content = new StringContent(data)
             };
-            var expectedResult = new Response<string>() { message = message };
+            var expectedResult = new Response<string>() { data = data };
 
             // Ensure that the call to GetAsync returns our prepared HttpResponseMessage.
             mockHttpClient.Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -41,7 +41,7 @@ namespace eslib_units.Services
             var result = await dataService.Fetch<string>("");
 
             // Assert the outcomes.
-            Assert.AreEqual(expectedResult.message, result.message);
+            Assert.AreEqual(expectedResult.data, result.data);
         }
 
         [Test]
@@ -50,13 +50,13 @@ namespace eslib_units.Services
             var mockOptions = new Mock<IOptions<ApiOptions>>();
             var mockHttpClient = new Mock<IHttpClientWrapper>();
 
-            var message = "this should be parsed correctly";
-            var expectedResult = new Response<string>() { message = message };                       
+            var data = "this should be parsed correctly";
+            var expectedResult = new Response<string>() { data = data };                       
 
             var response = new HttpResponseMessage()
             {
                 StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(message)
+                Content = new StringContent(data)
             };           
 
             var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
@@ -65,7 +65,7 @@ namespace eslib_units.Services
             // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
             var result = dataService.ParseResponse<string>(response);
 
-            Assert.AreEqual(result.message, expectedResult.message);
+            Assert.AreEqual(result.data, expectedResult.data);
         }
 
         [Test]
