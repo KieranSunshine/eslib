@@ -1,6 +1,7 @@
 ﻿using eslib.Helpers.Wrappers;
 using eslib.Models;
 using eslib.Services;
+using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace eslib_units.Services
             // Create a mock IOptions, IHttpClientWrapper and IDataService.
             var mockOptions = new Mock<IOptions<ApiOptions>>();
             var mockHttpClient = new Mock<IHttpClientWrapper>();
-            var mockDataService = new Mock<IDataService>();
+            var mockResponseHandler = new Mock<IResponseHandler>();
 
             // Create a response and set the content property.
             var data = "ok";
@@ -33,90 +34,34 @@ namespace eslib_units.Services
                 .Returns(Task.FromResult(response));
 
             // Ensure that ParseResponse returns our expected response.
-            mockDataService.Setup(m => m.ParseResponse<string>(It.IsAny<HttpResponseMessage>()))
+            mockResponseHandler.Setup(m => m.Parse<string>(It.IsAny<HttpResponseMessage>()))
                 .Returns(expectedResult);
 
             // Perform our test.
-            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object, mockResponseHandler.Object);
             var result = await dataService.Fetch<string>("");
 
             // Assert the outcomes.
             Assert.AreEqual(expectedResult.data, result.data);
-        }
-
-        [Test]
-        public void ParseResponseString()
-        {            
-            var mockOptions = new Mock<IOptions<ApiOptions>>();
-            var mockHttpClient = new Mock<IHttpClientWrapper>();
-
-            var data = "this should be parsed correctly";
-            var expectedResult = new Response<string>() { data = data };                       
-
-            var response = new HttpResponseMessage()
-            {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(data)
-            };           
-
-            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
-
-            // ParseResponse will call ReadAsStringAsync on the underlying HttpContent object.
-            // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
-            var result = dataService.ParseResponse<string>(response);
-
-            Assert.AreEqual(result.data, expectedResult.data);
-        }
-
-        [Test]
-        public void ParseResponseObject()
-        {
-            var mockOptions = new Mock<IOptions<ApiOptions>>();
-            var mockHttpClient = new Mock<IHttpClientWrapper>();
-
-            var expectedObject = new FakeType() {
-                SomeId = 42,
-                SomeData = "the meaning of life"
-            };
-            var serializedObject = JsonSerializer.Serialize<FakeType>(expectedObject);
-
-            var response = new HttpResponseMessage()
-            {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(serializedObject)
-            };
-
-            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
-
-            var result = dataService.ParseResponse<FakeType>(response);
-
-            Assert.AreEqual(expectedObject.SomeId, result.data.SomeId);
-            Assert.AreEqual(expectedObject.SomeData, result.data.SomeData);
-        }
+        }        
 
         [Test]
         public void GenerateUrl()
         {
             var mockOptions = new Mock<IOptions<ApiOptions>>();
             var mockHttpClient = new Mock<IHttpClientWrapper>();
+            var mockResponseHandler = new Mock<IResponseHandler>();
 
             var baseUrl = "https://esi.evetech.net";
             var endpoint = "testendpoint";
             var parameter = "somevalue";
             
 
-            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object);
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object, mockResponseHandler.Object);
 
             var result = dataService.GenerateUrl(endpoint, parameter);
 
             Assert.AreEqual($"{baseUrl}/{endpoint}/{parameter}", result);
-        }
-
-        private class FakeType
-        {
-            public int SomeId { get; set; }
-
-            public string SomeData { get; set; }
         }
     }
 }
