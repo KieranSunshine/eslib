@@ -3,6 +3,7 @@ using eslib.Models;
 using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace eslib.Services
             _responseHandler = responseHandler;
         }
 
-        public async Task<Response<T>> Fetch<T>(string url)
+        public async Task<Response<T>> Get<T>(string url)
         {
             var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
@@ -46,7 +47,7 @@ namespace eslib.Services
 
     public interface IDataService
     {
-        public Task<Response<T>> Fetch<T>(string url);        
+        public Task<Response<T>> Get<T>(string url);        
 
         public string GenerateUrl(params string[] parameters);        
     }

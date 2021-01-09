@@ -16,8 +16,8 @@ namespace eslib_units.Endpoints
 
             var mockResponse = Task.FromResult(new Response<string>() { data = "ok" });
 
-            // Ensure that the call to fetch returns our mocked response.
-            mock.Setup(m => m.Fetch<string>(It.IsAny<string>()))
+            // Ensure that the call to Get returns our mocked response.
+            mock.Setup(m => m.Get<string>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
             // Create our endpoint and call ping.

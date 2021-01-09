@@ -19,7 +19,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("somestring");
 
-            mock.Setup(m => m.Fetch<int[]>(It.IsAny<string>()))
+            mock.Setup(m => m.Get<int[]>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
@@ -48,7 +48,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns("somestring/someparam");
 
-            mock.Setup(m => m.Fetch<Alliance>(It.IsAny<string>()))
+            mock.Setup(m => m.Get<Alliance>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
@@ -66,7 +66,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("somestring");
 
-            mock.Setup(m => m.Fetch<int[]>(It.IsAny<string>()))
+            mock.Setup(m => m.Get<int[]>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
@@ -90,7 +90,7 @@ namespace eslib_units.Endpoints
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns("somestring/someparam");
 
-            mock.Setup(m => m.Fetch<Icon>(It.IsAny<string>()))
+            mock.Setup(m => m.Get<Icon>(It.IsAny<string>()))
                 .Returns(mockResponse);
 
             var allianceEndpoint = new AllianceEndpoint(mock.Object);

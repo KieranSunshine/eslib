@@ -16,7 +16,7 @@ namespace eslib.Endpoints
         public int[] GetAllianceIds()
         {            
             var url = _dataService.GenerateUrl(endpoint);
-            var result = _dataService.Fetch<int[]>(url).Result;
+            var result = _dataService.Get<int[]>(url).Result;
 
             return result.data;
         }
@@ -24,7 +24,7 @@ namespace eslib.Endpoints
         public Alliance GetAlliance(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Fetch<Alliance>(url).Result;
+            var result = _dataService.Get<Alliance>(url).Result;
 
             return result.data;
         }
@@ -32,7 +32,7 @@ namespace eslib.Endpoints
         public int[] GetAllianceCorporationIds(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Fetch<int[]>(url).Result;
+            var result = _dataService.Get<int[]>(url).Result;
 
             return result.data;
         }
@@ -40,7 +40,7 @@ namespace eslib.Endpoints
         public Icon GetAllianceIcon(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Fetch<Icon>(url).Result;
+            var result = _dataService.Get<Icon>(url).Result;
 
             return result.data;
         }

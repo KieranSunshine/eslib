@@ -14,7 +14,7 @@ namespace eslib_units.Services
     internal class DataServiceTests
     {
         [Test]
-        public async Task Fetch()
+        public async Task Get()
         {
             // Create a mock IOptions, IHttpClientWrapper and IDataService.
             var mockOptions = new Mock<IOptions<ApiOptions>>();
@@ -39,7 +39,7 @@ namespace eslib_units.Services
 
             // Perform our test.
             var dataService = new DataService(mockOptions.Object, mockHttpClient.Object, mockResponseHandler.Object);
-            var result = await dataService.Fetch<string>("");
+            var result = await dataService.Get<string>("");
 
             // Assert the outcomes.
             Assert.AreEqual(expectedResult.data, result.data);
