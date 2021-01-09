@@ -18,6 +18,11 @@ namespace eslib.Helpers.Wrappers
             return await _httpClient.GetAsync(url);
         }
 
+        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent httpContent)
+        {
+            return await _httpClient.PostAsync(url, httpContent);
+        }        
+
         public void Dispose()
         {
             _httpClient?.Dispose();
@@ -27,5 +32,7 @@ namespace eslib.Helpers.Wrappers
     public interface IHttpClientWrapper
     {
         public Task<HttpResponseMessage> GetAsync(string url);
+
+        public Task<HttpResponseMessage> PostAsync(string url, HttpContent httpContent);
     }
 }
