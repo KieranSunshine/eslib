@@ -1,6 +1,7 @@
 using eslib.Models;
 using eslib.Services;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace eslib.Endpoints
 {
@@ -40,11 +41,26 @@ namespace eslib.Endpoints
 
                 return result.data;
             }
+
+            public AssetLocation[] GetAssetLocations(int id, List<long> itemIds)
+            {                
+                if (itemIds.Count == 0 || itemIds.Count > 1000)
+                {
+                    throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
+                }
+
+                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "locations");                
+                var result = _parent._dataService.Post<AssetLocation[]>(url, itemIds).Result;
+
+                return result.data;
+            }
         }
         
         public interface IAssetOwner
         {
             public Asset[] GetAssets(int id);
+
+            public AssetLocation[] GetAssetLocations(int id, List<long> itemIds);
         }
     }
 }

@@ -1,3 +1,4 @@
+using eslib.Models;
 using System.Text.Json.Serialization;
 
 namespace eslib.Models
@@ -27,5 +28,14 @@ namespace eslib.Models
 
         [JsonPropertyName("type_id")]
         public int TypeId { get; set; }
+    }
+
+    public class AssetLocation
+    {
+        [JsonPropertyName("item_id")]
+        public long ItemId { get; set; }
+
+        [JsonPropertyName("position")]
+        public Position Postition { get; set; }
     }
 }
