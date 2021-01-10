@@ -3,7 +3,9 @@ using Moq;
 using eslib.Models;
 using eslib.Services;
 using eslib.Endpoints;
+using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eslib_units.Endpoints
 {
@@ -52,6 +54,83 @@ namespace eslib_units.Endpoints
 
             Assert.AreEqual(expectedObject, characterResult);
             Assert.AreEqual(expectedObject, corporationResult);
+        }
+
+        [Test]
+        public void GetAssetLocations()
+        {
+            var mock = new Mock<IDataService>();
+
+            var testIds = new List<long> { 1, 2, 3, 4, 5 };
+            var expectedObject = new AssetLocation[] 
+            { 
+                new AssetLocation()
+                {
+                    ItemId = 1,
+                    Postition = new Position() 
+                    {
+                        X = 1,
+                        Y = 2,
+                        Z = 3
+                    }
+                },
+                new AssetLocation()
+                {
+                    ItemId = 2,
+                    Postition = new Position()
+                    {
+                        X = 4,
+                        Y = 5,
+                        Z = 6
+                    }
+                }
+            };
+
+            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+                .Returns("something");
+
+            mock.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
+                .Returns(Task.FromResult(new Response<AssetLocation[]>() { data = expectedObject }));
+
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            var characterResult = assetsEndpoint.Characters.GetAssetLocations(1, testIds);
+            var corporationResult = assetsEndpoint.Corporations.GetAssetLocations(2, testIds);
+
+            Assert.AreEqual(expectedObject, characterResult);
+            Assert.AreEqual(expectedObject, corporationResult);
+        }
+
+        [Test]
+        public void GetAssetLocationsThrowsErrorOnMinItemIds()
+        {
+            var mock = new Mock<IDataService>();
+
+            var testIds = new List<long>();
+
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, testIds));
+        }
+
+        [Test]
+        public void GetAssetLocationsThrowsErrorOnMaxItemIds()
+        {
+            var mock = new Mock<IDataService>();
+
+            // Create the list and populate it.
+            var testIds = new List<long>();
+            for (var i = 0; i <= 1000; i++)
+            {
+                testIds.Add(i);
+            }
+            
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, testIds));
+
         }
     }
 }
