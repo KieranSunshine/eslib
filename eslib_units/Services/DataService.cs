@@ -43,7 +43,47 @@ namespace eslib_units.Services
 
             // Assert the outcomes.
             Assert.AreEqual(expectedResult.data, result.data);
-        }        
+        }
+
+        [Test]
+        public async Task Post()
+        {
+            // Create a mock IOptions, IHttpClientWrapper and IDataService.
+            var mockOptions = new Mock<IOptions<ApiOptions>>();
+            var mockHttpClient = new Mock<IHttpClientWrapper>();
+            var mockResponseHandler = new Mock<IResponseHandler>();
+
+            // Generate a fake object to post.
+            var data = new FakeObject() {
+                RandomString = "Random string",
+                RandomInt = 42
+            };
+
+            // Define the expected response from the post.
+            var postResponse = "object was posted";            
+            var response = new HttpResponseMessage()
+            {
+                Content = new StringContent(postResponse)
+            };
+
+            // Generate the expected end result.
+            var expectedResult = new Response<string>() { data = postResponse };
+
+            // Ensure that PostAsync returns appropriately.
+            mockHttpClient.Setup(m => m.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .Returns(Task.FromResult(response));
+            
+            // Ensure that Parse returns appropriately.
+            mockResponseHandler.Setup(m => m.Parse<string>(It.IsAny<HttpResponseMessage>()))
+                .Returns(expectedResult);
+
+            // Conduct the test.
+            var dataService = new DataService(mockOptions.Object, mockHttpClient.Object, mockResponseHandler.Object);
+            var result = await dataService.Post<string>("", data);
+
+            // Evaluate the response.
+            Assert.AreEqual(expectedResult.data, result.data);
+        }
 
         [Test]
         public void GenerateUrl()
@@ -62,6 +102,13 @@ namespace eslib_units.Services
             var result = dataService.GenerateUrl(endpoint, parameter);
 
             Assert.AreEqual($"{baseUrl}/{endpoint}/{parameter}", result);
+        }
+
+        private class FakeObject 
+        {
+            public string RandomString { get; set; }
+
+            public int RandomInt { get; set; }
         }
     }
 }
