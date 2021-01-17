@@ -179,5 +179,23 @@ namespace eslib_units.Endpoints
             Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, testIds));
             Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, testIds));
         }
+
+        [Test]
+        public void GetAssetNamesThrowsErrorOnMaxItemIds()
+        {
+            var mock = new Mock<IDataService>();
+
+            // Create the list and populate it.
+            var testIds = new List<long>();
+            for (var i = 0; i <= 1000; i++)
+            {
+                testIds.Add(i);
+            }
+
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, testIds));
+        }
     }
 }
