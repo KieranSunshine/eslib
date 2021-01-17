@@ -132,5 +132,39 @@ namespace eslib_units.Endpoints
             Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, testIds));
 
         }
+
+        [Test]
+        public void GetAssetNames()
+        {
+            var mock = new Mock<IDataService>();
+            var testIds = new List<long> { 1, 2, 3, 4, 5 };
+            var expectedObject = new AssetName[]
+            {
+                new AssetName()
+                {
+                    ItemId = 1,
+                    Name = "Apple"
+                },
+                new AssetName()
+                {
+                    ItemId = 2,
+                    Name = "Banana"
+                }
+            };
+
+            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+                .Returns("something");
+
+            mock.Setup(m => m.Post<AssetName[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
+                .Returns(Task.FromResult(new Response<AssetName[]>() { data = expectedObject }));
+
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            var characterResult = assetsEndpoint.Characters.GetAssetNames(1, testIds);
+            var corporationResult = assetsEndpoint.Corporations.GetAssetNames(2, testIds);
+
+            Assert.AreEqual(expectedObject, characterResult);
+            Assert.AreEqual(expectedObject, corporationResult);
+        }
     }
 }
