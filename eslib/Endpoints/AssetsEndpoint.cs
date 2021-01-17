@@ -54,6 +54,19 @@ namespace eslib.Endpoints
 
                 return result.data;
             }
+
+            public AssetName[] GetAssetNames(int id, List<long> itemIds)
+            {
+                if (itemIds.Count == 0 || itemIds.Count > 1000)
+                {
+                    throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
+                }
+
+                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "names");
+                var result = _parent._dataService.Post<AssetName[]>(url, itemIds).Result;
+
+                return result.data;
+            }
         }
         
         public interface IAssetOwner
@@ -61,6 +74,8 @@ namespace eslib.Endpoints
             public Asset[] GetAssets(int id);
 
             public AssetLocation[] GetAssetLocations(int id, List<long> itemIds);
+
+            public AssetName[] GetAssetNames(int id, List<long> itemIds);
         }
     }
 }
