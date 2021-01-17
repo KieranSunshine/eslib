@@ -166,5 +166,18 @@ namespace eslib_units.Endpoints
             Assert.AreEqual(expectedObject, characterResult);
             Assert.AreEqual(expectedObject, corporationResult);
         }
+
+        [Test]
+        public void GetAssetNamesThrowsErrorOnMinItemIds()
+        {
+            var mock = new Mock<IDataService>();
+
+            var testIds = new List<long>();
+
+            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, testIds));
+        }
     }
 }
