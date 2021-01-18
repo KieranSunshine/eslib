@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace eslib.Models
+﻿namespace eslib.Models
 {
     public class Response<T>
     {
