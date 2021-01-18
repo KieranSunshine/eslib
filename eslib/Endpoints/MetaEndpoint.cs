@@ -1,4 +1,5 @@
-﻿using eslib.Services;
+﻿using eslib.Models;
+using eslib.Services;
 
 namespace eslib.Endpoints
 {
@@ -11,12 +12,12 @@ namespace eslib.Endpoints
             _dataService = dataService;
         }
 
-        public string Ping()
+        public Response<string> Ping()
         {            
             var url = _dataService.GenerateUrl("ping");
             var result = _dataService.Get<string>(url).Result;
 
-            return result.Data;
+            return result;
         }
     }
 }

@@ -13,19 +13,18 @@ namespace eslib_units.Endpoints
         public void Ping()
         {
             var mock = new Mock<IDataService>();
-
-            var mockResponse = Task.FromResult(new Response<string>() { Data = "ok" });
+            var mockResponse = new Response<string>() { Data = "ok" };
 
             // Ensure that the call to Get returns our mocked response.
             mock.Setup(m => m.Get<string>(It.IsAny<string>()))
-                .Returns(mockResponse);
+                .Returns(Task.FromResult(mockResponse));
 
             // Create our endpoint and call ping.
             var metaEndpoint = new MetaEndpoint(mock.Object);
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.
-            Assert.AreEqual(result, mockResponse.Result.Data);
+            Assert.AreEqual(mockResponse, result);
         }
     }
 }

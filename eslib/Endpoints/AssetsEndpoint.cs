@@ -34,15 +34,15 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public Asset[] GetAssets(int id)
+            public Response<Asset[]> GetAssets(int id)
             {
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets");
                 var result = _parent._dataService.Get<Asset[]>(url).Result;
 
-                return result.Data;
+                return result;
             }
 
-            public AssetLocation[] GetAssetLocations(int id, List<long> itemIds)
+            public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds)
             {                
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
                 {
@@ -52,10 +52,10 @@ namespace eslib.Endpoints
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "locations");                
                 var result = _parent._dataService.Post<AssetLocation[]>(url, itemIds).Result;
 
-                return result.Data;
+                return result;
             }
 
-            public AssetName[] GetAssetNames(int id, List<long> itemIds)
+            public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds)
             {
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
                 {
@@ -65,17 +65,17 @@ namespace eslib.Endpoints
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "names");
                 var result = _parent._dataService.Post<AssetName[]>(url, itemIds).Result;
 
-                return result.Data;
+                return result;
             }
         }
         
         public interface IAssetOwner
         {
-            public Asset[] GetAssets(int id);
+            public Response<Asset[]> GetAssets(int id);
 
-            public AssetLocation[] GetAssetLocations(int id, List<long> itemIds);
+            public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds);
 
-            public AssetName[] GetAssetNames(int id, List<long> itemIds);
+            public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds);
         }
     }
 }

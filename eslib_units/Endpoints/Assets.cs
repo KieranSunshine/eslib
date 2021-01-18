@@ -39,12 +39,13 @@ namespace eslib_units.Endpoints
                     TypeId = 12345678
                 }
             };
+            var mockResponse = new Response<Asset[]>() { Data = expectedObject };
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("something");
 
             mock.Setup(m => m.Get<Asset[]>(It.IsAny<string>()))
-                .Returns(Task.FromResult(new Response<Asset[]>() { Data = expectedObject }));
+                .Returns(Task.FromResult(mockResponse));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 
@@ -52,8 +53,8 @@ namespace eslib_units.Endpoints
             var characterResult = assetsEndpoint.Characters.GetAssets(1);
             var corporationResult = assetsEndpoint.Corporations.GetAssets(2);
 
-            Assert.AreEqual(expectedObject, characterResult);
-            Assert.AreEqual(expectedObject, corporationResult);
+            Assert.AreEqual(mockResponse, characterResult);
+            Assert.AreEqual(mockResponse, corporationResult);
         }
 
         [Test]
@@ -85,20 +86,21 @@ namespace eslib_units.Endpoints
                     }
                 }
             };
+            var mockResponse = new Response<AssetLocation[]>() { Data = expectedObject };
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("something");
 
             mock.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(new Response<AssetLocation[]>() { Data = expectedObject }));
+                .Returns(Task.FromResult(mockResponse));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 
             var characterResult = assetsEndpoint.Characters.GetAssetLocations(1, testIds);
             var corporationResult = assetsEndpoint.Corporations.GetAssetLocations(2, testIds);
 
-            Assert.AreEqual(expectedObject, characterResult);
-            Assert.AreEqual(expectedObject, corporationResult);
+            Assert.AreEqual(mockResponse, characterResult);
+            Assert.AreEqual(mockResponse, corporationResult);
         }
 
         [Test]
@@ -151,20 +153,21 @@ namespace eslib_units.Endpoints
                     Name = "Banana"
                 }
             };
+            var mockResponse = new Response<AssetName[]>() { Data = expectedObject };
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("something");
 
             mock.Setup(m => m.Post<AssetName[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(new Response<AssetName[]>() { Data = expectedObject }));
+                .Returns(Task.FromResult(mockResponse));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 
             var characterResult = assetsEndpoint.Characters.GetAssetNames(1, testIds);
             var corporationResult = assetsEndpoint.Corporations.GetAssetNames(2, testIds);
 
-            Assert.AreEqual(expectedObject, characterResult);
-            Assert.AreEqual(expectedObject, corporationResult);
+            Assert.AreEqual(mockResponse, characterResult);
+            Assert.AreEqual(mockResponse, corporationResult);
         }
 
         [Test]

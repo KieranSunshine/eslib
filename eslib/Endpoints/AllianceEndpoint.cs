@@ -13,36 +13,36 @@ namespace eslib.Endpoints
             _dataService = dataService;
         }
 
-        public int[] GetAllianceIds()
+        public Response<int[]> GetAllianceIds()
         {            
             var url = _dataService.GenerateUrl(endpoint);
             var result = _dataService.Get<int[]>(url).Result;
 
-            return result.Data;
+            return result;
         }
 
-        public Alliance GetAlliance(int allianceId)
+        public Response<Alliance> GetAlliance(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
             var result = _dataService.Get<Alliance>(url).Result;
 
-            return result.Data;
+            return result;
         }
 
-        public int[] GetAllianceCorporationIds(int allianceId)
+        public Response<int[]> GetAllianceCorporationIds(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
             var result = _dataService.Get<int[]>(url).Result;
 
-            return result.Data;
+            return result;
         }
 
-        public Icon GetAllianceIcon(int allianceId)
+        public Response<Icon> GetAllianceIcon(int allianceId)
         {
             var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
             var result = _dataService.Get<Icon>(url).Result;
 
-            return result.Data;
+            return result;
         }
     }
 }
