@@ -30,7 +30,7 @@ namespace eslib.Services.Handlers
                         }
                         catch (JsonException)
                         {
-                            response.Error = "Error parsing response into the given type";
+                            response.Error.Message = "Error parsing response into the given type";
                         }
                     }
                 }
@@ -38,12 +38,12 @@ namespace eslib.Services.Handlers
                 {
                     try
                     {
-                        response.Error = JsonSerializer.Deserialize<Error>(result).Message;
+                        response.Error = JsonSerializer.Deserialize<Error>(result);
                     }
                     catch (JsonException)
                     {
                         // Something has gone rather wrong...
-                        response.Error = "Error parsing response";
+                        response.Error.Message = "Error parsing response";
 
                         throw;
                     }
