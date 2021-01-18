@@ -39,7 +39,7 @@ namespace eslib.Endpoints
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets");
                 var result = _parent._dataService.Get<Asset[]>(url).Result;
 
-                return result.data;
+                return result.Data;
             }
 
             public AssetLocation[] GetAssetLocations(int id, List<long> itemIds)
@@ -52,7 +52,7 @@ namespace eslib.Endpoints
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "locations");                
                 var result = _parent._dataService.Post<AssetLocation[]>(url, itemIds).Result;
 
-                return result.data;
+                return result.Data;
             }
 
             public AssetName[] GetAssetNames(int id, List<long> itemIds)
@@ -65,7 +65,7 @@ namespace eslib.Endpoints
                 var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "names");
                 var result = _parent._dataService.Post<AssetName[]>(url, itemIds).Result;
 
-                return result.data;
+                return result.Data;
             }
         }
         

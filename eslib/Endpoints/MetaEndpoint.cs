@@ -16,7 +16,7 @@ namespace eslib.Endpoints
             var url = _dataService.GenerateUrl("ping");
             var result = _dataService.Get<string>(url).Result;
 
-            return result.data;
+            return result.Data;
         }
     }
 }

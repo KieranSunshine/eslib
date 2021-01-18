@@ -19,18 +19,18 @@ namespace eslib.Services.Handlers
                     // If a plain string is expected then it may not be JSONified...
                     if (typeof(T) == typeof(string))
                     {
-                        response.data = (T)Convert.ChangeType(result, typeof(T));
+                        response.Data = (T)Convert.ChangeType(result, typeof(T));
                     }
                     else
                     {
                         try
                         {
                             // If result is valid json then set the data property.
-                            response.data = JsonSerializer.Deserialize<T>(result);
+                            response.Data = JsonSerializer.Deserialize<T>(result);
                         }
                         catch (JsonException)
                         {
-                            response.error = "Error parsing response into the given type";
+                            response.Error = "Error parsing response into the given type";
                         }
                     }
                 }
@@ -38,12 +38,12 @@ namespace eslib.Services.Handlers
                 {
                     try
                     {
-                        response.error = JsonSerializer.Deserialize<Error>(result).Message;
+                        response.Error = JsonSerializer.Deserialize<Error>(result).Message;
                     }
                     catch (JsonException)
                     {
                         // Something has gone rather wrong...
-                        response.error = "Error parsing response";
+                        response.Error = "Error parsing response";
 
                         throw;
                     }

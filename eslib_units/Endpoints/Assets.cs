@@ -44,7 +44,7 @@ namespace eslib_units.Endpoints
                 .Returns("something");
 
             mock.Setup(m => m.Get<Asset[]>(It.IsAny<string>()))
-                .Returns(Task.FromResult(new Response<Asset[]>() { data = expectedObject }));
+                .Returns(Task.FromResult(new Response<Asset[]>() { Data = expectedObject }));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 
@@ -90,7 +90,7 @@ namespace eslib_units.Endpoints
                 .Returns("something");
 
             mock.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(new Response<AssetLocation[]>() { data = expectedObject }));
+                .Returns(Task.FromResult(new Response<AssetLocation[]>() { Data = expectedObject }));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 
@@ -156,7 +156,7 @@ namespace eslib_units.Endpoints
                 .Returns("something");
 
             mock.Setup(m => m.Post<AssetName[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(new Response<AssetName[]>() { data = expectedObject }));
+                .Returns(Task.FromResult(new Response<AssetName[]>() { Data = expectedObject }));
 
             var assetsEndpoint = new AssetsEndpoint(mock.Object);
 

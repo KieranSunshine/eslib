@@ -27,7 +27,7 @@ namespace eslib_units.Services
             {
                 Content = new StringContent(data)
             };
-            var expectedResult = new Response<string>() { data = data };
+            var expectedResult = new Response<string>() { Data = data };
 
             // Ensure that the call to GetAsync returns our prepared HttpResponseMessage.
             mockHttpClient.Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -42,7 +42,7 @@ namespace eslib_units.Services
             var result = await dataService.Get<string>("");
 
             // Assert the outcomes.
-            Assert.AreEqual(expectedResult.data, result.data);
+            Assert.AreEqual(expectedResult.Data, result.Data);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace eslib_units.Services
             };
 
             // Generate the expected end result.
-            var expectedResult = new Response<string>() { data = postResponse };
+            var expectedResult = new Response<string>() { Data = postResponse };
 
             // Ensure that PostAsync returns appropriately.
             mockHttpClient.Setup(m => m.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
@@ -82,7 +82,7 @@ namespace eslib_units.Services
             var result = await dataService.Post<string>("", data);
 
             // Evaluate the response.
-            Assert.AreEqual(expectedResult.data, result.data);
+            Assert.AreEqual(expectedResult.Data, result.Data);
         }
 
         [Test]

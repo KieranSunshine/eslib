@@ -14,7 +14,7 @@ namespace eslib_units.Endpoints
         public void GetAllianceIds()
         {
             var mock = new Mock<IDataService>();
-            var mockResponse = Task.FromResult(new Response<int[]>() { data = new int[100] });
+            var mockResponse = Task.FromResult(new Response<int[]>() { Data = new int[100] });
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("somestring");
@@ -25,7 +25,7 @@ namespace eslib_units.Endpoints
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAllianceIds();
 
-            Assert.AreEqual(result, mockResponse.Result.data);
+            Assert.AreEqual(result, mockResponse.Result.Data);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace eslib_units.Endpoints
                 Name = "test",
                 Ticker = "test"
             };
-            var mockResponse = Task.FromResult(new Response<Alliance>() { data = expectedObject });
+            var mockResponse = Task.FromResult(new Response<Alliance>() { Data = expectedObject });
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns("somestring/someparam");
@@ -54,14 +54,14 @@ namespace eslib_units.Endpoints
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAlliance(1);
 
-            Assert.AreEqual(mockResponse.Result.data, result);
+            Assert.AreEqual(mockResponse.Result.Data, result);
         }
 
         [Test]
         public void GetAllianceCorporationIds()
         {
             var mock = new Mock<IDataService>();
-            var mockResponse = Task.FromResult(new Response<int[]>() { data = new int[100] });
+            var mockResponse = Task.FromResult(new Response<int[]>() { Data = new int[100] });
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("somestring");
@@ -72,7 +72,7 @@ namespace eslib_units.Endpoints
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAllianceCorporationIds(1);
 
-            Assert.AreEqual(result, mockResponse.Result.data);
+            Assert.AreEqual(result, mockResponse.Result.Data);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace eslib_units.Endpoints
                 Url128px = "some/128px/url",
                 Url64px = "some/64px/url"
             };
-            var mockResponse = Task.FromResult(new Response<Icon>() { data = expectedObject });
+            var mockResponse = Task.FromResult(new Response<Icon>() { Data = expectedObject });
 
             mock.Setup(m => m.GenerateUrl(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns("somestring/someparam");
@@ -96,7 +96,7 @@ namespace eslib_units.Endpoints
             var allianceEndpoint = new AllianceEndpoint(mock.Object);
             var result = allianceEndpoint.GetAllianceIcon(1);
 
-            Assert.AreEqual(mockResponse.Result.data, result);
+            Assert.AreEqual(mockResponse.Result.Data, result);
         }
     }
 }

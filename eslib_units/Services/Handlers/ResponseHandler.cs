@@ -15,7 +15,7 @@ namespace eslib_units.Services.Handlers
         public void ParseResponseString()
         {
             var data = "this should be parsed correctly";
-            var expectedResult = new Response<string>() { data = data };
+            var expectedResult = new Response<string>() { Data = data };
 
             var response = new HttpResponseMessage()
             {
@@ -29,7 +29,7 @@ namespace eslib_units.Services.Handlers
             // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
             var result = responseHandler.Parse<string>(response);
 
-            Assert.AreEqual(result.data, expectedResult.data);
+            Assert.AreEqual(result.Data, expectedResult.Data);
         }
 
         [Test]
@@ -52,8 +52,8 @@ namespace eslib_units.Services.Handlers
 
             var result = responseHandler.Parse<FakeType>(response);
 
-            Assert.AreEqual(expectedObject.SomeId, result.data.SomeId);
-            Assert.AreEqual(expectedObject.SomeData, result.data.SomeData);
+            Assert.AreEqual(expectedObject.SomeId, result.Data.SomeId);
+            Assert.AreEqual(expectedObject.SomeData, result.Data.SomeData);
         }
 
         private class FakeType
