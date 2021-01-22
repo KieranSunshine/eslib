@@ -32,15 +32,13 @@ namespace eslib_units.Endpoints
         {
             var mock = new Mock<IDataService>();
 
-            var expectedObject = new Alliance()
+            var expectedObject = new Alliance("test", "test")
             {
                 CreatorCorporationId = 1,
                 CreatorId = 2,
                 DateFounded  = new System.DateTime(2021, 1, 3),
                 ExecutorCorporationId = 3,
-                FactionId = 4,
-                Name = "test",
-                Ticker = "test"
+                FactionId = 4
             };
             var mockResponse = new Response<Alliance>() { Data = expectedObject };
 
