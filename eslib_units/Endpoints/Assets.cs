@@ -9,12 +9,23 @@ using System.Collections.Generic;
 
 namespace eslib_units.Endpoints
 {
+    [TestFixture]
     public class AssetsTests
     {
+        private Mock<IDataService> mockDataService { get; set; }
+
+        [SetUp]
+        public void Init()
+        {
+            mockDataService = new Mock<IDataService>();
+
+            mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+                .Returns("something");
+        }
+
         [Test]
         public void GetAssets()
         {
-            var mock = new Mock<IDataService>();
             var expectedObject = new Asset[] {
                 new Asset("some_string", "some_string")
                 {
@@ -37,13 +48,10 @@ namespace eslib_units.Endpoints
             };
             var mockResponse = new Response<Asset[]>() { Data = expectedObject };
 
-            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
-                .Returns("something");
-
-            mock.Setup(m => m.Get<Asset[]>(It.IsAny<string>()))
+            mockDataService.Setup(m => m.Get<Asset[]>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+            var assetsEndpoint = new AssetsEndpoint(mockDataService.Object);
 
             // These use the same underlying code so we might as well test them all.
             var characterResult = assetsEndpoint.Characters.GetAssets(1);
@@ -56,8 +64,6 @@ namespace eslib_units.Endpoints
         [Test]
         public void GetAssetLocations()
         {
-            var mock = new Mock<IDataService>();
-
             var stubbedPosition = new Position(1, 2, 3);
 
             var testIds = new List<long> { 1, 2, 3, 4, 5 };
@@ -74,13 +80,10 @@ namespace eslib_units.Endpoints
             };
             var mockResponse = new Response<AssetLocation[]>() { Data = expectedObject };
 
-            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
-                .Returns("something");
-
-            mock.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
+            mockDataService.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+            var assetsEndpoint = new AssetsEndpoint(mockDataService.Object);
 
             var characterResult = assetsEndpoint.Characters.GetAssetLocations(1, testIds);
             var corporationResult = assetsEndpoint.Corporations.GetAssetLocations(2, testIds);
