@@ -45,10 +45,8 @@ namespace eslib.Services
         }
 
         public string GenerateUrl(params string[] parameters)
-        {
-            var url = $"{Constants.apiUrl}/{string.Join("/", parameters)}";
-
-            return url;
+        {            
+            return $"{Constants.apiUrl}/{string.Join("/", parameters)}";
         }
     }
 
