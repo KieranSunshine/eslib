@@ -2,9 +2,11 @@
 using eslib.Models;
 using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eslib.Services
 {
@@ -44,9 +46,31 @@ namespace eslib.Services
             return _responseHandler.Parse<T>(response);
         }
 
-        public string GenerateUrl(params string[] parameters)
-        {            
-            return $"{Constants.apiUrl}/{string.Join("/", parameters)}";
+        public string GenerateUrl(params string[] pathArray)
+        {
+            var paths = new List<string>(); 
+            foreach (var path in pathArray)
+            {
+                var encoded = Uri.EscapeDataString(path);
+
+                paths.Add(encoded);
+            }
+
+            return $"{Constants.apiUrl}/{string.Join("/", paths)}";
+        }
+
+        public string GenerateQueryString(IDictionary<string, string> parameters)
+        {
+            var queries = new List<string>();
+            foreach (var param in parameters)
+            {
+                var key = Uri.EscapeDataString(param.Key);
+                var value = Uri.EscapeDataString(param.Value);
+
+                queries.Add($"{key}=${value}");
+            }
+
+            return string.Join("&", queries);
         }
     }
 
@@ -56,6 +80,8 @@ namespace eslib.Services
 
         public Task<Response<T>> Post<T>(string url, object data) where T: class;
 
-        public string GenerateUrl(params string[] parameters);        
+        public string GenerateUrl(params string[] pathArray);  
+
+        public string GenerateQueryString(IDictionary<string, string> parameters);      
     }
 }
