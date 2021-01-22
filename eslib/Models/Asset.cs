@@ -51,8 +51,9 @@ namespace eslib.Models
 
     public class AssetName
     {
-        public AssetName(string name)
+        public AssetName(long itemId, string name)
         {
+            ItemId = itemId;
             Name = name;
         }
         

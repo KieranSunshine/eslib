@@ -4,6 +4,13 @@ namespace eslib.Models
 {
     public class Position
     {
+        public Position(double x, double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
         [JsonPropertyName("x")]
         public double X { get; set; }
 

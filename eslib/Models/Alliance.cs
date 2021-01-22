@@ -5,8 +5,17 @@ namespace eslib.Models
 {
     public class Alliance
     {
-        public Alliance(string name, string ticker)
+        public Alliance(
+            int creatorCorporationId,
+            int creatorId,
+            DateTime dateFounded, 
+            string name,
+            string ticker
+        )
         {
+            CreatorCorporationId = creatorCorporationId;
+            CreatorId = creatorId;
+            dateFounded = DateFounded;
             Name = name;
             Ticker = ticker;
         }
