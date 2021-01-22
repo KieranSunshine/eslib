@@ -36,11 +36,21 @@ namespace eslib.Endpoints
 
                 return result;
             }
+
+            public Response<BookmarkFolder[]> GetBookmarkFolders(int id)
+            {
+                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "bookmarks", "folders");
+                var result = _parent._dataService.Get<BookmarkFolder[]>(url).Result;
+
+                return result;
+            }
         }
     }
 
     public interface IBookmarkOwner
     {
         public Response<Bookmark[]> GetBookmarks(int id);
+
+        public Response<BookmarkFolder[]> GetBookmarkFolders(int id);
     }
 }

@@ -49,4 +49,18 @@ namespace eslib.Models
         [JsonPropertyName("notes")]
         public string Notes { get; set; }
     }
+
+    public class BookmarkFolder
+    {
+        public BookmarkFolder(int folderId, string name) {
+            FolderId = folderId;
+            Name = name;
+        }
+
+        [JsonPropertyName("folder_id")]
+        public int FolderId { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+    }
 }
