@@ -1,8 +1,10 @@
-﻿namespace eslib.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace eslib.Models
 {
-    public class Response<T>
+    public class Response<T> where T: class
     {
-        public T Data { get; set; }
-        public Error Error { get; set; }
+        public T? Data { get; set; }
+        public Error? Error { get; set; }
     }
 }

@@ -28,14 +28,14 @@ namespace eslib.Services
             _responseHandler = responseHandler;
         }
 
-        public async Task<Response<T>> Get<T>(string url)
+        public async Task<Response<T>> Get<T>(string url) where T: class
         {
             var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
             return _responseHandler.Parse<T>(response);
         }
 
-        public async Task<Response<T>> Post<T>(string url, object data)
+        public async Task<Response<T>> Post<T>(string url, object data) where T: class
         {                         
             var httpContent = new StringContent(JsonSerializer.Serialize(data));
 
@@ -54,9 +54,9 @@ namespace eslib.Services
 
     public interface IDataService
     {
-        public Task<Response<T>> Get<T>(string url);
+        public Task<Response<T>> Get<T>(string url) where T: class;
 
-        public Task<Response<T>> Post<T>(string url, object data);
+        public Task<Response<T>> Post<T>(string url, object data) where T: class;
 
         public string GenerateUrl(params string[] parameters);        
     }

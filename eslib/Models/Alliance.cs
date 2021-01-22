@@ -1,12 +1,16 @@
-﻿
-
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace eslib.Models
 {
     public class Alliance
     {
+        public Alliance(string name, string ticker)
+        {
+            Name = name;
+            Ticker = ticker;
+        }
+
         [JsonPropertyName("creator_corporation_id")]
         public int CreatorCorporationId { get; set; }
 
@@ -27,6 +31,5 @@ namespace eslib.Models
 
         [JsonPropertyName("ticker")]
         public string Ticker { get; set; }
-
     }
 }

@@ -7,7 +7,7 @@ namespace eslib.Services.Handlers
 {
     public class ResponseHandler : IResponseHandler
     {
-        public Response<T> Parse<T>(HttpResponseMessage responseMessage)
+        public Response<T> Parse<T>(HttpResponseMessage responseMessage) where T: class
         {
             var response = new Response<T>();
             var result = responseMessage.Content.ReadAsStringAsync().Result;
@@ -30,7 +30,7 @@ namespace eslib.Services.Handlers
                         }
                         catch (JsonException)
                         {
-                            response.Error.Message = "Error parsing response into the given type";
+                            response.Error = new Error("Error parsing response into the given type");
                         }
                     }
                 }
@@ -43,7 +43,7 @@ namespace eslib.Services.Handlers
                     catch (JsonException)
                     {
                         // Something has gone rather wrong...
-                        response.Error.Message = "Error parsing response";
+                        response.Error = new Error("Error parsing response");
 
                         throw;
                     }
@@ -56,6 +56,6 @@ namespace eslib.Services.Handlers
 
     public interface IResponseHandler
     {
-        public Response<T> Parse<T>(HttpResponseMessage responseMessage);        
+        public Response<T> Parse<T>(HttpResponseMessage responseMessage) where T: class;        
     }
 }

@@ -4,6 +4,12 @@ namespace eslib.Models
 {
     public class Asset
     {
+        public Asset(string locationFlag, string locationType)
+        {
+            LocationFlag = locationFlag;
+            LocationType = locationType;
+        }
+
         [JsonPropertyName("is_blueprint_copy")]
         public bool? IsBlueprintCopy { get; set; }
 
@@ -31,15 +37,25 @@ namespace eslib.Models
 
     public class AssetLocation
     {
+        public AssetLocation(Position position)
+        {
+            Position = position;
+        }
+
         [JsonPropertyName("item_id")]
         public long ItemId { get; set; }
 
         [JsonPropertyName("position")]
-        public Position Postition { get; set; }
+        public Position Position { get; set; }
     }
 
     public class AssetName
     {
+        public AssetName(string name)
+        {
+            Name = name;
+        }
+        
         [JsonPropertyName("item_id")]
         public long ItemId { get; set; }
 
