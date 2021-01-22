@@ -32,11 +32,8 @@ namespace eslib_units.Endpoints
         {
             var mock = new Mock<IDataService>();
 
-            var expectedObject = new Alliance("test", "test")
+            var expectedObject = new Alliance(1, 2, new System.DateTime(2021, 1, 3), "test", "test")
             {
-                CreatorCorporationId = 1,
-                CreatorId = 2,
-                DateFounded  = new System.DateTime(2021, 1, 3),
                 ExecutorCorporationId = 3,
                 FactionId = 4
             };

@@ -58,12 +58,7 @@ namespace eslib_units.Endpoints
         {
             var mock = new Mock<IDataService>();
 
-            var stubbedPosition = new Position
-            {
-                X = 1,
-                Y = 2,
-                Z = 3
-            };
+            var stubbedPosition = new Position(1, 2, 3);
 
             var testIds = new List<long> { 1, 2, 3, 4, 5 };
             var expectedObject = new AssetLocation[] 
@@ -133,14 +128,8 @@ namespace eslib_units.Endpoints
             var testIds = new List<long> { 1, 2, 3, 4, 5 };
             var expectedObject = new AssetName[]
             {
-                new AssetName("Apple")
-                {
-                    ItemId = 1
-                },
-                new AssetName("Banana")
-                {
-                    ItemId = 2
-                }
+                new AssetName(1, "Apple"),
+                new AssetName(2, "Banana")
             };
             var mockResponse = new Response<AssetName[]>() { Data = expectedObject };
 
