@@ -15,9 +15,15 @@ namespace eslib
             _options = options;
             _dataService = new DataService(_options);
 
-            meta = new MetaEndpoint(_dataService);
+            Meta = new MetaEndpoint(_dataService);
+            Alliance = new AllianceEndpoint(_dataService);
+            Assets = new AssetsEndpoint(_dataService);
+            Bookmarks = new BookmarksEndpoint(_dataService);
         }
 
-        public readonly MetaEndpoint meta;
+        public readonly MetaEndpoint Meta;
+        public readonly AllianceEndpoint Alliance;
+        public readonly AssetsEndpoint Assets;
+        public readonly BookmarksEndpoint Bookmarks;
     }
 }
