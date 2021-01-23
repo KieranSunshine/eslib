@@ -1,12 +1,12 @@
-﻿using eslib.Helpers.Wrappers;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using eslib.Helpers.Wrappers;
 using eslib.Models.Internals;
 using eslib.Services;
-using eslib.Services.Handlers;
+using eslib.Services.Factories;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace eslib_units.Services
 {
@@ -15,14 +15,14 @@ namespace eslib_units.Services
     {
         private Mock<IOptions<ApiOptions>> _mockOptions;
         private Mock<IHttpClientWrapper> _mockHttpClient;
-        private Mock<IResponseHandler> _mockResponseHandler;
+        private Mock<IResponseFactory> _mockResponseHandler;
 
         [SetUp]
         public void Init()
         {
             _mockOptions = new Mock<IOptions<ApiOptions>>();
             _mockHttpClient = new Mock<IHttpClientWrapper>();
-            _mockResponseHandler = new Mock<IResponseHandler>();
+            _mockResponseHandler = new Mock<IResponseFactory>();
         }
         
         [Test]
@@ -41,7 +41,7 @@ namespace eslib_units.Services
                 .Returns(Task.FromResult(response));
 
             // Ensure that ParseResponse returns our expected response.
-            _mockResponseHandler.Setup(m => m.Parse<string>(It.IsAny<HttpResponseMessage>()))
+            _mockResponseHandler.Setup(m => m.CreateResponse<string>(It.IsAny<HttpResponseMessage>()))
                 .Returns(expectedResult);
 
             // Perform our test.
@@ -76,7 +76,7 @@ namespace eslib_units.Services
                 .Returns(Task.FromResult(response));
             
             // Ensure that Parse returns appropriately.
-            _mockResponseHandler.Setup(m => m.Parse<string>(It.IsAny<HttpResponseMessage>()))
+            _mockResponseHandler.Setup(m => m.CreateResponse<string>(It.IsAny<HttpResponseMessage>()))
                 .Returns(expectedResult);
 
             // Conduct the test.

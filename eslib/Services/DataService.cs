@@ -1,12 +1,12 @@
 ﻿using eslib.Helpers.Wrappers;
 using eslib.Models.Internals;
-using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using eslib.Services.Factories;
 
 namespace eslib.Services
 {
@@ -14,27 +14,27 @@ namespace eslib.Services
     {
         private readonly IOptions<ApiOptions> _options;
         private readonly IHttpClientWrapper _httpClient;
-        private readonly IResponseHandler _responseHandler;
+        private readonly IResponseFactory _responseFactory;
 
         public DataService(IOptions<ApiOptions> options)
         {
             _options = options;
             _httpClient = new HttpClientWrapper();
-            _responseHandler = new ResponseHandler();
+            _responseFactory = new ResponseFactory();
         }
 
-        public DataService(IOptions<ApiOptions> options, IHttpClientWrapper httpClient, IResponseHandler responseHandler)
+        public DataService(IOptions<ApiOptions> options, IHttpClientWrapper httpClient, IResponseFactory responseFactory)
         {
             _options = options;
             _httpClient = httpClient;
-            _responseHandler = responseHandler;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Response<T>> Get<T>(string url) where T: class
         {
             var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
-            return _responseHandler.Parse<T>(response);
+            return _responseFactory.CreateResponse<T>(response);
         }
 
         public async Task<Response<T>> Post<T>(string url, object data) where T: class
@@ -43,7 +43,7 @@ namespace eslib.Services
 
             var response = await _httpClient.PostAsync(url, httpContent).ConfigureAwait(false);
 
-            return _responseHandler.Parse<T>(response);
+            return _responseFactory.CreateResponse<T>(response);
         }
 
         public string GenerateUrl(params string[] pathArray)

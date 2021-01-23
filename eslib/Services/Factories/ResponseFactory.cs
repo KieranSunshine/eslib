@@ -1,13 +1,13 @@
-﻿using eslib.Models.Internals;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text.Json;
+using eslib.Models.Internals;
 
-namespace eslib.Services.Handlers
+namespace eslib.Services.Factories
 {
-    public class ResponseHandler : IResponseHandler
+    public class ResponseFactory : IResponseFactory
     {
-        public Response<T> Parse<T>(HttpResponseMessage responseMessage) where T: class
+        public Response<T> CreateResponse<T>(HttpResponseMessage responseMessage) where T: class
         {
             var response = new Response<T>();
             var result = responseMessage.Content.ReadAsStringAsync().Result;
@@ -49,13 +49,17 @@ namespace eslib.Services.Handlers
                     }
                 }
             }
+            else
+            {
+                response.Error = new Error("No data received");
+            }
 
             return response;
         }
     }
 
-    public interface IResponseHandler
+    public interface IResponseFactory
     {
-        public Response<T> Parse<T>(HttpResponseMessage responseMessage) where T: class;        
+        public Response<T> CreateResponse<T>(HttpResponseMessage responseMessage) where T: class;        
     }
 }
