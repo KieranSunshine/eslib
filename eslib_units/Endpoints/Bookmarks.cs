@@ -11,30 +11,30 @@ namespace eslib_units.Endpoints
     [TestFixture]
     public class BookmarksTests
     {
-        private Mock<IDataService> mockDataService { get; set; }
+        private Mock<IDataService> _mockDataService;
 
         [SetUp]
         public void Init()
         {
-            mockDataService = new Mock<IDataService>();
+            _mockDataService = new Mock<IDataService>();
             
-            mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("something");
         }
 
         [Test]
         public void GetBookmarksTests()
         {            
-            var expectedObject = new Bookmark[] {
+            var expectedObject = new [] {
                 new Bookmark(1, new System.DateTime(2021, 1, 22), 1, "some_label", 1, "some_note"),
                 new Bookmark(2, new System.DateTime(2021, 1, 22), 2, "some_other_label", 2, "some_other_note")
             };
             var mockResponse = new Response<Bookmark[]>() { Data = expectedObject };
 
-            mockDataService.Setup(m => m.Get<Bookmark[]>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<Bookmark[]>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var bookmarksEndpoint = new BookmarksEndpoint(mockDataService.Object);
+            var bookmarksEndpoint = new BookmarksEndpoint(_mockDataService.Object);
 
             var characterResult = bookmarksEndpoint.Characters.GetBookmarks(1);
             var corporationResult = bookmarksEndpoint.Corporations.GetBookmarks(2);
@@ -46,16 +46,16 @@ namespace eslib_units.Endpoints
         [Test]
         public void GetBookmarkFolders()
         {            
-            var expectedObject = new BookmarkFolder[] {
+            var expectedObject = new [] {
                 new BookmarkFolder(1, "some_folder"),
                 new BookmarkFolder(2, "some_other_folder")
             };
             var mockResponse = new Response<BookmarkFolder[]>() { Data = expectedObject };
 
-            mockDataService.Setup(m => m.Get<BookmarkFolder[]>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<BookmarkFolder[]>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var bookmarksEndpoint = new BookmarksEndpoint(mockDataService.Object);
+            var bookmarksEndpoint = new BookmarksEndpoint(_mockDataService.Object);
 
             var characterResult = bookmarksEndpoint.Characters.GetBookmarkFolders(1);
             var corporationResult = bookmarksEndpoint.Corporations.GetBookmarkFolders(2);

@@ -56,7 +56,7 @@ namespace eslib.Services
                 paths.Add(encoded);
             }
 
-            return $"{Constants.apiUrl}/{string.Join("/", paths)}";
+            return $"{Constants.ApiUrl}/{string.Join("/", paths)}";
         }
 
         public string GenerateQueryString(IDictionary<string, string> parameters)

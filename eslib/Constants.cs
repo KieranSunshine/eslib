@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace eslib
+﻿namespace eslib
 {
     internal static class Constants
     {
-        public const string apiUrl = "https://esi.evetech.net";
+        public const string ApiUrl = "https://esi.evetech.net";
     }
 }

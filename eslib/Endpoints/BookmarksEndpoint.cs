@@ -6,7 +6,7 @@ namespace eslib.Endpoints
 {
     public class BookmarksEndpoint
     {
-        protected readonly IDataService _dataService;
+        private readonly IDataService _dataService;
 
         public BookmarksEndpoint(IDataService dataService)
         {
@@ -16,13 +16,13 @@ namespace eslib.Endpoints
             Corporations = new BookmarkOwner(this, "corporations");
         }
 
-        public IBookmarkOwner Characters;
-        public IBookmarkOwner Corporations;
+        public readonly IBookmarkOwner Characters;
+        public readonly IBookmarkOwner Corporations;
 
         private class BookmarkOwner: IBookmarkOwner
         {
-            private BookmarksEndpoint _parent;
-            private string _ownerType;
+            private readonly BookmarksEndpoint _parent;
+            private readonly string _ownerType;
 
             public BookmarkOwner(BookmarksEndpoint parent, string ownerType)
             {

@@ -7,18 +7,14 @@ namespace eslib
 {
     public class Esi
     {
-        private readonly IOptions<ApiOptions> _options;
-        private readonly IDataService _dataService;
-
         public Esi(IOptions<ApiOptions> options)
         {
-            _options = options;
-            _dataService = new DataService(_options);
+            IDataService dataService = new DataService(options);
 
-            Meta = new MetaEndpoint(_dataService);
-            Alliance = new AllianceEndpoint(_dataService);
-            Assets = new AssetsEndpoint(_dataService);
-            Bookmarks = new BookmarksEndpoint(_dataService);
+            Meta = new MetaEndpoint(dataService);
+            Alliance = new AllianceEndpoint(dataService);
+            Assets = new AssetsEndpoint(dataService);
+            Bookmarks = new BookmarksEndpoint(dataService);
         }
 
         public readonly MetaEndpoint Meta;

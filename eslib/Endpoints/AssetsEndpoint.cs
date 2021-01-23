@@ -8,7 +8,7 @@ namespace eslib.Endpoints
 {
     public class AssetsEndpoint
     {
-        protected readonly IDataService _dataService;
+        private readonly IDataService _dataService;
 
         public AssetsEndpoint(IDataService dataService)
         {

@@ -12,14 +12,14 @@ namespace eslib_units.Endpoints
     public class AllianceTests
     {
 
-        private Mock<IDataService> mockDataService { get; set; }
+        private Mock<IDataService> _mockDataService;
 
         [SetUp]
         public void Init() 
         {
-            mockDataService = new Mock<IDataService>();
+            _mockDataService = new Mock<IDataService>();
 
-            mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
                 .Returns("somestring");
         }
 
@@ -28,10 +28,10 @@ namespace eslib_units.Endpoints
         {
             var mockResponse = new Response<int[]>() { Data = new int[100] };
             
-            mockDataService.Setup(m => m.Get<int[]>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<int[]>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var allianceEndpoint = new AllianceEndpoint(mockDataService.Object);
+            var allianceEndpoint = new AllianceEndpoint(_mockDataService.Object);
             var result = allianceEndpoint.GetAllianceIds();
 
             Assert.AreEqual(mockResponse, result);
@@ -47,10 +47,10 @@ namespace eslib_units.Endpoints
             };
             var mockResponse = new Response<Alliance>() { Data = expectedObject };
 
-            mockDataService.Setup(m => m.Get<Alliance>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<Alliance>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var allianceEndpoint = new AllianceEndpoint(mockDataService.Object);
+            var allianceEndpoint = new AllianceEndpoint(_mockDataService.Object);
             var result = allianceEndpoint.GetAlliance(1);
 
             Assert.AreEqual(mockResponse, result);
@@ -61,10 +61,10 @@ namespace eslib_units.Endpoints
         {
             var mockResponse = new Response<int[]>() { Data = new int[100] };
 
-            mockDataService.Setup(m => m.Get<int[]>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<int[]>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var allianceEndpoint = new AllianceEndpoint(mockDataService.Object);
+            var allianceEndpoint = new AllianceEndpoint(_mockDataService.Object);
             var result = allianceEndpoint.GetAllianceCorporationIds(1);
 
             Assert.AreEqual(mockResponse, result);
@@ -80,10 +80,10 @@ namespace eslib_units.Endpoints
             };
             var mockResponse = new Response<Icon>() { Data = expectedObject };
 
-            mockDataService.Setup(m => m.Get<Icon>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<Icon>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
-            var allianceEndpoint = new AllianceEndpoint(mockDataService.Object);
+            var allianceEndpoint = new AllianceEndpoint(_mockDataService.Object);
             var result = allianceEndpoint.GetAllianceIcon(1);
 
             Assert.AreEqual(mockResponse, result);

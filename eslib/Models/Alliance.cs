@@ -15,7 +15,7 @@ namespace eslib.Models
         {
             CreatorCorporationId = creatorCorporationId;
             CreatorId = creatorId;
-            dateFounded = DateFounded;
+            DateFounded = dateFounded;
             Name = name;
             Ticker = ticker;
         }
