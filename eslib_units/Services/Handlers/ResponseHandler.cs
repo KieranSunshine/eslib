@@ -1,4 +1,4 @@
-﻿using eslib.Models;
+﻿using eslib.Models.Internals;
 using eslib.Services.Handlers;
 using Moq;
 using NUnit.Framework;

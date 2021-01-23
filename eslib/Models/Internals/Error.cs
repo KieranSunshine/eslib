@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace eslib.Models
+namespace eslib.Models.Internals
 {
     public class Error
     {

@@ -1,5 +1,5 @@
 ﻿using eslib.Endpoints;
-using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 using Moq;
 using NUnit.Framework;
@@ -10,12 +10,12 @@ namespace eslib_units.Endpoints
     [TestFixture]
     public class MetaTests
     {
-        private Mock<IDataService> mockDataService { get; set; }
+        private Mock<IDataService> _mockDataService;
 
         [SetUp]
         public void Init()
         {
-            mockDataService = new Mock<IDataService>();
+            _mockDataService = new Mock<IDataService>();
         }
 
         [Test]
@@ -24,11 +24,11 @@ namespace eslib_units.Endpoints
             var mockResponse = new Response<string>() { Data = "ok" };
 
             // Ensure that the call to Get returns our mocked response.
-            mockDataService.Setup(m => m.Get<string>(It.IsAny<string>()))
+            _mockDataService.Setup(m => m.Get<string>(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockResponse));
 
             // Create our endpoint and call ping.
-            var metaEndpoint = new MetaEndpoint(mockDataService.Object);
+            var metaEndpoint = new MetaEndpoint(_mockDataService.Object);
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Moq;
 using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 using eslib.Endpoints;
 using System.Threading.Tasks;

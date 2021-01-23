@@ -1,5 +1,5 @@
 ﻿using eslib.Helpers.Wrappers;
-using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
 using System;

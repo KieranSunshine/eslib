@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace eslib.Models
+namespace eslib.Models.Internals
 {
     public class Response<T> where T: class
     {

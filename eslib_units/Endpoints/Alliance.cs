@@ -1,5 +1,6 @@
 ﻿using eslib.Endpoints;
 using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 using Moq;
 using NUnit.Framework;
@@ -10,6 +11,7 @@ namespace eslib_units.Endpoints
     [TestFixture]
     public class AllianceTests
     {
+
         private Mock<IDataService> mockDataService { get; set; }
 
         [SetUp]

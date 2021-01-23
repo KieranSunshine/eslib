@@ -1,4 +1,4 @@
-﻿using eslib.Models;
+﻿using eslib.Models.Internals;
 using System;
 using System.Net.Http;
 using System.Text.Json;

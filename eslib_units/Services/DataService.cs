@@ -1,12 +1,11 @@
 ﻿using eslib.Helpers.Wrappers;
-using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 using eslib.Services.Handlers;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace eslib_units.Services

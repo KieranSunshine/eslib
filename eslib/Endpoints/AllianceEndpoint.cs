@@ -1,4 +1,5 @@
 ﻿using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 
 namespace eslib.Endpoints

@@ -1,5 +1,5 @@
 ﻿using eslib.Endpoints;
-using eslib.Models;
+using eslib.Models.Internals;
 using eslib.Services;
 using Microsoft.Extensions.Options;
 
