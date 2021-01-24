@@ -13,14 +13,14 @@ namespace eslib_units.Services
     [TestFixture]
     internal class DataServiceTests
     {
-        private Mock<IOptions<ApiOptions>> _mockOptions;
+        private Mock<ApiOptions> _mockOptions;
         private Mock<IHttpClientWrapper> _mockHttpClient;
         private Mock<IResponseFactory> _mockResponseHandler;
 
         [SetUp]
         public void Init()
         {
-            _mockOptions = new Mock<IOptions<ApiOptions>>();
+            _mockOptions = new Mock<ApiOptions>();
             _mockHttpClient = new Mock<IHttpClientWrapper>();
             _mockResponseHandler = new Mock<IResponseFactory>();
         }

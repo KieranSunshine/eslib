@@ -9,7 +9,7 @@ namespace eslib
     {
         public Esi(IOptions<ApiOptions> options)
         {
-            IDataService dataService = new DataService(options);
+            IDataService dataService = new DataService(options.Value);
 
             Meta = new MetaEndpoint(dataService);
             Alliance = new AllianceEndpoint(dataService);

@@ -1,29 +1,28 @@
-﻿using eslib.Helpers.Wrappers;
-using eslib.Models.Internals;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using eslib.Helpers.Wrappers;
+using eslib.Models.Internals;
 using eslib.Services.Factories;
 
 namespace eslib.Services
 {
     public class DataService : IDataService
     {
-        private readonly IOptions<ApiOptions> _options;
+        private readonly ApiOptions _options;
         private readonly IHttpClientWrapper _httpClient;
         private readonly IResponseFactory _responseFactory;
 
-        public DataService(IOptions<ApiOptions> options)
+        public DataService(ApiOptions options)
         {
             _options = options;
             _httpClient = new HttpClientWrapper();
             _responseFactory = new ResponseFactory();
         }
 
-        public DataService(IOptions<ApiOptions> options, IHttpClientWrapper httpClient, IResponseFactory responseFactory)
+        public DataService(ApiOptions options, IHttpClientWrapper httpClient, IResponseFactory responseFactory)
         {
             _options = options;
             _httpClient = httpClient;
