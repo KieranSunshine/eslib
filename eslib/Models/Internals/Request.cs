@@ -24,6 +24,16 @@ namespace eslib.Models.Internals
             return this;
         }
 
+        public Request AddQuery(string key, string value)
+        {
+            if (key.Length > 0 && value.Length > 0)
+            {
+                Queries.Add(key, value);
+            }
+
+            return this;
+        }
+
         /// <summary>
         /// Encodes then combines paths and query parameters.
         /// </summary>
@@ -78,5 +88,13 @@ namespace eslib.Models.Internals
         /// <param name="paths">The paths to add</param>
         /// <returns>The request</returns>
         public Request AddPaths(params string[] paths);
+
+        /// <summary>
+        /// Adds the desired key and value to the list of Query params.
+        /// </summary>
+        /// <param name="key">The key</param>
+        /// <param name="value">The value</param>
+        /// <returns>The updated request</returns>
+        public Request AddQuery(string key, string value);
     }
 }
