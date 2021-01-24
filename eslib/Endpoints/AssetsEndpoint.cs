@@ -6,28 +6,29 @@ using System.Collections.Generic;
 
 namespace eslib.Endpoints
 {
-    public class AssetsEndpoint
+    public class AssetsEndpoint : EndpointBase
     {
-        private readonly IDataService _dataService;
-
-        public AssetsEndpoint(IDataService dataService)
+        public AssetsEndpoint(ApiOptions options) : base(options)
         {
-            _dataService = dataService;
+            Characters = new AssetOwner(this, "characters");
+            Corporations = new AssetOwner(this, "corporations");
+        }
 
+        public AssetsEndpoint(IDataService dataService) : base(dataService)
+        {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
         }
 
         // The same endpoint methods exist for both Characters and Corporations.
-        public IAssetOwner Characters;
-        public IAssetOwner Corporations;
-
+        public IAssetOwner Characters { get; }
+        public IAssetOwner Corporations { get; }
 
         // Define the reusable logic for the different Asset Owners.
         private class AssetOwner : IAssetOwner
         {            
-            private AssetsEndpoint _parent;
-            private string _ownerType;
+            private readonly AssetsEndpoint _parent;
+            private readonly string _ownerType;
 
             public AssetOwner(AssetsEndpoint parent, string ownerType)
             {

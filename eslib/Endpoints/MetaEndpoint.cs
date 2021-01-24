@@ -3,14 +3,11 @@ using eslib.Services;
 
 namespace eslib.Endpoints
 {
-    public class MetaEndpoint
+    public class MetaEndpoint : EndpointBase
     {
-        private readonly IDataService _dataService;
+        public MetaEndpoint(ApiOptions options) : base(options) { }
 
-        public MetaEndpoint(IDataService dataService)
-        {
-            _dataService = dataService;
-        }
+        public MetaEndpoint(IDataService dataService) : base(dataService) { }
 
         public Response<string> Ping()
         {            

@@ -1,25 +1,24 @@
 ﻿using eslib.Endpoints;
 using eslib.Models.Internals;
-using eslib.Services;
 using Microsoft.Extensions.Options;
 
 namespace eslib
 {
     public class Esi
     {
-        public Esi(IOptions<ApiOptions> options)
+        public Esi(IOptions<ApiOptions> apiOptions)
         {
-            IDataService dataService = new DataService(options.Value);
+            var options = apiOptions.Value;
 
-            Meta = new MetaEndpoint(dataService);
-            Alliance = new AllianceEndpoint(dataService);
-            Assets = new AssetsEndpoint(dataService);
-            Bookmarks = new BookmarksEndpoint(dataService);
+            Meta = new MetaEndpoint(options);
+            Alliance = new AllianceEndpoint(options);
+            Assets = new AssetsEndpoint(options);
+            Bookmarks = new BookmarksEndpoint(options);
         }
 
-        public readonly MetaEndpoint Meta;
-        public readonly AllianceEndpoint Alliance;
-        public readonly AssetsEndpoint Assets;
-        public readonly BookmarksEndpoint Bookmarks;
+        public MetaEndpoint Meta { get; }
+        public AllianceEndpoint Alliance { get; }
+        public AssetsEndpoint Assets { get; }
+        public BookmarksEndpoint Bookmarks { get; }
     }
 }

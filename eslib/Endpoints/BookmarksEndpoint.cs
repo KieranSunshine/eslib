@@ -4,20 +4,22 @@ using eslib.Services;
 
 namespace eslib.Endpoints
 {
-    public class BookmarksEndpoint
+    public class BookmarksEndpoint : EndpointBase
     {
-        private readonly IDataService _dataService;
-
-        public BookmarksEndpoint(IDataService dataService)
+        public BookmarksEndpoint(ApiOptions options) : base(options)
         {
-            _dataService = dataService;
-
             Characters = new BookmarkOwner(this, "characters");
             Corporations = new BookmarkOwner(this, "corporations");
         }
 
-        public readonly IBookmarkOwner Characters;
-        public readonly IBookmarkOwner Corporations;
+        public BookmarksEndpoint(IDataService dataService) : base(dataService)
+        {
+            Characters = new BookmarkOwner(this, "characters");
+            Corporations = new BookmarkOwner(this, "corporations");
+        }
+
+        public IBookmarkOwner Characters { get; }
+        public IBookmarkOwner Corporations { get; }
 
         private class BookmarkOwner: IBookmarkOwner
         {

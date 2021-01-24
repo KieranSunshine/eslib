@@ -4,15 +4,12 @@ using eslib.Services;
 
 namespace eslib.Endpoints
 {
-    public class AllianceEndpoint
+    public class AllianceEndpoint: EndpointBase
     {
-        private readonly IDataService _dataService;
-        private readonly string endpoint = "alliances";
+        private const string endpoint = "alliances";
 
-        public AllianceEndpoint(IDataService dataService)
-        {
-            _dataService = dataService;
-        }
+        public AllianceEndpoint(ApiOptions options) : base(options) { }
+        public AllianceEndpoint(IDataService dataService) : base(dataService) { }
 
         public Response<int[]> GetAllianceIds()
         {            
