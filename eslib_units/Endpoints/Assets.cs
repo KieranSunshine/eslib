@@ -7,27 +7,39 @@ using eslib.Endpoints;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using eslib.Services.Factories;
 
 namespace eslib_units.Endpoints
 {
     [TestFixture]
     public class AssetsTests
     {
+        private Request _stubbedRequest;
+
+        private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IDataService> _mockDataService;
+        private Mock<IResponseFactory> _mockResponseFactory;
 
         [SetUp]
         public void Init()
         {
-            _mockDataService = new Mock<IDataService>();
+            _stubbedRequest = new Request();
 
-            _mockDataService.Setup(m => m.GenerateUrl(It.IsAny<string>()))
-                .Returns("something");
+            _mockRequestFactory = new Mock<IRequestFactory>();
+            _mockDataService = new Mock<IDataService>();
+            _mockResponseFactory = new Mock<IResponseFactory>();
+
+            _mockRequestFactory
+                .Setup(m => m.Create())
+                .Returns(_stubbedRequest);
         }
 
         [Test]
         public void GetAssets()
         {
-            var expectedObject = new [] {
+            var stubbedData = new [] {
                 new Asset("some_string", "some_string")
                 {
                     IsBlueprintCopy = true,
@@ -47,28 +59,41 @@ namespace eslib_units.Endpoints
                     TypeId = 12345678
                 }
             };
-            var mockResponse = new Response<Asset[]>() { Data = expectedObject };
+            
+            var httpResponse = new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<Asset[]>() { Data = stubbedData };
 
-            _mockDataService.Setup(m => m.Get<Asset[]>(It.IsAny<string>()))
-                .Returns(Task.FromResult(mockResponse));
+            _mockDataService
+                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
 
-            var assetsEndpoint = new AssetsEndpoint(_mockDataService.Object);
+            _mockResponseFactory
+                .Setup(m => m.Create<Asset[]>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
             // These use the same underlying code so we might as well test them all.
             var characterResult = assetsEndpoint.Characters.GetAssets(1);
             var corporationResult = assetsEndpoint.Corporations.GetAssets(2);
 
-            Assert.AreEqual(mockResponse, characterResult);
-            Assert.AreEqual(mockResponse, corporationResult);
+            Assert.AreEqual(response, characterResult);
+            Assert.AreEqual(response, corporationResult);
         }
 
         [Test]
         public void GetAssetLocations()
         {
             var stubbedPosition = new Position(1, 2, 3);
-
-            var testIds = new List<long> { 1, 2, 3, 4, 5 };
-            var expectedObject = new [] 
+            var stubbedIds = new List<long> {1, 2, 3, 4, 5};
+            var stubbedData = new [] 
             { 
                 new AssetLocation(stubbedPosition)
                 {
@@ -79,108 +104,135 @@ namespace eslib_units.Endpoints
                     ItemId = 2
                 }
             };
-            var mockResponse = new Response<AssetLocation[]>() { Data = expectedObject };
 
-            _mockDataService.Setup(m => m.Post<AssetLocation[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(mockResponse));
+            var httpResponse = new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<AssetLocation[]>() { Data = stubbedData };
 
-            var assetsEndpoint = new AssetsEndpoint(_mockDataService.Object);
+            _mockDataService
+                .Setup(m => m.Post(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
 
-            var characterResult = assetsEndpoint.Characters.GetAssetLocations(1, testIds);
-            var corporationResult = assetsEndpoint.Corporations.GetAssetLocations(2, testIds);
+            _mockResponseFactory
+                .Setup(m => m.Create<AssetLocation[]>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
 
-            Assert.AreEqual(mockResponse, characterResult);
-            Assert.AreEqual(mockResponse, corporationResult);
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+
+            var characterResult = assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds);
+            var corporationResult = assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds);
+
+            Assert.AreEqual(response, characterResult);
+            Assert.AreEqual(response, corporationResult);
         }
 
         [Test]
         public void GetAssetLocationsThrowsErrorOnMinItemIds()
         {
-            var mock = new Mock<IDataService>();
+            var stubbedIds = new List<long>();
 
-            var testIds = new List<long>();
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
-
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, testIds));
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds));
         }
 
         [Test]
         public void GetAssetLocationsThrowsErrorOnMaxItemIds()
         {
-            var mock = new Mock<IDataService>();
-
             // Create the list and populate it.
-            var testIds = new List<long>();
+            var stubbedIds = new List<long>();
             for (var i = 0; i <= 1000; i++)
             {
-                testIds.Add(i);
+                stubbedIds.Add(i);
             }
             
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, testIds));
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, testIds));
-
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds));
         }
 
         [Test]
         public void GetAssetNames()
         {
-            var mock = new Mock<IDataService>();
             var testIds = new List<long> { 1, 2, 3, 4, 5 };
-            var expectedObject = new []
+            var stubbedData = new []
             {
                 new AssetName(1, "Apple"),
                 new AssetName(2, "Banana")
             };
-            var mockResponse = new Response<AssetName[]>() { Data = expectedObject };
 
-            mock.Setup(m => m.GenerateUrl(It.IsAny<string>()))
-                .Returns("something");
+            var httpResponse = new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<AssetName[]>() { Data = stubbedData };
 
-            mock.Setup(m => m.Post<AssetName[]>(It.IsAny<string>(), It.IsAny<List<long>>()))
-                .Returns(Task.FromResult(mockResponse));
+            _mockDataService
+                .Setup(m => m.Post(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+            _mockResponseFactory
+                .Setup(m => m.Create<AssetName[]>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
             var characterResult = assetsEndpoint.Characters.GetAssetNames(1, testIds);
             var corporationResult = assetsEndpoint.Corporations.GetAssetNames(2, testIds);
 
-            Assert.AreEqual(mockResponse, characterResult);
-            Assert.AreEqual(mockResponse, corporationResult);
+            Assert.AreEqual(response, characterResult);
+            Assert.AreEqual(response, corporationResult);
         }
 
         [Test]
         public void GetAssetNamesThrowsErrorOnMinItemIds()
         {
-            var mock = new Mock<IDataService>();
+            var stubbedIds = new List<long>();
 
-            var testIds = new List<long>();
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
-
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, testIds));
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, stubbedIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, stubbedIds));
         }
 
         [Test]
         public void GetAssetNamesThrowsErrorOnMaxItemIds()
         {
-            var mock = new Mock<IDataService>();
-
             // Create the list and populate it.
-            var testIds = new List<long>();
+            var stubbedIds = new List<long>();
             for (var i = 0; i <= 1000; i++)
             {
-                testIds.Add(i);
+                stubbedIds.Add(i);
             }
 
-            var assetsEndpoint = new AssetsEndpoint(mock.Object);
+            var assetsEndpoint = new AssetsEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
 
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, testIds));
-            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, testIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Characters.GetAssetNames(1, stubbedIds));
+            Assert.Throws<ArgumentException>(() => assetsEndpoint.Corporations.GetAssetNames(2, stubbedIds));
         }
     }
 }

@@ -1,38 +1,70 @@
-﻿using eslib.Endpoints;
+﻿using System.Net.Http;
+using System.Text.Json;
+using eslib.Endpoints;
 using eslib.Models.Internals;
 using eslib.Services;
 using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using eslib.Services.Factories;
 
 namespace eslib_units.Endpoints
 {
     [TestFixture]
     public class MetaTests
     {
+        private ApiOptions _stubbedOptions;
+        private Request _stubbedRequest;
+        
+        private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IDataService> _mockDataService;
+        private Mock<IResponseFactory> _mockResponseFactory;
 
         [SetUp]
         public void Init()
         {
+            _stubbedRequest = new Request();
+            
+            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
+            _mockResponseFactory = new Mock<IResponseFactory>();
+
+            _mockRequestFactory
+                .Setup(m => m.Create())
+                .Returns(_stubbedRequest);
         }
 
         [Test]
         public void Ping()
         {
-            var mockResponse = new Response<string>() { Data = "ok" };
+            var data = "ok";
+
+            var httpResponse = new HttpResponseMessage()
+            {
+                Content = new StringContent(JsonSerializer.Serialize(data))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<string>() { Data = "ok" };
 
             // Ensure that the call to Get returns our mocked response.
-            _mockDataService.Setup(m => m.Get<string>(It.IsAny<string>()))
-                .Returns(Task.FromResult(mockResponse));
+            _mockDataService
+                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
+
+            _mockResponseFactory
+                .Setup(m => m.Create<string>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
 
             // Create our endpoint and call ping.
-            var metaEndpoint = new MetaEndpoint(_mockDataService.Object);
+            var metaEndpoint = new MetaEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+            
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.
-            Assert.AreEqual(mockResponse, result);
+            Assert.AreEqual(response, result);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace eslib_units.Services.Factories
 
             // ParseResponse will call ReadAsStringAsync on the underlying HttpContent object.
             // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
-            var result = responseFactory.CreateResponse<string>(response);
+            var result = responseFactory.Create<string>(response);
 
             Assert.AreEqual(result.Data, expectedResult.Data);
         }
@@ -48,7 +48,7 @@ namespace eslib_units.Services.Factories
 
             var responseFactory = new ResponseFactory();
 
-            var result = responseFactory.CreateResponse<FakeType>(response);
+            var result = responseFactory.Create<FakeType>(response);
 
             Assert.AreEqual(expectedObject.SomeId, result.Data.SomeId);
             Assert.AreEqual(expectedObject.SomeData, result.Data.SomeData);
