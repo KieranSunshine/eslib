@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-
 namespace eslib.Helpers.Wrappers
 {
     internal class HttpClientWrapper : IHttpClientWrapper
@@ -21,7 +20,7 @@ namespace eslib.Helpers.Wrappers
         public async Task<HttpResponseMessage> PostAsync(string url, HttpContent httpContent)
         {
             return await _httpClient.PostAsync(url, httpContent);
-        }        
+        }
 
         public void Dispose()
         {
