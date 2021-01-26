@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using eslib.Helpers.Wrappers;
 using eslib.Models.Internals;
-using eslib.Services.Factories;
 
 namespace eslib.Services
 {
@@ -31,7 +30,7 @@ namespace eslib.Services
         }
 
         public async Task<HttpResponseMessage> Post(Request request)
-        {                         
+        {
             var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
 
             var response = await _httpClient
