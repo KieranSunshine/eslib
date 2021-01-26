@@ -1,6 +1,7 @@
 ﻿using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
+using eslib.Services.Factories;
 
 namespace eslib.Endpoints
 {
@@ -9,38 +10,39 @@ namespace eslib.Endpoints
         private const string endpoint = "alliances";
 
         public AllianceEndpoint(ApiOptions options) : base(options) { }
-        public AllianceEndpoint(IDataService dataService) : base(dataService) { }
+        public AllianceEndpoint(IDataService dataService, IRequestFactory requestFactory)
+            : base(dataService, requestFactory) { }
 
         public Response<int[]> GetAllianceIds()
-        {            
-            var url = _dataService.GenerateUrl(endpoint);
-            var result = _dataService.Get<int[]>(url).Result;
+        {
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint);
 
-            return result;
+            return _dataService.Get<int[]>(request).Result;
         }
 
         public Response<Alliance> GetAlliance(int allianceId)
         {
-            var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Get<Alliance>(url).Result;
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, allianceId.ToString());
 
-            return result;
+            return _dataService.Get<Alliance>(request).Result;
         }
 
         public Response<int[]> GetAllianceCorporationIds(int allianceId)
         {
-            var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Get<int[]>(url).Result;
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, allianceId.ToString(), "corporations");
 
-            return result;
+            return _dataService.Get<int[]>(request).Result;
         }
 
         public Response<Icon> GetAllianceIcon(int allianceId)
         {
-            var url = _dataService.GenerateUrl(endpoint, allianceId.ToString());
-            var result = _dataService.Get<Icon>(url).Result;
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, allianceId.ToString(), "icons");
 
-            return result;
+            return _dataService.Get<Icon>(request).Result;
         }
     }
 }

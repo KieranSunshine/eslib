@@ -9,11 +9,16 @@ namespace eslib.Models.Internals
         {
             Paths = new List<string>();
             Queries = new Dictionary<string, string>();
+            
+            // TODO: test if this serializes to an empty object...
+            // If not make nullable and catch error?
+            Data = new { };
         }
 
         public string Url => CreateUrl();
         public List<string> Paths { get; }
         public Dictionary<string, string> Queries { get; }
+        public object Data { get; set; }
 
         public Request AddPaths(params string[] paths)
         {

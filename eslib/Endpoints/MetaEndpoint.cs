@@ -1,5 +1,6 @@
 ﻿using eslib.Models.Internals;
 using eslib.Services;
+using eslib.Services.Factories;
 
 namespace eslib.Endpoints
 {
@@ -7,14 +8,15 @@ namespace eslib.Endpoints
     {
         public MetaEndpoint(ApiOptions options) : base(options) { }
 
-        public MetaEndpoint(IDataService dataService) : base(dataService) { }
+        public MetaEndpoint(IDataService dataService, IRequestFactory requestFactory)
+            : base(dataService, requestFactory) { }
 
         public Response<string> Ping()
-        {            
-            var url = _dataService.GenerateUrl("ping");
-            var result = _dataService.Get<string>(url).Result;
+        {
+            var request = _requestFactory.Create()
+                .AddPaths("ping");
 
-            return result;
+            return _dataService.Get<string>(request).Result;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using eslib.Helpers.Wrappers;
@@ -11,76 +9,45 @@ namespace eslib.Services
 {
     public class DataService : IDataService
     {
-        private readonly ApiOptions _options;
         private readonly IHttpClientWrapper _httpClient;
         private readonly IResponseFactory _responseFactory;
 
-        public DataService(ApiOptions options)
+        public DataService()
         {
-            _options = options;
             _httpClient = new HttpClientWrapper();
             _responseFactory = new ResponseFactory();
         }
 
-        public DataService(ApiOptions options, IHttpClientWrapper httpClient, IResponseFactory responseFactory)
+        public DataService(IHttpClientWrapper httpClient, IResponseFactory responseFactory)
         {
-            _options = options;
             _httpClient = httpClient;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Response<T>> Get<T>(string url) where T: class
+        public async Task<Response<T>> Get<T>(Request request) where T: class
         {
-            var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+            var response = await _httpClient
+                .GetAsync(request.Url)
+                .ConfigureAwait(false);
 
             return _responseFactory.CreateResponse<T>(response);
         }
 
-        public async Task<Response<T>> Post<T>(string url, object data) where T: class
+        public async Task<Response<T>> Post<T>(Request request) where T: class
         {                         
-            var httpContent = new StringContent(JsonSerializer.Serialize(data));
+            var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
 
-            var response = await _httpClient.PostAsync(url, httpContent).ConfigureAwait(false);
+            var response = await _httpClient
+                .PostAsync(request.Url, httpContent)
+                .ConfigureAwait(false);
 
             return _responseFactory.CreateResponse<T>(response);
-        }
-
-        public string GenerateUrl(params string[] pathArray)
-        {
-            var paths = new List<string>(); 
-            foreach (var path in pathArray)
-            {
-                var encoded = Uri.EscapeDataString(path);
-
-                paths.Add(encoded);
-            }
-
-            return $"{Constants.ApiUrl}/{string.Join("/", paths)}";
-        }
-
-        public string GenerateQueryString(IDictionary<string, string> parameters)
-        {
-            var queries = new List<string>();
-            foreach (var param in parameters)
-            {
-                var key = Uri.EscapeDataString(param.Key);
-                var value = Uri.EscapeDataString(param.Value);
-
-                queries.Add($"{key}=${value}");
-            }
-
-            return string.Join("&", queries);
         }
     }
 
     public interface IDataService
     {
-        public Task<Response<T>> Get<T>(string url) where T: class;
-
-        public Task<Response<T>> Post<T>(string url, object data) where T: class;
-
-        public string GenerateUrl(params string[] pathArray);  
-
-        public string GenerateQueryString(IDictionary<string, string> parameters);      
+        public Task<Response<T>> Get<T>(Request request) where T: class;
+        public Task<Response<T>> Post<T>(Request request) where T: class;   
     }
 }

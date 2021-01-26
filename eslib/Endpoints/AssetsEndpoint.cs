@@ -3,6 +3,7 @@ using eslib.Models.Internals;
 using eslib.Services;
 using System;
 using System.Collections.Generic;
+using eslib.Services.Factories;
 
 namespace eslib.Endpoints
 {
@@ -14,7 +15,8 @@ namespace eslib.Endpoints
             Corporations = new AssetOwner(this, "corporations");
         }
 
-        public AssetsEndpoint(IDataService dataService) : base(dataService)
+        public AssetsEndpoint(IDataService dataService, IRequestFactory requestFactory) 
+            : base(dataService, requestFactory)
         {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
@@ -38,36 +40,38 @@ namespace eslib.Endpoints
 
             public Response<Asset[]> GetAssets(int id)
             {
-                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets");
-                var result = _parent._dataService.Get<Asset[]>(url).Result;
+                var request = _parent._requestFactory.Create()
+                    .AddPaths(_ownerType, id.ToString(), "assets");
 
-                return result;
+                return _parent._dataService.Get<Asset[]>(request).Result;
             }
 
             public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds)
-            {                
+            {
+                var request = _parent._requestFactory.Create()
+                    .AddPaths(_ownerType, id.ToString(), "assets", "locations");
+                
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
                 {
                     throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 }
+                request.Data = itemIds;
 
-                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "locations");                
-                var result = _parent._dataService.Post<AssetLocation[]>(url, itemIds).Result;
-
-                return result;
+                return _parent._dataService.Post<AssetLocation[]>(request).Result;;
             }
 
             public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds)
             {
+                var request = _parent._requestFactory.Create()
+                    .AddPaths(_ownerType, id.ToString(), "assets", "names");
+                
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
                 {
                     throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 }
+                request.Data = itemIds;
 
-                var url = _parent._dataService.GenerateUrl(_ownerType, id.ToString(), "assets", "names");
-                var result = _parent._dataService.Post<AssetName[]>(url, itemIds).Result;
-
-                return result;
+                return _parent._dataService.Post<AssetName[]>(request).Result;
             }
         }
         
