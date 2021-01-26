@@ -21,7 +21,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint);
 
-            var result = _dataService.Get<int[]>(request).Result;
+            var result = _dataService.Get(request).Result;
             
             return _responseFactory.Create<int[]>(result);
         }
@@ -31,7 +31,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString());
 
-            var result = _dataService.Get<Alliance>(request).Result;
+            var result = _dataService.Get(request).Result;
 
             return _responseFactory.Create<Alliance>(result);
         }
@@ -41,7 +41,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "corporations");
 
-            var result = _dataService.Get<int[]>(request).Result;
+            var result = _dataService.Get(request).Result;
 
             return _responseFactory.Create<int[]>(result);
         }
@@ -51,7 +51,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "icons");
 
-            var result = _dataService.Get<Icon>(request).Result;
+            var result = _dataService.Get(request).Result;
 
             return _responseFactory.Create<Icon>(result);
         }

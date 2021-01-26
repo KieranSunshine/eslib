@@ -21,7 +21,7 @@ namespace eslib.Services
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseMessage> Get<T>(Request request) where T: class
+        public async Task<HttpResponseMessage> Get(Request request)
         {
             var response = await _httpClient
                 .GetAsync(request.Url)
@@ -30,7 +30,7 @@ namespace eslib.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> Post<T>(Request request) where T: class
+        public async Task<HttpResponseMessage> Post(Request request)
         {                         
             var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
 
@@ -44,7 +44,7 @@ namespace eslib.Services
 
     public interface IDataService
     {
-        public Task<HttpResponseMessage> Get<T>(Request request) where T: class;
-        public Task<HttpResponseMessage> Post<T>(Request request) where T: class;   
+        public Task<HttpResponseMessage> Get(Request request);
+        public Task<HttpResponseMessage> Post(Request request);
     }
 }

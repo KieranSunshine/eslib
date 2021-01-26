@@ -19,7 +19,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths("ping");
 
-            var result = _dataService.Get<string>(request).Result;
+            var result = _dataService.Get(request).Result;
 
             return _responseFactory.Create<string>(result);
         }

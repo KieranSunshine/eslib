@@ -42,7 +42,7 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks");
 
-                var result = _parent._dataService.Get<Bookmark[]>(request).Result;
+                var result = _parent._dataService.Get(request).Result;
 
                 return _parent._responseFactory.Create<Bookmark[]>(result);
             }
@@ -52,7 +52,7 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders");
 
-                var result = _parent._dataService.Get<BookmarkFolder[]>(request).Result;
+                var result = _parent._dataService.Get(request).Result;
 
                 return _parent._responseFactory.Create<BookmarkFolder[]>(result);
             }

@@ -46,7 +46,7 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets");
 
-                var result = _parent._dataService.Get<Asset[]>(request).Result;
+                var result = _parent._dataService.Get(request).Result;
 
                 return _parent._responseFactory.Create<Asset[]>(result);
             }
@@ -62,7 +62,7 @@ namespace eslib.Endpoints
                 }
                 request.Data = itemIds;
 
-                var result = _parent._dataService.Post<AssetLocation[]>(request).Result;
+                var result = _parent._dataService.Post(request).Result;
 
                 return _parent._responseFactory.Create<AssetLocation[]>(result);
             }
@@ -78,7 +78,7 @@ namespace eslib.Endpoints
                 }
                 request.Data = itemIds;
 
-                var result = _parent._dataService.Post<AssetName[]>(request).Result;
+                var result = _parent._dataService.Post(request).Result;
 
                 return _parent._responseFactory.Create<AssetName[]>(result);
             }
