@@ -10,15 +10,20 @@ namespace eslib.Endpoints
         private const string endpoint = "alliances";
 
         public AllianceEndpoint(ApiOptions options) : base(options) { }
-        public AllianceEndpoint(IDataService dataService, IRequestFactory requestFactory)
-            : base(dataService, requestFactory) { }
+        public AllianceEndpoint(
+            IDataService dataService,
+            IRequestFactory requestFactory,
+            IResponseFactory responseFactory)
+            : base(dataService, requestFactory, responseFactory) { }
 
         public Response<int[]> GetAllianceIds()
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint);
 
-            return _dataService.Get<int[]>(request).Result;
+            var result = _dataService.Get<int[]>(request).Result;
+            
+            return _responseFactory.Create<int[]>(result);
         }
 
         public Response<Alliance> GetAlliance(int allianceId)
@@ -26,7 +31,9 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString());
 
-            return _dataService.Get<Alliance>(request).Result;
+            var result = _dataService.Get<Alliance>(request).Result;
+
+            return _responseFactory.Create<Alliance>(result);
         }
 
         public Response<int[]> GetAllianceCorporationIds(int allianceId)
@@ -34,7 +41,9 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "corporations");
 
-            return _dataService.Get<int[]>(request).Result;
+            var result = _dataService.Get<int[]>(request).Result;
+
+            return _responseFactory.Create<int[]>(result);
         }
 
         public Response<Icon> GetAllianceIcon(int allianceId)
@@ -42,7 +51,9 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "icons");
 
-            return _dataService.Get<Icon>(request).Result;
+            var result = _dataService.Get<Icon>(request).Result;
+
+            return _responseFactory.Create<Icon>(result);
         }
     }
 }

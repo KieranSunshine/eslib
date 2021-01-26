@@ -10,30 +10,27 @@ namespace eslib.Services
     public class DataService : IDataService
     {
         private readonly IHttpClientWrapper _httpClient;
-        private readonly IResponseFactory _responseFactory;
 
         public DataService()
         {
             _httpClient = new HttpClientWrapper();
-            _responseFactory = new ResponseFactory();
         }
 
-        public DataService(IHttpClientWrapper httpClient, IResponseFactory responseFactory)
+        public DataService(IHttpClientWrapper httpClient)
         {
             _httpClient = httpClient;
-            _responseFactory = responseFactory;
         }
 
-        public async Task<Response<T>> Get<T>(Request request) where T: class
+        public async Task<HttpResponseMessage> Get<T>(Request request) where T: class
         {
             var response = await _httpClient
                 .GetAsync(request.Url)
                 .ConfigureAwait(false);
 
-            return _responseFactory.CreateResponse<T>(response);
+            return response;
         }
 
-        public async Task<Response<T>> Post<T>(Request request) where T: class
+        public async Task<HttpResponseMessage> Post<T>(Request request) where T: class
         {                         
             var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
 
@@ -41,13 +38,13 @@ namespace eslib.Services
                 .PostAsync(request.Url, httpContent)
                 .ConfigureAwait(false);
 
-            return _responseFactory.CreateResponse<T>(response);
+            return response;
         }
     }
 
     public interface IDataService
     {
-        public Task<Response<T>> Get<T>(Request request) where T: class;
-        public Task<Response<T>> Post<T>(Request request) where T: class;   
+        public Task<HttpResponseMessage> Get<T>(Request request) where T: class;
+        public Task<HttpResponseMessage> Post<T>(Request request) where T: class;   
     }
 }

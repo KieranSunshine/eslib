@@ -7,7 +7,7 @@ namespace eslib.Services.Factories
 {
     public class ResponseFactory : IResponseFactory
     {
-        public Response<T> CreateResponse<T>(HttpResponseMessage responseMessage) where T: class
+        public Response<T> Create<T>(HttpResponseMessage responseMessage) where T: class
         {
             var response = new Response<T>();
             var result = responseMessage.Content.ReadAsStringAsync().Result;
@@ -60,6 +60,6 @@ namespace eslib.Services.Factories
 
     public interface IResponseFactory
     {
-        public Response<T> CreateResponse<T>(HttpResponseMessage responseMessage) where T: class;        
+        public Response<T> Create<T>(HttpResponseMessage responseMessage) where T: class;        
     }
 }

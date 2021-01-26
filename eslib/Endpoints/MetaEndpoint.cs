@@ -8,15 +8,20 @@ namespace eslib.Endpoints
     {
         public MetaEndpoint(ApiOptions options) : base(options) { }
 
-        public MetaEndpoint(IDataService dataService, IRequestFactory requestFactory)
-            : base(dataService, requestFactory) { }
+        public MetaEndpoint(
+            IDataService dataService,
+            IRequestFactory requestFactory,
+            IResponseFactory responseFactory)
+            : base(dataService, requestFactory, responseFactory) { }
 
         public Response<string> Ping()
         {
             var request = _requestFactory.Create()
                 .AddPaths("ping");
 
-            return _dataService.Get<string>(request).Result;
+            var result = _dataService.Get<string>(request).Result;
+
+            return _responseFactory.Create<string>(result);
         }
     }
 }

@@ -13,8 +13,11 @@ namespace eslib.Endpoints
             Corporations = new BookmarkOwner(this, "corporations");
         }
 
-        public BookmarksEndpoint(IDataService dataService, IRequestFactory requestFactory) 
-            : base(dataService, requestFactory)
+        public BookmarksEndpoint(
+            IDataService dataService,
+            IRequestFactory requestFactory,
+            IResponseFactory responseFactory) 
+            : base(dataService, requestFactory, responseFactory)
         {
             Characters = new BookmarkOwner(this, "characters");
             Corporations = new BookmarkOwner(this, "corporations");
@@ -39,7 +42,9 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks");
 
-                return _parent._dataService.Get<Bookmark[]>(request).Result;
+                var result = _parent._dataService.Get<Bookmark[]>(request).Result;
+
+                return _parent._responseFactory.Create<Bookmark[]>(result);
             }
 
             public Response<BookmarkFolder[]> GetBookmarkFolders(int id)
@@ -47,7 +52,9 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders");
 
-                return _parent._dataService.Get<BookmarkFolder[]>(request).Result;
+                var result = _parent._dataService.Get<BookmarkFolder[]>(request).Result;
+
+                return _parent._responseFactory.Create<BookmarkFolder[]>(result);
             }
         }
     }

@@ -15,8 +15,11 @@ namespace eslib.Endpoints
             Corporations = new AssetOwner(this, "corporations");
         }
 
-        public AssetsEndpoint(IDataService dataService, IRequestFactory requestFactory) 
-            : base(dataService, requestFactory)
+        public AssetsEndpoint(
+            IDataService dataService,
+            IRequestFactory requestFactory,
+            IResponseFactory responseFactory)
+            : base(dataService, requestFactory, responseFactory)
         {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
@@ -43,7 +46,9 @@ namespace eslib.Endpoints
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets");
 
-                return _parent._dataService.Get<Asset[]>(request).Result;
+                var result = _parent._dataService.Get<Asset[]>(request).Result;
+
+                return _parent._responseFactory.Create<Asset[]>(result);
             }
 
             public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds)
@@ -57,7 +62,9 @@ namespace eslib.Endpoints
                 }
                 request.Data = itemIds;
 
-                return _parent._dataService.Post<AssetLocation[]>(request).Result;;
+                var result = _parent._dataService.Post<AssetLocation[]>(request).Result;
+
+                return _parent._responseFactory.Create<AssetLocation[]>(result);
             }
 
             public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds)
@@ -71,7 +78,9 @@ namespace eslib.Endpoints
                 }
                 request.Data = itemIds;
 
-                return _parent._dataService.Post<AssetName[]>(request).Result;
+                var result = _parent._dataService.Post<AssetName[]>(request).Result;
+
+                return _parent._responseFactory.Create<AssetName[]>(result);
             }
         }
         
