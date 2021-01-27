@@ -1,57 +1,63 @@
-﻿using eslib.Models;
+﻿using System.Threading.Tasks;
+using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
 using eslib.Services.Factories;
 
 namespace eslib.Endpoints
 {
-    public class AllianceEndpoint: EndpointBase
+    public class AllianceEndpoint : EndpointBase
     {
         private const string endpoint = "alliances";
 
-        public AllianceEndpoint(ApiOptions options) : base(options) { }
+        public AllianceEndpoint(ApiOptions options) : base(options)
+        {
+        }
+
         public AllianceEndpoint(
             IDataService dataService,
             IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory) { }
+            : base(dataService, requestFactory, responseFactory)
+        {
+        }
 
-        public Response<int[]> GetAllianceIds()
+        public async Task<Response<int[]>> GetAllianceIds()
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint);
 
-            var result = _dataService.Get(request).Result;
-            
+            var result = await _dataService.Get(request);
+
             return _responseFactory.Create<int[]>(result);
         }
 
-        public Response<Alliance> GetAlliance(int allianceId)
+        public async Task<Response<Alliance>> GetAlliance(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString());
 
-            var result = _dataService.Get(request).Result;
+            var result = await _dataService.Get(request);
 
             return _responseFactory.Create<Alliance>(result);
         }
 
-        public Response<int[]> GetAllianceCorporationIds(int allianceId)
+        public async Task<Response<int[]>> GetAllianceCorporationIds(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "corporations");
 
-            var result = _dataService.Get(request).Result;
+            var result = await _dataService.Get(request);
 
             return _responseFactory.Create<int[]>(result);
         }
 
-        public Response<Icon> GetAllianceIcon(int allianceId)
+        public async Task<Response<Icon>> GetAllianceIcon(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "icons");
 
-            var result = _dataService.Get(request).Result;
+            var result = await _dataService.Get(request);
 
             return _responseFactory.Create<Icon>(result);
         }

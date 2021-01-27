@@ -35,7 +35,7 @@ namespace eslib_units.Endpoints
         private Mock<IResponseFactory> _mockResponseFactory;
 
         [Test]
-        public void GetAllianceIds()
+        public async Task GetAllianceIds()
         {
             var stubbedData = new int[100];
 
@@ -58,13 +58,14 @@ namespace eslib_units.Endpoints
                 _mockDataService.Object,
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
-            var result = allianceEndpoint.GetAllianceIds();
+
+            var result = await allianceEndpoint.GetAllianceIds();
 
             Assert.AreEqual(response, result);
         }
 
         [Test]
-        public void GetAlliance()
+        public async Task GetAlliance()
         {
             var stubbedData = new Alliance(
                 1,
@@ -97,13 +98,13 @@ namespace eslib_units.Endpoints
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
-            var result = allianceEndpoint.GetAlliance(1);
+            var result = await allianceEndpoint.GetAlliance(1);
 
             Assert.AreEqual(response, result);
         }
 
         [Test]
-        public void GetAllianceCorporationIds()
+        public async Task GetAllianceCorporationIds()
         {
             var stubbedData = new int[100];
 
@@ -126,13 +127,14 @@ namespace eslib_units.Endpoints
                 _mockDataService.Object,
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
-            var result = allianceEndpoint.GetAllianceCorporationIds(1);
+
+            var result = await allianceEndpoint.GetAllianceCorporationIds(1);
 
             Assert.AreEqual(response, result);
         }
 
         [Test]
-        public void GetAllianceIcon()
+        public async Task GetAllianceIcon()
         {
             var stubbedData = new Icon
             {
@@ -159,7 +161,8 @@ namespace eslib_units.Endpoints
                 _mockDataService.Object,
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
-            var result = allianceEndpoint.GetAllianceIcon(1);
+
+            var result = await allianceEndpoint.GetAllianceIcon(1);
 
             Assert.AreEqual(response, result);
         }
