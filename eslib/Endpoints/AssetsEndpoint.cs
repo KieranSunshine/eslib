@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
@@ -41,18 +42,18 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public Response<Asset[]> GetAssets(int id, int pageNumber = 1)
+            public async Task<Response<Asset[]>> GetAssets(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets")
                     .Page(pageNumber);
 
-                var result = _parent._dataService.Get(request).Result;
+                var result = await _parent._dataService.Get(request);
 
                 return _parent._responseFactory.Create<Asset[]>(result);
             }
 
-            public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds)
+            public async Task<Response<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "locations");
@@ -62,12 +63,12 @@ namespace eslib.Endpoints
                         "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 request.Data = itemIds;
 
-                var result = _parent._dataService.Post(request).Result;
+                var result = await _parent._dataService.Post(request);
 
                 return _parent._responseFactory.Create<AssetLocation[]>(result);
             }
 
-            public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds)
+            public async Task<Response<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "names");
@@ -77,7 +78,7 @@ namespace eslib.Endpoints
                         "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 request.Data = itemIds;
 
-                var result = _parent._dataService.Post(request).Result;
+                var result = await _parent._dataService.Post(request);
 
                 return _parent._responseFactory.Create<AssetName[]>(result);
             }
@@ -85,11 +86,11 @@ namespace eslib.Endpoints
 
         public interface IAssetOwner
         {
-            public Response<Asset[]> GetAssets(int id, int pageNumber = 1);
+            public Task<Response<Asset[]>> GetAssets(int id, int pageNumber = 1);
 
-            public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds);
+            public Task<Response<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds);
 
-            public Response<AssetName[]> GetAssetNames(int id, List<long> itemIds);
+            public Task<Response<AssetName[]>> GetAssetNames(int id, List<long> itemIds);
         }
     }
 }
