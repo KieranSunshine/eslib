@@ -1,4 +1,5 @@
-﻿using eslib.Models.Internals;
+﻿using System.Threading.Tasks;
+using eslib.Models.Internals;
 using eslib.Services;
 using eslib.Services.Factories;
 
@@ -14,12 +15,12 @@ namespace eslib.Endpoints
             IResponseFactory responseFactory)
             : base(dataService, requestFactory, responseFactory) { }
 
-        public Response<string> Ping()
+        public async Task<Response<string>> Ping()
         {
             var request = _requestFactory.Create()
                 .AddPaths("ping");
 
-            var result = _dataService.Get(request).Result;
+            var result = await _dataService.Get(request);
 
             return _responseFactory.Create<string>(result);
         }

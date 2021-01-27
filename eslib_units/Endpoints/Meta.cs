@@ -34,7 +34,7 @@ namespace eslib_units.Endpoints
         private Mock<IResponseFactory> _mockResponseFactory;
 
         [Test]
-        public void Ping()
+        public async Task Ping()
         {
             var data = "ok";
 
@@ -60,7 +60,7 @@ namespace eslib_units.Endpoints
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
-            var result = metaEndpoint.Ping();
+            var result = await metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.
             Assert.AreEqual(response, result);
