@@ -1,8 +1,8 @@
+using System;
+using System.Collections.Generic;
 using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
-using System;
-using System.Collections.Generic;
 using eslib.Services.Factories;
 
 namespace eslib.Endpoints
@@ -31,9 +31,9 @@ namespace eslib.Endpoints
 
         // Define the reusable logic for the different Asset Owners.
         private class AssetOwner : IAssetOwner
-        {            
-            private readonly AssetsEndpoint _parent;
+        {
             private readonly string _ownerType;
+            private readonly AssetsEndpoint _parent;
 
             public AssetOwner(AssetsEndpoint parent, string ownerType)
             {
@@ -41,10 +41,11 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public Response<Asset[]> GetAssets(int id)
+            public Response<Asset[]> GetAssets(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "assets");
+                    .AddPaths(_ownerType, id.ToString(), "assets")
+                    .Page(pageNumber);
 
                 var result = _parent._dataService.Get(request).Result;
 
@@ -55,11 +56,10 @@ namespace eslib.Endpoints
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "locations");
-                
+
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
-                {
-                    throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
-                }
+                    throw new ArgumentException(
+                        "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 request.Data = itemIds;
 
                 var result = _parent._dataService.Post(request).Result;
@@ -71,11 +71,10 @@ namespace eslib.Endpoints
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "names");
-                
+
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
-                {
-                    throw new ArgumentException("The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
-                }
+                    throw new ArgumentException(
+                        "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
                 request.Data = itemIds;
 
                 var result = _parent._dataService.Post(request).Result;
@@ -83,10 +82,10 @@ namespace eslib.Endpoints
                 return _parent._responseFactory.Create<AssetName[]>(result);
             }
         }
-        
+
         public interface IAssetOwner
         {
-            public Response<Asset[]> GetAssets(int id);
+            public Response<Asset[]> GetAssets(int id, int pageNumber = 1);
 
             public Response<AssetLocation[]> GetAssetLocations(int id, List<long> itemIds);
 

@@ -16,7 +16,7 @@ namespace eslib.Endpoints
         public BookmarksEndpoint(
             IDataService dataService,
             IRequestFactory requestFactory,
-            IResponseFactory responseFactory) 
+            IResponseFactory responseFactory)
             : base(dataService, requestFactory, responseFactory)
         {
             Characters = new BookmarkOwner(this, "characters");
@@ -26,10 +26,10 @@ namespace eslib.Endpoints
         public IBookmarkOwner Characters { get; }
         public IBookmarkOwner Corporations { get; }
 
-        private class BookmarkOwner: IBookmarkOwner
+        private class BookmarkOwner : IBookmarkOwner
         {
-            private readonly BookmarksEndpoint _parent;
             private readonly string _ownerType;
+            private readonly BookmarksEndpoint _parent;
 
             public BookmarkOwner(BookmarksEndpoint parent, string ownerType)
             {
@@ -37,20 +37,22 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public Response<Bookmark[]> GetBookmarks(int id)
+            public Response<Bookmark[]> GetBookmarks(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "bookmarks");
+                    .AddPaths(_ownerType, id.ToString(), "bookmarks")
+                    .Page(pageNumber);
 
                 var result = _parent._dataService.Get(request).Result;
 
                 return _parent._responseFactory.Create<Bookmark[]>(result);
             }
 
-            public Response<BookmarkFolder[]> GetBookmarkFolders(int id)
+            public Response<BookmarkFolder[]> GetBookmarkFolders(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders");
+                    .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders")
+                    .Page(pageNumber);
 
                 var result = _parent._dataService.Get(request).Result;
 
@@ -61,8 +63,8 @@ namespace eslib.Endpoints
 
     public interface IBookmarkOwner
     {
-        public Response<Bookmark[]> GetBookmarks(int id);
+        public Response<Bookmark[]> GetBookmarks(int id, int pageNumber = 1);
 
-        public Response<BookmarkFolder[]> GetBookmarkFolders(int id);
+        public Response<BookmarkFolder[]> GetBookmarkFolders(int id, int pageNumber = 1);
     }
 }
