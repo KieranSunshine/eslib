@@ -1,13 +1,13 @@
 using System.Net.Http;
 using System.Text.Json;
-using NUnit.Framework;
-using Moq;
+using System.Threading.Tasks;
+using eslib.Endpoints;
 using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
-using eslib.Endpoints;
-using System.Threading.Tasks;
 using eslib.Services.Factories;
+using Moq;
+using NUnit.Framework;
 
 namespace eslib_units.Endpoints
 {
@@ -35,7 +35,7 @@ namespace eslib_units.Endpoints
         }
 
         [Test]
-        public void GetBookmarksTests()
+        public async Task GetBookmarksTests()
         {            
             var stubbedData = new [] {
                 new Bookmark(
@@ -76,15 +76,15 @@ namespace eslib_units.Endpoints
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
-            var characterResult = bookmarksEndpoint.Characters.GetBookmarks(1);
-            var corporationResult = bookmarksEndpoint.Corporations.GetBookmarks(2);
+            var characterResult = await bookmarksEndpoint.Characters.GetBookmarks(1);
+            var corporationResult = await bookmarksEndpoint.Corporations.GetBookmarks(2);
 
-            Assert.AreEqual(stubbedData, characterResult.Data);
-            Assert.AreEqual(stubbedData, corporationResult.Data);
+            Assert.AreEqual(response, characterResult);
+            Assert.AreEqual(response, corporationResult);
         }
 
         [Test]
-        public void GetBookmarkFolders()
+        public async Task GetBookmarkFolders()
         {            
             var stubbedData = new [] {
                 new BookmarkFolder(1, "some_folder"),
@@ -111,11 +111,11 @@ namespace eslib_units.Endpoints
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
-            var characterResult = bookmarksEndpoint.Characters.GetBookmarkFolders(1);
-            var corporationResult = bookmarksEndpoint.Corporations.GetBookmarkFolders(2);
+            var characterResult = await bookmarksEndpoint.Characters.GetBookmarkFolders(1);
+            var corporationResult = await bookmarksEndpoint.Corporations.GetBookmarkFolders(2);
 
-            Assert.AreEqual(stubbedData, characterResult.Data);
-            Assert.AreEqual(stubbedData, corporationResult.Data);
+            Assert.AreEqual(response, characterResult);
+            Assert.AreEqual(response, corporationResult);
         }
     }
 }

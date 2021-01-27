@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
@@ -37,24 +38,24 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public Response<Bookmark[]> GetBookmarks(int id, int pageNumber = 1)
+            public async Task<Response<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks")
                     .Page(pageNumber);
 
-                var result = _parent._dataService.Get(request).Result;
+                var result = await _parent._dataService.Get(request);
 
                 return _parent._responseFactory.Create<Bookmark[]>(result);
             }
 
-            public Response<BookmarkFolder[]> GetBookmarkFolders(int id, int pageNumber = 1)
+            public async Task<Response<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders")
                     .Page(pageNumber);
 
-                var result = _parent._dataService.Get(request).Result;
+                var result = await _parent._dataService.Get(request);
 
                 return _parent._responseFactory.Create<BookmarkFolder[]>(result);
             }
@@ -63,8 +64,8 @@ namespace eslib.Endpoints
 
     public interface IBookmarkOwner
     {
-        public Response<Bookmark[]> GetBookmarks(int id, int pageNumber = 1);
+        public Task<Response<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1);
 
-        public Response<BookmarkFolder[]> GetBookmarkFolders(int id, int pageNumber = 1);
+        public Task<Response<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1);
     }
 }
