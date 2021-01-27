@@ -1,30 +1,23 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using eslib.Endpoints;
 using eslib.Models.Internals;
 using eslib.Services;
+using eslib.Services.Factories;
 using Moq;
 using NUnit.Framework;
-using System.Threading.Tasks;
-using eslib.Services.Factories;
 
 namespace eslib_units.Endpoints
 {
     [TestFixture]
     public class MetaTests
     {
-        private ApiOptions _stubbedOptions;
-        private Request _stubbedRequest;
-        
-        private Mock<IRequestFactory> _mockRequestFactory;
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-
         [SetUp]
         public void Init()
         {
             _stubbedRequest = new Request();
-            
+
             _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
             _mockResponseFactory = new Mock<IResponseFactory>();
@@ -34,17 +27,23 @@ namespace eslib_units.Endpoints
                 .Returns(_stubbedRequest);
         }
 
+        private Request _stubbedRequest;
+
+        private Mock<IRequestFactory> _mockRequestFactory;
+        private Mock<IDataService> _mockDataService;
+        private Mock<IResponseFactory> _mockResponseFactory;
+
         [Test]
         public void Ping()
         {
             var data = "ok";
 
-            var httpResponse = new HttpResponseMessage()
+            var httpResponse = new HttpResponseMessage
             {
                 Content = new StringContent(JsonSerializer.Serialize(data))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<string>() { Data = "ok" };
+            var response = new Response<string> {Data = "ok"};
 
             // Ensure that the call to Get returns our mocked response.
             _mockDataService
@@ -60,7 +59,7 @@ namespace eslib_units.Endpoints
                 _mockDataService.Object,
                 _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
-            
+
             var result = metaEndpoint.Ping();
 
             // Assert that the outcome is what was expected.
