@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using eslib.Models.Internals;
 using eslib.Services.Factories;
@@ -6,52 +7,64 @@ using NUnit.Framework;
 
 namespace eslib_units.Services.Factories
 {
+    [TestFixture]
     public class ResponseFactoryTests
     {
+        [SetUp]
+        public void Init()
+        {
+            _responseFactory = new ResponseFactory();
+        }
+
+        private IResponseFactory _responseFactory;
 
         [Test]
         public void CreateResponseFromString()
         {
-            var data = "this should be parsed correctly";
-            var expectedResult = new Response<string>() { Data = data };
+            var stubbedData = "this should be parsed correctly";
 
-            var response = new HttpResponseMessage()
+            var response = new Response<string> {Data = stubbedData};
+            var httpResponse = new HttpResponseMessage
             {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(data)
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(stubbedData)
             };
-
-            var responseFactory = new ResponseFactory();
 
             // ParseResponse will call ReadAsStringAsync on the underlying HttpContent object.
             // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
-            var result = responseFactory.Create<string>(response);
+            var result = _responseFactory.Create<string>(httpResponse);
 
-            Assert.AreEqual(result.Data, expectedResult.Data);
+            Assert.IsNotNull(result.Data);
+            Assert.IsNull(result.Error);
+
+            Assert.AreEqual(response.Data, result.Data);
+            Assert.AreEqual(response.Error, result.Error);
         }
 
         [Test]
         public void CreateResponseFromObject()
-        {            
-            var expectedObject = new FakeType()
+        {
+            var stubbedData = new FakeType
             {
                 SomeId = 42,
                 SomeData = "the meaning of life"
             };
-            var serializedObject = JsonSerializer.Serialize<FakeType>(expectedObject);
 
-            var response = new HttpResponseMessage()
+            var response = new Response<FakeType> {Data = stubbedData};
+            var httpResponse = new HttpResponseMessage
             {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(serializedObject)
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
 
-            var responseFactory = new ResponseFactory();
+            var result = _responseFactory.Create<FakeType>(httpResponse);
 
-            var result = responseFactory.Create<FakeType>(response);
+            Assert.IsNotNull(result.Data);
+            Assert.IsNull(result.Error);
 
-            Assert.AreEqual(expectedObject.SomeId, result.Data.SomeId);
-            Assert.AreEqual(expectedObject.SomeData, result.Data.SomeData);
+            Assert.AreEqual(response.Data.SomeId, result.Data.SomeId);
+            Assert.AreEqual(response.Data.SomeData, result.Data.SomeData);
+            Assert.AreEqual(response.Error, result.Error);
         }
 
         private class FakeType

@@ -24,7 +24,7 @@ namespace eslib.Helpers.Wrappers
 
         public void Dispose()
         {
-            _httpClient?.Dispose();
+            _httpClient.Dispose();
         }
     }
 
