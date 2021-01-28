@@ -47,6 +47,21 @@ namespace eslib.Endpoints
             return _responseFactory.Create<Event>(result);
         }
 
+        public async Task<Response<string>> RespondToEvent(int characterId, int eventId, string response)
+        {
+            var request = _requestFactory.Create()
+                .AddPaths("characters", characterId.ToString(), eventId.ToString());
+            
+            // TODO: check response against acceptable enum.
+            // TODO: investigate ways of returning responses that are only a response code.
+            
+            request.Data = response;
+
+            var result = await _dataService.Put(request);
+
+            return _responseFactory.Create<string>(result);
+        }
+
         public async Task<Response<EventResponse[]>> GetEventAttendees(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
