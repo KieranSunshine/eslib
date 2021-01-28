@@ -40,7 +40,9 @@ namespace eslib_units.Endpoints
         public async Task GetAssets()
         {
             var stubbedData = new [] {
-                new Asset("some_string", "some_string")
+                new Asset(
+                    eslib.Enums.Locations.LocationFlags.Cargo.ToString(), 
+                    eslib.Enums.Locations.LocationTypes.Item.ToString())
                 {
                     IsBlueprintCopy = true,
                     IsSingleton = true,
@@ -49,7 +51,9 @@ namespace eslib_units.Endpoints
                     Quantity = 42,
                     TypeId = 1234567
                 },
-                new Asset("some_other_string", "some_other_string")
+                new Asset(
+                    eslib.Enums.Locations.LocationFlags.Hangar.ToString(),
+                    eslib.Enums.Locations.LocationTypes.Other.ToString())
                 {
                     IsBlueprintCopy = false,
                     IsSingleton = false,
