@@ -39,11 +39,23 @@ namespace eslib.Services
 
             return response;
         }
+
+        public async Task<HttpResponseMessage> Put(Request request)
+        {
+            var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
+
+            var response = await _httpClient
+                .PutAsync(request.Url, httpContent)
+                .ConfigureAwait(false);
+
+            return response;
+        }
     }
 
     public interface IDataService
     {
         public Task<HttpResponseMessage> Get(Request request);
         public Task<HttpResponseMessage> Post(Request request);
+        public Task<HttpResponseMessage> Put(Request request);
     }
 }
