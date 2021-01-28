@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json.Serialization;
 
 namespace eslib.Models
@@ -6,8 +7,8 @@ namespace eslib.Models
     {
         public Asset(string locationFlag, string locationType)
         {
-            LocationFlag = locationFlag;
-            LocationType = locationType;
+            LocationFlag = Enum.Parse<Enums.Locations.LocationFlags>(locationFlag);
+            LocationType = Enum.Parse<Enums.Locations.LocationTypes>(locationType);
         }
 
         [JsonPropertyName("is_blueprint_copy")]
@@ -20,13 +21,13 @@ namespace eslib.Models
         public long ItemId { get; set; }
 
         [JsonPropertyName("location_flag")]
-        public string LocationFlag { get; set; }
+        public Enums.Locations.LocationFlags LocationFlag { get; set; }
 
         [JsonPropertyName("location_id")]
         public long LocationId { get; set; }
 
         [JsonPropertyName("location_type")]
-        public string LocationType { get; set; }
+        public Enums.Locations.LocationTypes LocationType { get; set; }
 
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
