@@ -11,7 +11,7 @@ namespace eslib.Models
         public int? Id { get; set; }
 
         [JsonPropertyName("event_response")]
-        public string? Response { get; set; }
+        public Enums.Calendar.EventResponses Response { get; set; }
 
         [JsonPropertyName("importance")]
         public int? Importance { get; set; }
