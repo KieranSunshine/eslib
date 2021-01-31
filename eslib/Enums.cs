@@ -96,5 +96,25 @@
                 Wardrobe
             }
         }
+
+        public class Calendar
+        {
+            public enum EventResponses
+            {
+                NotResponded,
+                Accepted,
+                Declined,
+                Tentative
+            }
+
+            public enum OwnerType
+            {
+                EveServer,
+                Corporation,
+                Faction,
+                Character,
+                Alliance
+            }
+        }
     }
 }
