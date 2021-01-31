@@ -15,7 +15,7 @@ namespace eslib.Endpoints
             IResponseFactory responseFactory)
             : base(dataService, requestFactory, responseFactory) { }
 
-        public async Task<Response<string>> Ping()
+        public async Task<IResponse<string>> Ping()
         {
             var request = _requestFactory.Create()
                 .AddPaths("ping");

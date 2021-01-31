@@ -42,7 +42,7 @@ namespace eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public async Task<Response<Asset[]>> GetAssets(int id, int pageNumber = 1)
+            public async Task<IResponse<Asset[]>> GetAssets(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets")
@@ -53,7 +53,7 @@ namespace eslib.Endpoints
                 return _parent._responseFactory.Create<Asset[]>(result);
             }
 
-            public async Task<Response<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
+            public async Task<IResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "locations");
@@ -68,7 +68,7 @@ namespace eslib.Endpoints
                 return _parent._responseFactory.Create<AssetLocation[]>(result);
             }
 
-            public async Task<Response<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
+            public async Task<IResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "names");
@@ -86,11 +86,11 @@ namespace eslib.Endpoints
 
         public interface IAssetOwner
         {
-            public Task<Response<Asset[]>> GetAssets(int id, int pageNumber = 1);
+            public Task<IResponse<Asset[]>> GetAssets(int id, int pageNumber = 1);
 
-            public Task<Response<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds);
+            public Task<IResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds);
 
-            public Task<Response<AssetName[]>> GetAssetNames(int id, List<long> itemIds);
+            public Task<IResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds);
         }
     }
 }

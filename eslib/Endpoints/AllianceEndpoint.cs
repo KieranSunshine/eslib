@@ -22,7 +22,7 @@ namespace eslib.Endpoints
         {
         }
 
-        public async Task<Response<int[]>> GetAllianceIds()
+        public async Task<IResponse<int[]>> GetAllianceIds()
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint);
@@ -32,7 +32,7 @@ namespace eslib.Endpoints
             return _responseFactory.Create<int[]>(result);
         }
 
-        public async Task<Response<Alliance>> GetAlliance(int allianceId)
+        public async Task<IResponse<Alliance>> GetAlliance(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString());
@@ -42,7 +42,7 @@ namespace eslib.Endpoints
             return _responseFactory.Create<Alliance>(result);
         }
 
-        public async Task<Response<int[]>> GetAllianceCorporationIds(int allianceId)
+        public async Task<IResponse<int[]>> GetAllianceCorporationIds(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "corporations");
@@ -52,7 +52,7 @@ namespace eslib.Endpoints
             return _responseFactory.Create<int[]>(result);
         }
 
-        public async Task<Response<Icon>> GetAllianceIcon(int allianceId)
+        public async Task<IResponse<Icon>> GetAllianceIcon(int allianceId)
         {
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, allianceId.ToString(), "icons");
