@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using eslib.Models;
 using eslib.Models.Internals;
@@ -22,7 +23,7 @@ namespace eslib.Endpoints
         {
         }
 
-        public async Task<Response<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
+        public async Task<IResponse<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), endpoint);
@@ -37,7 +38,7 @@ namespace eslib.Endpoints
             return _responseFactory.Create<EventSummary[]>(result);
         }
 
-        public async Task<Response<Event>> GetEvent(int characterId, int eventId)
+        public async Task<IResponse<Event>> GetEvent(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString());
@@ -47,22 +48,25 @@ namespace eslib.Endpoints
             return _responseFactory.Create<Event>(result);
         }
 
-        public async Task<Response<string>> RespondToEvent(int characterId, int eventId, string response)
+        public async Task<IResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses response)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString());
-            
-            // TODO: check response against acceptable enum.
-            // TODO: investigate ways of returning responses that are only a response code.
-            
-            request.Data = response;
+
+            if (response == Enums.Calendar.EventResponses.NotResponded)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(response), 
+                    "Cannot respond to an event with the NotResponded response");
+            }
+            request.Data = response.ToString().ToLower();
 
             var result = await _dataService.Put(request);
 
             return _responseFactory.Create<string>(result);
         }
 
-        public async Task<Response<EventResponse[]>> GetEventAttendees(int characterId, int eventId)
+        public async Task<IResponse<EventResponse[]>> GetEventAttendees(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString(), "attendees");
