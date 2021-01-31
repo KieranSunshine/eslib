@@ -19,6 +19,7 @@ namespace eslib.Services.Factories
             {
                 case HttpStatusCode.OK:
                 case HttpStatusCode.NotModified:
+                case HttpStatusCode.NoContent:
                     response = ProcessResponse<T>(responseMessage.StatusCode, content);
                     break;
 

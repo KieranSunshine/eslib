@@ -25,7 +25,10 @@ namespace eslib.Models.Internals
         }
 
         public HttpStatusCode StatusCode { get; }
-        public bool Success => (StatusCode == HttpStatusCode.OK || StatusCode == HttpStatusCode.NotModified);
+        public bool Success => (
+            StatusCode == HttpStatusCode.OK ||
+            StatusCode == HttpStatusCode.NotModified ||
+            StatusCode == HttpStatusCode.NoContent);
         public string? Message { get; }
         public T? Data { get; }
         public Error? Error { get; }
@@ -38,6 +41,5 @@ namespace eslib.Models.Internals
         public string? Message { get; }
         public T? Data { get; }
         public Error? Error { get; }
-        
     }
 }
