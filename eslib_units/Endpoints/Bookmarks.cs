@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Bookmark[]>() { Data = stubbedData };
+            var response = new Response<Bookmark[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))
@@ -96,7 +97,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<BookmarkFolder[]>() { Data = stubbedData };
+            var response = new Response<BookmarkFolder[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))

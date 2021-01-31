@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,10 +42,11 @@ namespace eslib_units.Endpoints
 
             var httpResponse = new HttpResponseMessage
             {
+                StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<int[]> {Data = stubbedData};
+            var response = new Response<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))
@@ -80,10 +82,11 @@ namespace eslib_units.Endpoints
 
             var httpResponse = new HttpResponseMessage
             {
+                StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Alliance> {Data = stubbedData};
+            var response = new Response<Alliance>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))
@@ -110,10 +113,11 @@ namespace eslib_units.Endpoints
 
             var httpResponse = new HttpResponseMessage
             {
+                StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<int[]> {Data = stubbedData};
+            var response = new Response<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))
@@ -144,10 +148,11 @@ namespace eslib_units.Endpoints
 
             var httpResponse = new HttpResponseMessage
             {
+                StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Icon> {Data = stubbedData};
+            var response = new Response<Icon>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))

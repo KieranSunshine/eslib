@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -69,7 +70,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Asset[]>() { Data = stubbedData };
+            var response = new Response<Asset[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Get(It.IsAny<Request>()))
@@ -114,7 +115,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<AssetLocation[]>() { Data = stubbedData };
+            var response = new Response<AssetLocation[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Post(It.IsAny<Request>()))
@@ -188,7 +189,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<AssetName[]>() { Data = stubbedData };
+            var response = new Response<AssetName[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
                 .Setup(m => m.Post(It.IsAny<Request>()))

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using eslib.Endpoints;
@@ -43,7 +44,7 @@ namespace eslib_units.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(data))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<string> {Data = "ok"};
+            var response = new Response<string>(HttpStatusCode.OK, "ok");
 
             // Ensure that the call to Get returns our mocked response.
             _mockDataService

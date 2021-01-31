@@ -23,7 +23,7 @@ namespace eslib_units.Services.Factories
         {
             var stubbedData = "this should be parsed correctly";
 
-            var response = new Response<string> {Data = stubbedData};
+            var response = new Response<string>(HttpStatusCode.OK, stubbedData);
             var httpResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -34,11 +34,11 @@ namespace eslib_units.Services.Factories
             // Really this should be mocked but as we are controlling the content, I am putting trust in System.Net.Http.           
             var result = _responseFactory.Create<string>(httpResponse);
 
-            Assert.IsNotNull(result.Data);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Data);
             Assert.IsNull(result.Error);
-
-            Assert.AreEqual(response.Data, result.Data);
-            Assert.AreEqual(response.Error, result.Error);
+            Assert.AreEqual(result.StatusCode, result.StatusCode);
+            Assert.AreEqual(response.Message, result.Message);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace eslib_units.Services.Factories
                 SomeData = "the meaning of life"
             };
 
-            var response = new Response<FakeType> {Data = stubbedData};
+            var response = new Response<FakeType>(HttpStatusCode.OK, stubbedData);
             var httpResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -59,12 +59,18 @@ namespace eslib_units.Services.Factories
 
             var result = _responseFactory.Create<FakeType>(httpResponse);
 
-            Assert.IsNotNull(result.Data);
-            Assert.IsNull(result.Error);
-
-            Assert.AreEqual(response.Data.SomeId, result.Data.SomeId);
-            Assert.AreEqual(response.Data.SomeData, result.Data.SomeData);
-            Assert.AreEqual(response.Error, result.Error);
+            if (!(result.Data is null))
+            {
+                Assert.AreEqual(response.Data!.SomeId, result.Data.SomeId);
+                Assert.AreEqual(response.Data!.SomeData, result.Data.SomeData);
+                
+                Assert.IsNull(result.Error);
+                Assert.IsNull(result.Message);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         private class FakeType
