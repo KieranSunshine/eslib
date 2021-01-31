@@ -4,8 +4,10 @@ namespace eslib.Models
 {
     public class EventResponse
     {
-        [JsonPropertyName("character_id")] public int? CharacterId { get; set; }
+        [JsonPropertyName("character_id")] 
+        public int? CharacterId { get; set; }
 
-        [JsonPropertyName("event_response")] public string? Response { get; set; }
+        [JsonPropertyName("event_response")] 
+        public string? Response { get; set; }
     }
 }
