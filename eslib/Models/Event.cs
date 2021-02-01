@@ -11,8 +11,8 @@ namespace eslib.Models
             int importance,
             int ownerId,
             string ownerName,
-            string ownerType,
-            string response,
+            Enums.Calendar.OwnerType ownerType,
+            Enums.Calendar.EventResponses response,
             string text,
             string title)
         {
@@ -47,10 +47,10 @@ namespace eslib.Models
         public string OwnerName { get; set; }
 
         [JsonPropertyName("owner_type")] 
-        public string OwnerType { get; set; }
+        public Enums.Calendar.OwnerType OwnerType { get; set; }
 
         [JsonPropertyName("response")] 
-        public string Response { get; set; }
+        public Enums.Calendar.EventResponses Response { get; set; }
 
         [JsonPropertyName("text")] 
         public string Text { get; set; }
