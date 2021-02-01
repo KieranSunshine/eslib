@@ -66,14 +66,14 @@ namespace eslib.Endpoints
             return _responseFactory.Create<string>(result);
         }
 
-        public async Task<IResponse<EventResponse[]>> GetEventAttendees(int characterId, int eventId)
+        public async Task<IResponse<EventAttendee[]>> GetEventAttendees(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString(), "attendees");
 
             var result = await _dataService.Get(request);
 
-            return _responseFactory.Create<EventResponse[]>(result);
+            return _responseFactory.Create<EventAttendee[]>(result);
         }
     }
 }
