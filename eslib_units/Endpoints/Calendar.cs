@@ -165,7 +165,7 @@ namespace eslib_units.Endpoints
         [Test]
         public async Task GetEventAttendees()
         {
-            var stubbedData = new EventAttendee[]
+            var stubbedData = new []
             {
                 new EventAttendee()
                 {
