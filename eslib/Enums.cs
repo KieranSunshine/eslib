@@ -116,5 +116,14 @@
                 Alliance
             }
         }
+
+        public class Character
+        {
+            public enum Gender
+            {
+                Male,
+                Female
+            }
+        }
     }
 }
