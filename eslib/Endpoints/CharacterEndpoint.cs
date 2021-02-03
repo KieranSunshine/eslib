@@ -31,11 +31,21 @@ namespace eslib.Endpoints
         public async Task<IResponse<AgentResearch[]>> GetAgentsResearch(int characterId)
         {
             var request = _requestFactory.Create()
-                .AddPaths("characters", characterId.ToString(), "agents_research");
+                .AddPaths(endpoint, characterId.ToString(), "agents_research");
 
             var result = await _dataService.Get(request);
 
             return _responseFactory.Create<AgentResearch[]>(result);
+        }
+
+        public async Task<IResponse<Blueprint[]>> GetBlueprints(int characterId)
+        {
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, characterId.ToString(), "blueprints");
+
+            var result = await _dataService.Get(request);
+
+            return _responseFactory.Create<Blueprint[]>(result);
         }
     }
 }
