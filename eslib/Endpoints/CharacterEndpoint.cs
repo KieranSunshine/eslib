@@ -47,5 +47,15 @@ namespace eslib.Endpoints
 
             return _responseFactory.Create<Blueprint[]>(result);
         }
+
+        public async Task<IResponse<CorporationHistory[]>> GetCorporationHistory(int characterId)
+        {
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, characterId.ToString(), "corporationhistory");
+
+            var result = await _dataService.Get(request);
+
+            return _responseFactory.Create<CorporationHistory[]>(result);
+        }
     }
 }
