@@ -125,5 +125,14 @@
                 Female
             }
         }
+
+        public class Medals
+        {
+            public enum Status
+            {
+                Public,
+                Private
+        }
+        }
     }
 }

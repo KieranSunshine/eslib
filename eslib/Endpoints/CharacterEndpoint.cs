@@ -86,5 +86,15 @@ namespace eslib.Endpoints
 
             return _responseFactory.Create<JumpFatigue>(result);
         }
+
+        public async Task<IResponse<Medal[]>> GetMedals(int characterId)
+        {
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, characterId.ToString(), "medals");
+
+            var result = await _dataService.Get(request);
+
+            return _responseFactory.Create<Medal[]>(result);
+        }
     }
 }
