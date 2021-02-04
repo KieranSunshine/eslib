@@ -2,13 +2,14 @@
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using eslib.Helpers;
 using eslib.Models.Internals;
 
 namespace eslib.Services.Factories
 {
     public class ResponseFactory : IResponseFactory
     {
-        public IResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class
+        public IResponse<T> Create<T>(HttpResponseMessage responseMessage)
         {
             IResponse<T> response;
 
@@ -18,6 +19,7 @@ namespace eslib.Services.Factories
             switch (responseMessage.StatusCode)
             {
                 case HttpStatusCode.OK:
+                case HttpStatusCode.Created:
                 case HttpStatusCode.NotModified:
                 case HttpStatusCode.NoContent:
                     response = ProcessResponse<T>(responseMessage.StatusCode, content);
@@ -39,7 +41,7 @@ namespace eslib.Services.Factories
             }
 
             // If data type is string, do not deserialize...
-            if (typeof(T) == typeof(string))
+            if (typeof(T) == typeof(string) || Numerics.IsNumeric(typeof(T)))
             {
                 return new Response<T>(statusCode, content);
             }
@@ -95,6 +97,6 @@ namespace eslib.Services.Factories
     
     public interface IResponseFactory
     {
-        public IResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class;
+        public IResponse<T> Create<T>(HttpResponseMessage responseMessage);
     }
 }

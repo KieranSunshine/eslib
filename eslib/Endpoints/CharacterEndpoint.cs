@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using eslib.Models;
 using eslib.Models.Internals;
 using eslib.Services;
@@ -56,6 +57,24 @@ namespace eslib.Endpoints
             var result = await _dataService.Get(request);
 
             return _responseFactory.Create<CorporationHistory[]>(result);
+        }
+        
+        public async Task<IResponse<double>> CalculateCspa(int characterId, int[] characters)
+        {
+            var request = _requestFactory.Create()
+                .AddPaths(endpoint, characterId.ToString(), "cspa");
+
+            if (characters.Length > 0 && characters.Length <= 100)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(characters), 
+                    "length of array must be between 1 and 100 items");
+            }
+            request.Data = characters;
+
+            var result = await _dataService.Post(request);
+
+            return _responseFactory.Create<double>(result);
         }
     }
 }
