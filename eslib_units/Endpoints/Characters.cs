@@ -173,5 +173,171 @@ namespace eslib_units.Endpoints
             Assert.IsNull(result.Message);
             Assert.AreEqual(stubbedData, result.Data);
         }
+
+        [Test]
+        public async Task GetCorporationHistory()
+        {
+            var stubbedData = new[]
+            {
+                new CorporationHistory(1, 2, "2020-01-01"),
+                new CorporationHistory(2, 3, "2020-01-01")
+            };
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<CorporationHistory[]>(HttpStatusCode.OK, stubbedData);
+
+            _mockDataService
+                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
+
+            _mockResponseFactory
+                .Setup(m => m.Create<CorporationHistory[]>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var characterEndpoint = new CharacterEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+
+            var result = await characterEndpoint.GetCorporationHistory(1);
+
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Error);
+            Assert.IsNull(result.Message);
+            Assert.AreEqual(stubbedData, result.Data);
+        }
+
+        [Test]
+        public async Task CalculateCspa()
+        {
+            var stubbedData = 10.50;
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<double>(HttpStatusCode.OK, stubbedData);
+
+            _mockDataService
+                .Setup(m => m.Post(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
+
+            _mockResponseFactory
+                .Setup(m => m.Create<double>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var characterEndpoint = new CharacterEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+
+            var result = await characterEndpoint.CalculateCspa(1, new[] {0});
+            
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Error);
+            Assert.IsNull(result.Message);
+            Assert.AreEqual(stubbedData, result.Data);
+        }
+
+        [Test]
+        public async Task GetJumpFatigue()
+        {
+            var stubbedData = new JumpFatigue
+            {
+                ExpiryDate = "2020-01-01",
+                LastJumpDate = "2020-01-02",
+                LastUpdateDate = "2020-01-03"
+            };
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<JumpFatigue>(HttpStatusCode.OK, stubbedData);
+
+            _mockDataService
+                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
+
+            _mockResponseFactory
+                .Setup(m => m.Create<JumpFatigue>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var characterEndpoint = new CharacterEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+
+            var result = await characterEndpoint.GetJumpFatigue(1);
+            
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Error);
+            Assert.IsNull(result.Message);
+            Assert.AreEqual(stubbedData, result.Data);
+        }
+
+        [Test]
+        public async Task GetMedals()
+        {
+            var stubbedData = new[]
+            {
+                new Medal(
+                    "10",
+                    "2020-01-01",
+                    "Some description of a medal",
+                    new[]
+                    {
+                        new Graphics("a graphic 1", 1, 1),
+                        new Graphics("a graphic 2", 1, 1),
+                        new Graphics("a graphic 3", 1, 1)
+                    },
+                    1,
+                    123,
+                    "for coming first",
+                    Enums.Medals.Status.Private,
+                    "medal owner"),
+            };
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(stubbedData))
+            };
+            var httpResponseTask = Task.FromResult(httpResponse);
+            var response = new Response<Medal[]>(HttpStatusCode.OK, stubbedData);
+
+            _mockDataService
+                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Returns(httpResponseTask);
+
+            _mockResponseFactory
+                .Setup(m => m.Create<Medal[]>(It.IsAny<HttpResponseMessage>()))
+                .Returns(response);
+
+            var characterEndpoint = new CharacterEndpoint(
+                _mockDataService.Object,
+                _mockRequestFactory.Object,
+                _mockResponseFactory.Object);
+
+            var result = await characterEndpoint.GetMedals(1);
+            
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.IsTrue(result.Success);
+            Assert.IsNull(result.Error);
+            Assert.IsNull(result.Message);
+            CollectionAssert.AreEqual(stubbedData, result.Data);
+        }
     }
 }
