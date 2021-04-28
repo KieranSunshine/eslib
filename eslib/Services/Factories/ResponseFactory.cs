@@ -13,39 +13,30 @@ namespace eslib.Services.Factories
             IResponse<T> response;
 
             // TODO: Convert method to async and await here.
+            var status = responseMessage.StatusCode;
             var content = responseMessage.Content.ReadAsStringAsync().Result;
 
-            switch (responseMessage.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                case HttpStatusCode.NotModified:
-                case HttpStatusCode.NoContent:
-                    response = ProcessResponse<T>(responseMessage.StatusCode, content);
-                    break;
-
-                default:
-                    response = ProcessError<T>(responseMessage.StatusCode, content);
-                    break;
-            }
+            response = status switch {
+                HttpStatusCode.OK or
+                HttpStatusCode.NotModified or
+                HttpStatusCode.NoContent => ProcessResponse<T>(status, content),
+                _                        => ProcessError<T>(status, content) 
+            };
 
             return response;
         }
 
-        private IResponse<T> ProcessResponse<T>(HttpStatusCode statusCode, string content)
+        private static IResponse<T> ProcessResponse<T>(HttpStatusCode statusCode, string content)
         {
             if (string.IsNullOrEmpty(content))
-            {
                 return new Response<T>(statusCode);
-            }
 
             // If data type is string, do not deserialize...
             if (typeof(T) == typeof(string))
-            {
                 return new Response<T>(statusCode, content);
-            }
             
             // Attempt to deserialize...
-            T data;
+            T? data;
             try
             {
                 data = JsonSerializer.Deserialize<T>(content);
@@ -57,14 +48,12 @@ namespace eslib.Services.Factories
 
             // Double check for null value.
             if (data is null)
-            {
                 throw new ConversionException("Converted data cannot be null");
-            }
-
+            
             return new Response<T>(statusCode, data);
         }
 
-        private IResponse<T> ProcessError<T>(HttpStatusCode statusCode, string content)
+        private static IResponse<T> ProcessError<T>(HttpStatusCode statusCode, string content)
         {
             // If no content received, return a generic response...
             if (string.IsNullOrEmpty(content))

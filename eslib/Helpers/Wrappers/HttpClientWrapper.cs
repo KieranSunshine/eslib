@@ -26,11 +26,6 @@ namespace eslib.Helpers.Wrappers
         {
             return await _httpClient.PutAsync(url, httpContent);
         }
-
-        public void Dispose()
-        {
-            _httpClient.Dispose();
-        }
     }
 
     public interface IHttpClientWrapper
