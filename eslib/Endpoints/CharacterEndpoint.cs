@@ -64,7 +64,7 @@ namespace eslib.Endpoints
             var request = _requestFactory.Create()
                 .AddPaths(endpoint, characterId.ToString(), "cspa");
 
-            if (characters.Length > 0 && characters.Length <= 100)
+            if (characters.Length == 0 || characters.Length > 100)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(characters), 
