@@ -1,8 +1,8 @@
-﻿using eslib.Endpoints;
-using eslib.Models.Internals;
+﻿using Eslib.Endpoints;
+using Eslib.Models.Internals;
 using Microsoft.Extensions.Options;
 
-namespace eslib
+namespace Eslib
 {
     public class Esi
     {

@@ -1,12 +1,12 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using eslib.Helpers.Wrappers;
-using eslib.Models.Internals;
-using eslib.Services;
+using Eslib.Helpers.Wrappers;
+using Eslib.Models.Internals;
+using Eslib.Services;
 using Moq;
 using NUnit.Framework;
 
-namespace eslib.tests.unit.Services
+namespace Eslib.Tests.Unit.Services
 {
     [TestFixture]
     internal class DataServiceTests

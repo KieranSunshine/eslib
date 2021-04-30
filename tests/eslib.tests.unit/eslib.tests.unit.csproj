@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\eslib\eslib.csproj" />
+    <ProjectReference Include="..\..\Eslib\Eslib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eslib
+namespace Eslib
 {
     public class ConversionException : ApplicationException
     {

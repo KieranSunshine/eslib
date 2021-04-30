@@ -1,4 +1,4 @@
-﻿namespace eslib
+﻿namespace Eslib
 {
     internal static class Constants
     {

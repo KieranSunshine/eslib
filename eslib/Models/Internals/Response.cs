@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace eslib.Models.Internals
+namespace Eslib.Models.Internals
 {
     public class Response<T> : IResponse<T>
     {

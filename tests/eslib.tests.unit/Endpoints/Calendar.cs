@@ -3,16 +3,16 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using eslib;
-using eslib.Endpoints;
-using eslib.Models;
-using eslib.Models.Internals;
-using eslib.Services;
-using eslib.Services.Factories;
+using Eslib;
+using Eslib.Endpoints;
+using Eslib.Models;
+using Eslib.Models.Internals;
+using Eslib.Services;
+using Eslib.Services.Factories;
 using Moq;
 using NUnit.Framework;
 
-namespace eslib.tests.unit.Endpoints
+namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
     public class CalendarTests

@@ -1,5 +1,5 @@
 ﻿
-namespace eslib.Models.Internals
+namespace Eslib.Models.Internals
 {
     public class ApiOptions
     {

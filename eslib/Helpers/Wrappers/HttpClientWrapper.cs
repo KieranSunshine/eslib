@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace eslib.Helpers.Wrappers
+namespace Eslib.Helpers.Wrappers
 {
     internal class HttpClientWrapper : IHttpClientWrapper
     {

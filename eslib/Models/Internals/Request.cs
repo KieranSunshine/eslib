@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eslib.Models.Internals
+namespace Eslib.Models.Internals
 {
     public class Request : IRequest
     {

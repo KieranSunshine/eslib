@@ -1,10 +1,10 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using eslib.Helpers.Wrappers;
-using eslib.Models.Internals;
+using Eslib.Helpers.Wrappers;
+using Eslib.Models.Internals;
 
-namespace eslib.Services
+namespace Eslib.Services
 {
     public class DataService : IDataService
     {

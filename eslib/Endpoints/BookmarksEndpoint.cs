@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using eslib.Models;
-using eslib.Models.Internals;
-using eslib.Services;
-using eslib.Services.Factories;
+using Eslib.Models;
+using Eslib.Models.Internals;
+using Eslib.Services;
+using Eslib.Services.Factories;
 
-namespace eslib.Endpoints
+namespace Eslib.Endpoints
 {
     public class BookmarksEndpoint : EndpointBase
     {

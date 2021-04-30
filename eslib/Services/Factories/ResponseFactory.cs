@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using eslib.Models.Internals;
+using Eslib.Models.Internals;
 
-namespace eslib.Services.Factories
+namespace Eslib.Services.Factories
 {
     public class ResponseFactory : IResponseFactory
     {

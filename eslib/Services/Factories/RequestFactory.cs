@@ -1,6 +1,6 @@
-﻿using eslib.Models.Internals;
+﻿using Eslib.Models.Internals;
 
-namespace eslib.Services.Factories
+namespace Eslib.Services.Factories
 {
     public class RequestFactory : IRequestFactory
     {

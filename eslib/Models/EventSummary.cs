@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace eslib.Models
+namespace Eslib.Models
 {
     public class EventSummary
     {
