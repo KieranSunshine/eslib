@@ -12,7 +12,7 @@ using eslib.Services.Factories;
 using Moq;
 using NUnit.Framework;
 
-namespace eslib_units.Endpoints
+namespace eslib.tests.unit.Endpoints
 {
     [TestFixture]
     public class AssetsTests

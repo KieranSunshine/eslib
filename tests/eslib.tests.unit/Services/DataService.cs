@@ -6,7 +6,7 @@ using eslib.Services;
 using Moq;
 using NUnit.Framework;
 
-namespace eslib_units.Services
+namespace eslib.tests.unit.Services
 {
     [TestFixture]
     internal class DataServiceTests

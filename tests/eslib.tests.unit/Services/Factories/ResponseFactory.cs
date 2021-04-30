@@ -5,7 +5,7 @@ using eslib.Models.Internals;
 using eslib.Services.Factories;
 using NUnit.Framework;
 
-namespace eslib_units.Services.Factories
+namespace eslib.tests.unit.Services.Factories
 {
     [TestFixture]
     public class ResponseFactoryTests
