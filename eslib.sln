@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eslib", "Eslib\Eslib.csproj", "{A8020A00-D2CF-4591-9580-373B45B04084}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F1C022B-16A7-4CC2-821D-C0FAFA85686C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eslib.Tests.Unit", "Tests\Eslib.Tests.Unit\Eslib.Tests.Unit.csproj", "{80575F3C-8AE0-463F-9680-FE99793B33A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +19,18 @@ Global
 		{A8020A00-D2CF-4591-9580-373B45B04084}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8020A00-D2CF-4591-9580-373B45B04084}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8020A00-D2CF-4591-9580-373B45B04084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80575F3C-8AE0-463F-9680-FE99793B33A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80575F3C-8AE0-463F-9680-FE99793B33A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80575F3C-8AE0-463F-9680-FE99793B33A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80575F3C-8AE0-463F-9680-FE99793B33A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6775EF31-0170-4D96-AAEA-C0B07301A8C1}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80575F3C-8AE0-463F-9680-FE99793B33A7} = {9F1C022B-16A7-4CC2-821D-C0FAFA85686C}
 	EndGlobalSection
 EndGlobal
