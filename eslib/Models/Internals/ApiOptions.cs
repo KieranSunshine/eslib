@@ -11,5 +11,6 @@ namespace Eslib.Models.Internals
         
         public string DataSource { get; }
         public string Version { get; set; }
+        public string ApiUrl { get; set; }
     }
 }

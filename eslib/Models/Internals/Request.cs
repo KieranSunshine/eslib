@@ -5,6 +5,8 @@ namespace Eslib.Models.Internals
 {
     public class Request : IRequest
     {
+        private readonly string _url = string.Empty;
+        
         public Request()
         {
             Paths = new List<string>();
@@ -15,10 +17,14 @@ namespace Eslib.Models.Internals
             Data = new { };
         }
 
+        public string Url
+        {
+            get => CreateFullUrl();
+            init => _url = value;
+        }
         public object Data { get; set; }
-
-        public string Url => CreateUrl();
         public List<string> Paths { get; }
+        
         public Dictionary<string, string> Queries { get; }
 
         public Request AddPaths(params string[] paths)
@@ -45,7 +51,7 @@ namespace Eslib.Models.Internals
         ///     Encodes then combines paths and query parameters.
         /// </summary>
         /// <returns>A fully formed and encoded url.</returns>
-        private string CreateUrl()
+        private string CreateFullUrl()
         {
             var encodedPaths = new List<string>();
             var encodedQueries = new List<string>();
@@ -65,7 +71,7 @@ namespace Eslib.Models.Internals
                 encodedQueries.Add($"{encodedKey}={encodedValue}");
             }
 
-            var fullPath = $"{Constants.ApiUrl}/{string.Join("/", encodedPaths)}";
+            var fullPath = $"{_url}/{string.Join("/", encodedPaths)}";
             var queryString = string.Join("&", encodedQueries);
 
             return $"{fullPath}?{queryString}";

@@ -13,8 +13,12 @@ namespace Eslib.Services.Factories
 
         public Request Create()
         {
-            var request = new Request()
-                .AddPaths(_options.Version)
+            var request = new Request
+            {
+                Url = $"{_options.ApiUrl}/{_options.Version}"
+            };
+
+            request
                 .AddQuery("datasource", _options.DataSource);
 
             return request;
