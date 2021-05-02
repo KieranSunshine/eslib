@@ -8,19 +8,27 @@ namespace Eslib
     {
         public Esi(IOptions<ApiOptions> apiOptions)
         {
-            var options = apiOptions.Value;
-
-            Meta = new MetaEndpoint(options);
-            Alliance = new AllianceEndpoint(options);
-            Assets = new AssetsEndpoint(options);
-            Bookmarks = new BookmarksEndpoint(options);
-            Calendar = new CalendarEndpoint(options);
+            Init(apiOptions.Value);
         }
 
-        public MetaEndpoint Meta { get; }
-        public AllianceEndpoint Alliance { get; }
-        public AssetsEndpoint Assets { get; }
-        public BookmarksEndpoint Bookmarks { get; }
-        public CalendarEndpoint Calendar { get;  }
+        public Esi(ApiOptions apiOptions)
+        {
+            Init(apiOptions);
+        }
+
+        public MetaEndpoint Meta { get; private set; }
+        public AllianceEndpoint Alliance { get; private set; }
+        public AssetsEndpoint Assets { get; private set; }
+        public BookmarksEndpoint Bookmarks { get; private set; }
+        public CalendarEndpoint Calendar { get; private set; }
+
+        private void Init(ApiOptions apiOptions)
+        {
+            Meta = new MetaEndpoint(apiOptions);
+            Alliance = new AllianceEndpoint(apiOptions);
+            Assets = new AssetsEndpoint(apiOptions);
+            Bookmarks = new BookmarksEndpoint(apiOptions);
+            Calendar = new CalendarEndpoint(apiOptions);
+        }
     }
 }
