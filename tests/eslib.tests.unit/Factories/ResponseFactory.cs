@@ -23,7 +23,7 @@ namespace Eslib.Tests.Unit.Factories
         {
             var stubbedData = "this should be parsed correctly";
 
-            var response = new Response<string>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<string>(HttpStatusCode.OK, stubbedData);
             var httpResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -50,7 +50,7 @@ namespace Eslib.Tests.Unit.Factories
                 SomeData = "the meaning of life"
             };
 
-            var response = new Response<FakeType>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<FakeType>(HttpStatusCode.OK, stubbedData);
             var httpResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,

@@ -19,17 +19,17 @@ namespace Eslib.Tests.Unit.Endpoints
         [SetUp]
         public void Init()
         {
-            _stubbedRequest = new Request();
+            _stubbedEsiRequest = new EsiRequest();
 
             _mockDataService = new Mock<IDataService>();
             _mockRequestFactory = new Mock<IRequestFactory>();
             _mockResponseFactory = new Mock<IResponseFactory>();
 
             _mockRequestFactory.Setup(m => m.Create())
-                .Returns(_stubbedRequest);
+                .Returns(_stubbedEsiRequest);
         }
 
-        private Request _stubbedRequest;
+        private EsiRequest _stubbedEsiRequest;
 
         private Mock<IDataService> _mockDataService;
         private Mock<IRequestFactory> _mockRequestFactory;
@@ -46,10 +46,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<int[]>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -86,10 +86,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Alliance>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<Alliance>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -117,10 +117,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<int[]>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -152,10 +152,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Icon>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<Icon>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory

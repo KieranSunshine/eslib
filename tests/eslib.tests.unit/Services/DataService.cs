@@ -23,7 +23,7 @@ namespace Eslib.Tests.Unit.Services
         public async Task Get()
         {
             // Create a response and set the content property.
-            var request = new Request();
+            var request = new EsiRequest();
             var data = "ok";
             var response = new HttpResponseMessage()
             {
@@ -52,7 +52,7 @@ namespace Eslib.Tests.Unit.Services
                 RandomString = "Random string",
                 RandomInt = 42
             };
-            var request = new Request() { Data = data };
+            var request = new EsiRequest() { Data = data };
             
             // Define the expected response from the post.
             var postResponse = "object was posted";            

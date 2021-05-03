@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Eslib.Models.Internals
 {
-    public class Request : IRequest
+    public class EsiRequest : IRequest
     {
         private readonly string _url = string.Empty;
         
-        public Request()
+        public EsiRequest()
         {
             Paths = new List<string>();
             Queries = new Dictionary<string, string>();
@@ -27,20 +27,20 @@ namespace Eslib.Models.Internals
         
         public Dictionary<string, string> Queries { get; }
 
-        public Request AddPaths(params string[] paths)
+        public EsiRequest AddPaths(params string[] paths)
         {
             if (paths.Length > 0) Paths.AddRange(paths);
             return this;
         }
 
-        public Request AddQuery(string key, string value)
+        public EsiRequest AddQuery(string key, string value)
         {
             if (key.Length > 0 && value.Length > 0) Queries.Add(key, value);
 
             return this;
         }
 
-        public Request Page(int pageNumber = 1)
+        public EsiRequest Page(int pageNumber = 1)
         {
             Queries["page"] = pageNumber.ToString();
 
@@ -96,11 +96,11 @@ namespace Eslib.Models.Internals
         public Dictionary<string, string> Queries { get; }
 
         /// <summary>
-        ///     Append the provided paths to the Request.
+        ///     Append the provided paths to the EsiRequest.
         /// </summary>
         /// <param name="paths">The paths to add</param>
         /// <returns>The request</returns>
-        public Request AddPaths(params string[] paths);
+        public EsiRequest AddPaths(params string[] paths);
 
         /// <summary>
         ///     Adds the desired key and value to the list of Query params.
@@ -108,13 +108,13 @@ namespace Eslib.Models.Internals
         /// <param name="key">The key</param>
         /// <param name="value">The value</param>
         /// <returns>The updated request</returns>
-        public Request AddQuery(string key, string value);
+        public EsiRequest AddQuery(string key, string value);
 
         /// <summary>
         ///     Adds the required query string parameter for paged endpoints
         /// </summary>
         /// <param name="pageNumber">The page number to retrieve</param>
         /// <returns>The request</returns>
-        public Request Page(int pageNumber);
+        public EsiRequest Page(int pageNumber);
     }
 }

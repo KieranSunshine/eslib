@@ -11,9 +11,9 @@ namespace Eslib.Factories
             _options = options;
         }
 
-        public Request Create()
+        public EsiRequest Create()
         {
-            var request = new Request
+            var request = new EsiRequest
             {
                 Url = $"{_options.ApiUrl}/{_options.Version}"
             };
@@ -28,9 +28,9 @@ namespace Eslib.Factories
     public interface IRequestFactory
     {
         /// <summary>
-        /// Creates an appropriately created Request
+        /// Creates an appropriately created EsiRequest
         /// </summary>
         /// <returns>The request</returns>
-        public Request Create();
+        public EsiRequest Create();
     }
 }

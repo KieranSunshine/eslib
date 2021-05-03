@@ -2,23 +2,23 @@
 
 namespace Eslib.Models.Internals
 {
-    public class Response<T> : IResponse<T>
+    public class EsiResponse<T> : IResponse<T>
     {
-        public Response(HttpStatusCode statusCode)
+        public EsiResponse(HttpStatusCode statusCode)
         {
             StatusCode = statusCode;
         }
-        public Response(HttpStatusCode statusCode, string message)
+        public EsiResponse(HttpStatusCode statusCode, string message)
         {
             StatusCode = statusCode;
             Message = message;
         }
-        public Response(HttpStatusCode statusCode, T data)
+        public EsiResponse(HttpStatusCode statusCode, T data)
         {
             StatusCode = statusCode;
             Data = data;
         }
-        public Response(HttpStatusCode statusCode, Error error)
+        public EsiResponse(HttpStatusCode statusCode, Error error)
         {
             StatusCode = statusCode;
             Error = error;

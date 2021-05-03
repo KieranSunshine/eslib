@@ -15,7 +15,7 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class BookmarksTests
     {
-        private Request _stubbedRequest;
+        private EsiRequest _stubbedEsiRequest;
 
         private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IDataService> _mockDataService;
@@ -24,7 +24,7 @@ namespace Eslib.Tests.Unit.Endpoints
         [SetUp]
         public void Init()
         {
-            _stubbedRequest = new Request();
+            _stubbedEsiRequest = new EsiRequest();
 
             _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
@@ -32,7 +32,7 @@ namespace Eslib.Tests.Unit.Endpoints
 
             _mockRequestFactory
                 .Setup(m => m.Create())
-                .Returns(_stubbedRequest);
+                .Returns(_stubbedEsiRequest);
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<Bookmark[]>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<Bookmark[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -97,10 +97,10 @@ namespace Eslib.Tests.Unit.Endpoints
                 Content = new StringContent(JsonSerializer.Serialize(stubbedData))
             };
             var httpResponseTask = Task.FromResult(httpResponse);
-            var response = new Response<BookmarkFolder[]>(HttpStatusCode.OK, stubbedData);
+            var response = new EsiResponse<BookmarkFolder[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<Request>()))
+                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory

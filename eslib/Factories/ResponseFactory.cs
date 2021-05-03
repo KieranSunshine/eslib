@@ -29,11 +29,11 @@ namespace Eslib.Factories
         private static IResponse<T> ProcessResponse<T>(HttpStatusCode statusCode, string content)
         {
             if (string.IsNullOrEmpty(content))
-                return new Response<T>(statusCode);
+                return new EsiResponse<T>(statusCode);
 
             // If data type is string, do not deserialize...
             if (typeof(T) == typeof(string))
-                return new Response<T>(statusCode, content);
+                return new EsiResponse<T>(statusCode, content);
             
             // Attempt to deserialize...
             T? data;
@@ -50,7 +50,7 @@ namespace Eslib.Factories
             if (data is null)
                 throw new ConversionException("Converted data cannot be null");
             
-            return new Response<T>(statusCode, data);
+            return new EsiResponse<T>(statusCode, data);
         }
 
         private static IResponse<T> ProcessError<T>(HttpStatusCode statusCode, string content)
@@ -58,7 +58,7 @@ namespace Eslib.Factories
             // If no content received, return a generic response...
             if (string.IsNullOrEmpty(content))
             {
-                return new Response<T>(statusCode);
+                return new EsiResponse<T>(statusCode);
             }
 
             // Attempt to deserialize the error...
@@ -78,7 +78,7 @@ namespace Eslib.Factories
                 throw new ConversionException("Error data cannot be null");
             }
             
-            return new Response<T>(statusCode, error);
+            return new EsiResponse<T>(statusCode, error);
         }
     }
     

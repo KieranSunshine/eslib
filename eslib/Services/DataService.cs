@@ -20,32 +20,32 @@ namespace Eslib.Services
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseMessage> Get(Request request)
+        public async Task<HttpResponseMessage> Get(EsiRequest esiRequest)
         {
             var response = await _httpClient
-                .GetAsync(request.Url)
+                .GetAsync(esiRequest.Url)
                 .ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<HttpResponseMessage> Post(Request request)
+        public async Task<HttpResponseMessage> Post(EsiRequest esiRequest)
         {
-            var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
+            var httpContent = new StringContent(JsonSerializer.Serialize(esiRequest.Data));
 
             var response = await _httpClient
-                .PostAsync(request.Url, httpContent)
+                .PostAsync(esiRequest.Url, httpContent)
                 .ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<HttpResponseMessage> Put(Request request)
+        public async Task<HttpResponseMessage> Put(EsiRequest esiRequest)
         {
-            var httpContent = new StringContent(JsonSerializer.Serialize(request.Data));
+            var httpContent = new StringContent(JsonSerializer.Serialize(esiRequest.Data));
 
             var response = await _httpClient
-                .PutAsync(request.Url, httpContent)
+                .PutAsync(esiRequest.Url, httpContent)
                 .ConfigureAwait(false);
 
             return response;
@@ -54,8 +54,8 @@ namespace Eslib.Services
 
     public interface IDataService
     {
-        public Task<HttpResponseMessage> Get(Request request);
-        public Task<HttpResponseMessage> Post(Request request);
-        public Task<HttpResponseMessage> Put(Request request);
+        public Task<HttpResponseMessage> Get(EsiRequest esiRequest);
+        public Task<HttpResponseMessage> Post(EsiRequest esiRequest);
+        public Task<HttpResponseMessage> Put(EsiRequest esiRequest);
     }
 }
