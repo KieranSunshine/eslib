@@ -1,11 +1,7 @@
 using System;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Eslib.Tests.Integration.Helpers;
 using NUnit.Framework;
-using WireMock.ResponseBuilders;
-using WireMock.RequestBuilders;
 
 namespace Eslib.Tests.Integration.Endpoints
 {
@@ -24,23 +20,11 @@ namespace Eslib.Tests.Integration.Endpoints
                 99000036
             };
             
-            var request = Request
-                .Create()
-                .WithPath("/latest/alliances")
-                .UsingGet();
-
-            var response = Response
-                .Create()
-                .WithBody(JsonSerializer.Serialize(stubbedData));
-            
-            _server
-                .Given(request)
-                .RespondWith(response);
+            MockGetRequest("/latest/alliances", stubbedData);
             
             var result = await _esi.Alliance.GetAllianceIds();
 
             ResponseAssert.IsSuccessful(result);
-            
             Assert.IsNull(result.Message);
             Assert.IsNotNull(result.Data);
             Assert.IsTrue(result.Data.Length == 5);
@@ -63,24 +47,12 @@ namespace Eslib.Tests.Integration.Endpoints
                 name = "Everto Rex Regiss",
                 ticker = "666"
             };
-            
-            var request = Request
-                .Create()
-                .WithPath("/latest/alliances/*")
-                .UsingGet();
 
-            var response = Response
-                .Create()
-                .WithBody(JsonSerializer.Serialize(stubbedData));
-            
-            _server
-                .Given(request)
-                .RespondWith(response);
+            MockGetRequest("/latest/alliances/*", stubbedData);
 
             var result = await _esi.Alliance.GetAlliance(1);
             
             ResponseAssert.IsSuccessful(result);
-
             Assert.IsNull(result.Message);
             Assert.IsNotNull(result.Data);
             Assert.AreEqual(stubbedData.creator_corporation_id, result.Data.CreatorCorporationId);
