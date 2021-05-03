@@ -1,7 +1,6 @@
 using Eslib.Models.Internals;
 using NUnit.Framework;
 using WireMock.Server;
-using WireMock.Settings;
 
 namespace Eslib.Tests.Integration.Endpoints
 {
