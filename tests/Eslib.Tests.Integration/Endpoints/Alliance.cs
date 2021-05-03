@@ -62,5 +62,46 @@ namespace Eslib.Tests.Integration.Endpoints
             Assert.AreEqual(stubbedData.name, result.Data.Name);
             Assert.AreEqual(stubbedData.ticker, result.Data.Ticker);
         }
+
+        [Test]
+        public async Task GetAllianceCorporationIds()
+        {
+            var stubbedData = new[]
+            {
+                98617312,
+                98667839
+            };
+            
+            MockGetRequest("/latest/alliances/*/corporations", stubbedData);
+
+            var result = await _esi.Alliance.GetAllianceCorporationIds(1);
+            
+            ResponseAssert.IsSuccessful(result);
+            Assert.IsNull(result.Message);
+            Assert.IsNotNull(result.Data);
+            Assert.IsTrue(result.Data.Length == 2);
+            Assert.AreEqual(stubbedData[0], result.Data[0]);
+            Assert.AreEqual(stubbedData[1], result.Data[1]);
+        }
+
+        [Test]
+        public async Task GetAllianceIcon()
+        {
+            var stubbedData = new
+            {
+                px128x128 = "https://images.evetech.net/Alliance/99000006_128.png",
+                px64x64 = "https://images.evetech.net/Alliance/99000006_64.png"
+            };
+            
+            MockGetRequest("/latest/alliances/*/icons", stubbedData);
+
+            var result = await _esi.Alliance.GetAllianceIcon(1);
+            
+            ResponseAssert.IsSuccessful(result);
+            Assert.IsNull(result.Message);
+            Assert.IsNotNull(result.Data);
+            Assert.AreEqual(stubbedData.px64x64, result.Data.Url64);
+            Assert.AreEqual(stubbedData.px128x128, result.Data.Url128);
+        }
     }
 }
