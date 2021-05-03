@@ -34,12 +34,17 @@ namespace Eslib.Models.Internals
         public Error? Error { get; }
     }
 
-    public interface IResponse<T>
+    // TODO: For clarity, consider inverting the names of these two interfaces.
+    public interface IBaseResponse
     {
         public HttpStatusCode StatusCode { get; }
         public bool Success { get; }
         public string? Message { get; }
-        public T? Data { get; }
         public Error? Error { get; }
+    }
+
+    public interface IResponse<T> : IBaseResponse
+    {
+        public T? Data { get; }
     }
 }
