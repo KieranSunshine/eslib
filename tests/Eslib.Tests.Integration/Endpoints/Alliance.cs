@@ -28,11 +28,11 @@ namespace Eslib.Tests.Integration.Endpoints
             Assert.IsNull(result.Message);
             Assert.IsNotNull(result.Data);
             Assert.IsTrue(result.Data.Length == 5);
-            Assert.IsTrue(result.Data[0] == 99000006);
-            Assert.IsTrue(result.Data[1] == 99000008);
-            Assert.IsTrue(result.Data[2] == 99000025);
-            Assert.IsTrue(result.Data[3] == 99000026);
-            Assert.IsTrue(result.Data[4] == 99000036);
+            Assert.AreEqual(stubbedData[0], result.Data[0]);
+            Assert.AreEqual(stubbedData[1], result.Data[1]);
+            Assert.AreEqual(stubbedData[2], result.Data[2]);
+            Assert.AreEqual(stubbedData[3], result.Data[3]);
+            Assert.AreEqual(stubbedData[4], result.Data[4]);
         }
 
         [Test]
