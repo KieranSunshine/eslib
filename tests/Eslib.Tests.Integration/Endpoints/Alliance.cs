@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Eslib.Tests.Integration.Helpers;
 using NUnit.Framework;
 using WireMock.ResponseBuilders;
 using WireMock.RequestBuilders;
@@ -14,6 +15,15 @@ namespace Eslib.Tests.Integration.Endpoints
         [Test]
         public async Task GetAllianceIds()
         {
+            var stubbedData = new[]
+            {
+                99000006,
+                99000008,
+                99000025,
+                99000026,
+                99000036
+            };
+            
             var request = Request
                 .Create()
                 .WithPath("/latest/alliances")
@@ -21,26 +31,18 @@ namespace Eslib.Tests.Integration.Endpoints
 
             var response = Response
                 .Create()
-                .WithBody(@"[
-                    99000006,
-                    99000008,
-                    99000025,
-                    99000026,
-                    99000036,
-                ]");
+                .WithBody(JsonSerializer.Serialize(stubbedData));
             
             _server
                 .Given(request)
                 .RespondWith(response);
             
             var result = await _esi.Alliance.GetAllianceIds();
+
+            ResponseAssert.IsSuccessful(result);
             
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.IsNull(result.Error);
             Assert.IsNull(result.Message);
             Assert.IsNotNull(result.Data);
-            
             Assert.IsTrue(result.Data.Length == 5);
             Assert.IsTrue(result.Data[0] == 99000006);
             Assert.IsTrue(result.Data[1] == 99000008);
@@ -77,12 +79,10 @@ namespace Eslib.Tests.Integration.Endpoints
 
             var result = await _esi.Alliance.GetAlliance(1);
             
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.IsNull(result.Error);
+            ResponseAssert.IsSuccessful(result);
+
             Assert.IsNull(result.Message);
             Assert.IsNotNull(result.Data);
-            
             Assert.AreEqual(stubbedData.creator_corporation_id, result.Data.CreatorCorporationId);
             Assert.AreEqual(stubbedData.creator_id, result.Data.CreatorId);
             Assert.AreEqual(new DateTime(2010, 11, 4, 13, 11, 0), result.Data.DateFounded);
