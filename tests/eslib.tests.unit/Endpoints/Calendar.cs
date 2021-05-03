@@ -3,12 +3,11 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Eslib;
 using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
-using Eslib.Services.Factories;
+using Eslib.Factories;
 using Moq;
 using NUnit.Framework;
 

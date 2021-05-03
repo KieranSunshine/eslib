@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Text.Json;
 using Eslib.Models.Internals;
-using Eslib.Services.Factories;
+using Eslib.Factories;
 using NUnit.Framework;
 
-namespace Eslib.Tests.Unit.Services.Factories
+namespace Eslib.Tests.Unit.Factories
 {
     [TestFixture]
     public class ResponseFactoryTests

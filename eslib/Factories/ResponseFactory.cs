@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using Eslib.Models.Internals;
 
-namespace Eslib.Services.Factories
+namespace Eslib.Factories
 {
     public class ResponseFactory : IResponseFactory
     {

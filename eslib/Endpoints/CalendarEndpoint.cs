@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
-using Eslib.Services.Factories;
+using Eslib.Factories;
 
 namespace Eslib.Endpoints
 {

@@ -7,7 +7,7 @@ using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
-using Eslib.Services.Factories;
+using Eslib.Factories;
 using Moq;
 using NUnit.Framework;
 
