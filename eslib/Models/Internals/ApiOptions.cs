@@ -7,6 +7,7 @@ namespace Eslib.Models.Internals
         {
             DataSource = "tranquility";
             Version = Constants.ApiVersions.Latest;
+            ApiUrl = Constants.ApiUrl;
         }
         
         public string DataSource { get; }

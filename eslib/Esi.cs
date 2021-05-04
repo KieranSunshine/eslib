@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Eslib
 {
+    #pragma warning disable CS8618
     public class Esi
     {
         public Esi(IOptions<ApiOptions> apiOptions)
@@ -15,7 +16,7 @@ namespace Eslib
         {
             Init(apiOptions);
         }
-
+        
         public MetaEndpoint Meta { get; private set; }
         public AllianceEndpoint Alliance { get; private set; }
         public AssetsEndpoint Assets { get; private set; }
@@ -31,4 +32,5 @@ namespace Eslib
             Calendar = new CalendarEndpoint(apiOptions);
         }
     }
+    #pragma warning restore CS8618
 }
