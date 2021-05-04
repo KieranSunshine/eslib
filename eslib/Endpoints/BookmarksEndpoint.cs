@@ -38,7 +38,7 @@ namespace Eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public async Task<IResponse<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1)
+            public async Task<EsiResponse<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks")
@@ -49,7 +49,7 @@ namespace Eslib.Endpoints
                 return _parent._responseFactory.Create<Bookmark[]>(result);
             }
 
-            public async Task<IResponse<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1)
+            public async Task<EsiResponse<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "bookmarks", "folders")
@@ -64,8 +64,8 @@ namespace Eslib.Endpoints
 
     public interface IBookmarkOwner
     {
-        public Task<IResponse<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1);
+        public Task<EsiResponse<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1);
 
-        public Task<IResponse<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1);
+        public Task<EsiResponse<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1);
     }
 }

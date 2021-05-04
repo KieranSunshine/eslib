@@ -23,7 +23,7 @@ namespace Eslib.Endpoints
         {
         }
 
-        public async Task<IResponse<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
+        public async Task<EsiResponse<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), endpoint);
@@ -38,7 +38,7 @@ namespace Eslib.Endpoints
             return _responseFactory.Create<EventSummary[]>(result);
         }
 
-        public async Task<IResponse<Event>> GetEvent(int characterId, int eventId)
+        public async Task<EsiResponse<Event>> GetEvent(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString());
@@ -48,7 +48,7 @@ namespace Eslib.Endpoints
             return _responseFactory.Create<Event>(result);
         }
 
-        public async Task<IResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses response)
+        public async Task<EsiResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses response)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString());
@@ -66,7 +66,7 @@ namespace Eslib.Endpoints
             return _responseFactory.Create<string>(result);
         }
 
-        public async Task<IResponse<EventAttendee[]>> GetEventAttendees(int characterId, int eventId)
+        public async Task<EsiResponse<EventAttendee[]>> GetEventAttendees(int characterId, int eventId)
         {
             var request = _requestFactory.Create()
                 .AddPaths("characters", characterId.ToString(), eventId.ToString(), "attendees");

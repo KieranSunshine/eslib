@@ -8,9 +8,9 @@ namespace Eslib.Factories
 {
     public class ResponseFactory : IResponseFactory
     {
-        public IResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class
+        public EsiResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class
         {
-            IResponse<T> response;
+            EsiResponse<T> response;
 
             // TODO: Convert method to async and await here.
             var status = responseMessage.StatusCode;
@@ -26,7 +26,7 @@ namespace Eslib.Factories
             return response;
         }
 
-        private static IResponse<T> ProcessResponse<T>(HttpStatusCode statusCode, string content)
+        private static EsiResponse<T> ProcessResponse<T>(HttpStatusCode statusCode, string content)
         {
             if (string.IsNullOrEmpty(content))
                 return new EsiResponse<T>(statusCode);
@@ -53,7 +53,7 @@ namespace Eslib.Factories
             return new EsiResponse<T>(statusCode, data);
         }
 
-        private static IResponse<T> ProcessError<T>(HttpStatusCode statusCode, string content)
+        private static EsiResponse<T> ProcessError<T>(HttpStatusCode statusCode, string content)
         {
             // If no content received, return a generic response...
             if (string.IsNullOrEmpty(content))
@@ -84,6 +84,6 @@ namespace Eslib.Factories
     
     public interface IResponseFactory
     {
-        public IResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class;
+        public EsiResponse<T> Create<T>(HttpResponseMessage responseMessage) where T : class;
     }
 }

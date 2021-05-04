@@ -42,7 +42,7 @@ namespace Eslib.Endpoints
                 _ownerType = ownerType;
             }
 
-            public async Task<IResponse<Asset[]>> GetAssets(int id, int pageNumber = 1)
+            public async Task<EsiResponse<Asset[]>> GetAssets(int id, int pageNumber = 1)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets")
@@ -53,7 +53,7 @@ namespace Eslib.Endpoints
                 return _parent._responseFactory.Create<Asset[]>(result);
             }
 
-            public async Task<IResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
+            public async Task<EsiResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "locations");
@@ -68,7 +68,7 @@ namespace Eslib.Endpoints
                 return _parent._responseFactory.Create<AssetLocation[]>(result);
             }
 
-            public async Task<IResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
+            public async Task<EsiResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
             {
                 var request = _parent._requestFactory.Create()
                     .AddPaths(_ownerType, id.ToString(), "assets", "names");
@@ -86,11 +86,11 @@ namespace Eslib.Endpoints
 
         public interface IAssetOwner
         {
-            public Task<IResponse<Asset[]>> GetAssets(int id, int pageNumber = 1);
+            public Task<EsiResponse<Asset[]>> GetAssets(int id, int pageNumber = 1);
 
-            public Task<IResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds);
+            public Task<EsiResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds);
 
-            public Task<IResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds);
+            public Task<EsiResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds);
         }
     }
 }
