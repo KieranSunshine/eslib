@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Eslib.Models.Internals.Interfaces;
 
 namespace Eslib.Models.Internals
 {
@@ -31,14 +32,6 @@ namespace Eslib.Models.Internals
             StatusCode == HttpStatusCode.NoContent);
         public string? Message { get; }
         public T? Data { get; }
-        public Error? Error { get; }
-    }
-    
-    public interface IResponse
-    {
-        public HttpStatusCode StatusCode { get; }
-        public bool Success { get; }
-        public string? Message { get; }
         public Error? Error { get; }
     }
 }

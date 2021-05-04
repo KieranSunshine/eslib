@@ -1,6 +1,5 @@
-﻿using System.Buffers;
-using System.Net;
-using Eslib.Models.Internals;
+﻿using System.Net;
+using Eslib.Models.Internals.Interfaces;
 using NUnit.Framework;
 
 namespace Eslib.Tests.Integration.Helpers
