@@ -7,7 +7,7 @@ namespace Eslib.Tests.Integration.Helpers
 {
     public static class ResponseAssert
     {
-        public static void IsSuccessful(IBaseResponse response)
+        public static void IsSuccessful(IResponse response)
         {
             if (response.StatusCode is not (
                 HttpStatusCode.OK or

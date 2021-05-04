@@ -2,7 +2,7 @@
 
 namespace Eslib.Models.Internals
 {
-    public class EsiResponse<T> : IBaseResponse
+    public class EsiResponse<T> : IResponse
     {
         public EsiResponse(HttpStatusCode statusCode)
         {
@@ -33,9 +33,8 @@ namespace Eslib.Models.Internals
         public T? Data { get; }
         public Error? Error { get; }
     }
-
-    // TODO: For clarity, consider inverting the names of these two interfaces.
-    public interface IBaseResponse
+    
+    public interface IResponse
     {
         public HttpStatusCode StatusCode { get; }
         public bool Success { get; }
