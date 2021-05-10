@@ -7,38 +7,30 @@ namespace Eslib
     #pragma warning disable CS8618
     public class Esi
     {
+        private ApiOptions _options;
         private EsiTokens _tokens = new();
         
         public Esi(IOptions<ApiOptions> apiOptions)
         {
-            Init(apiOptions.Value);
+            _options = apiOptions.Value;
         }
 
         public Esi(ApiOptions apiOptions)
         {
-            Init(apiOptions);
+            _options = apiOptions;
         }
         
         public EsiTokens Tokens => _tokens;
 
         #region Endpoints
 
-        public MetaEndpoint Meta { get; private set; }
-        public AllianceEndpoint Alliance { get; private set; }
-        public AssetsEndpoint Assets { get; private set; }
-        public BookmarksEndpoint Bookmarks { get; private set; }
-        public CalendarEndpoint Calendar { get; private set; }
+        public MetaEndpoint Meta => new(_options);
+        public AllianceEndpoint Alliance => new(_options);
+        public AssetsEndpoint Assets => new(_options);
+        public BookmarksEndpoint Bookmarks => new(_options);
+        public CalendarEndpoint Calendar => new(_options);
 
         #endregion
-
-        private void Init(ApiOptions apiOptions)
-        {
-            Meta = new MetaEndpoint(apiOptions);
-            Alliance = new AllianceEndpoint(apiOptions);
-            Assets = new AssetsEndpoint(apiOptions);
-            Bookmarks = new BookmarksEndpoint(apiOptions);
-            Calendar = new CalendarEndpoint(apiOptions);
-        }
     }
     #pragma warning restore CS8618
 }
