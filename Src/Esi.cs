@@ -7,6 +7,8 @@ namespace Eslib
     #pragma warning disable CS8618
     public class Esi
     {
+        private EsiTokens _tokens = new();
+        
         public Esi(IOptions<ApiOptions> apiOptions)
         {
             Init(apiOptions.Value);
@@ -17,11 +19,17 @@ namespace Eslib
             Init(apiOptions);
         }
         
+        public EsiTokens Tokens => _tokens;
+
+        #region Endpoints
+
         public MetaEndpoint Meta { get; private set; }
         public AllianceEndpoint Alliance { get; private set; }
         public AssetsEndpoint Assets { get; private set; }
         public BookmarksEndpoint Bookmarks { get; private set; }
         public CalendarEndpoint Calendar { get; private set; }
+
+        #endregion
 
         private void Init(ApiOptions apiOptions)
         {
