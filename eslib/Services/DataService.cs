@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Eslib.Helpers.Wrappers;
 using Eslib.Models.Internals;
@@ -61,6 +63,28 @@ namespace Eslib.Services
             return response;
         }
 
+        public async Task<HttpResponseMessage> PostAsync(Url url, object data)
+        {
+            if (data is null)
+                throw new ArgumentNullException(nameof(data), "data cannot be null");
+            
+            url = ValidateUrl(url);
+
+            var serializedData = JsonSerializer.Serialize(data);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = url.ToUri(),
+                Content = new StringContent(serializedData)
+            };
+
+            var response = await _httpClient
+                .SendAsync(request)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<HttpResponseMessage> PutAsync(Url url)
         {
             url = ValidateUrl(url);
@@ -91,6 +115,7 @@ namespace Eslib.Services
     {
         public Task<HttpResponseMessage> GetAsync(Url url);
         public Task<HttpResponseMessage> PostAsync(Url url);
+        public Task<HttpResponseMessage> PostAsync(Url url, object data);
         public Task<HttpResponseMessage> PutAsync(Url url);
     }
 }
