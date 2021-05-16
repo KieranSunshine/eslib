@@ -1,61 +1,96 @@
 ﻿using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Eslib.Helpers.Wrappers;
 using Eslib.Models.Internals;
+using Flurl;
 
 namespace Eslib.Services
 {
     public class DataService : IDataService
     {
+        private ApiOptions _options;
         private readonly IHttpClientWrapper _httpClient;
 
-        public DataService()
+        #region Constructors
+
+        public DataService(ApiOptions options)
         {
+            _options = options;
             _httpClient = new HttpClientWrapper();
         }
 
-        public DataService(IHttpClientWrapper httpClient)
+        public DataService(ApiOptions options, IHttpClientWrapper httpClient)
         {
+            _options = options;
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseMessage> Get(EsiRequest esiRequest)
+        #endregion
+
+        public async Task<HttpResponseMessage> GetAsync(Url url)
         {
+            url = ValidateUrl(url);
+            
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = url.ToUri()
+            };
+
             var response = await _httpClient
-                .GetAsync(esiRequest.Url)
+                .SendAsync(request)
                 .ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<HttpResponseMessage> Post(EsiRequest esiRequest)
+        public async Task<HttpResponseMessage> PostAsync(Url url)
         {
-            var httpContent = new StringContent(JsonSerializer.Serialize(esiRequest.Data));
+            url = ValidateUrl(url);
+            
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = url.ToUri()
+            };
 
             var response = await _httpClient
-                .PostAsync(esiRequest.Url, httpContent)
+                .SendAsync(request)
                 .ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<HttpResponseMessage> Put(EsiRequest esiRequest)
+        public async Task<HttpResponseMessage> PutAsync(Url url)
         {
-            var httpContent = new StringContent(JsonSerializer.Serialize(esiRequest.Data));
+            url = ValidateUrl(url);
+            
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = url.ToUri()
+            };
 
             var response = await _httpClient
-                .PutAsync(esiRequest.Url, httpContent)
+                .SendAsync(request)
                 .ConfigureAwait(false);
 
             return response;
+        }
+
+        private Url ValidateUrl(Url url)
+        {
+            if (!url.QueryParams.Contains("datasource"))
+                url.SetQueryParam("datasource", _options.DataSource);
+
+            return url;
         }
     }
 
     public interface IDataService
     {
-        public Task<HttpResponseMessage> Get(EsiRequest esiRequest);
-        public Task<HttpResponseMessage> Post(EsiRequest esiRequest);
-        public Task<HttpResponseMessage> Put(EsiRequest esiRequest);
+        public Task<HttpResponseMessage> GetAsync(Url url);
+        public Task<HttpResponseMessage> PostAsync(Url url);
+        public Task<HttpResponseMessage> PutAsync(Url url);
     }
 }

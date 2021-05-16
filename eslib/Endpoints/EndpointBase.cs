@@ -6,13 +6,17 @@ namespace Eslib.Endpoints
 {
     public abstract class EndpointBase
     {
+        protected ApiOptions _options;
         protected readonly IDataService _dataService;
         protected readonly IRequestFactory _requestFactory;
         protected readonly IResponseFactory _responseFactory;
 
+        protected string _baseUrl => $"{_options.ApiUrl}/{_options.Version}";
+
         protected EndpointBase(ApiOptions options)
         {
-            _dataService = new DataService();
+            _options = options;
+            _dataService = new DataService(options);
             _requestFactory = new RequestFactory(options);
             _responseFactory = new ResponseFactory();
         }
@@ -22,6 +26,7 @@ namespace Eslib.Endpoints
             IRequestFactory requestFactory,
             IResponseFactory responseFactory)
         {
+            _options = new ApiOptions();
             _dataService = dataService;
             _requestFactory = requestFactory;
             _responseFactory = responseFactory;
