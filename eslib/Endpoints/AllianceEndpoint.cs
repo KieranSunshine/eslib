@@ -3,12 +3,13 @@ using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 
 namespace Eslib.Endpoints
 {
     public class AllianceEndpoint : EndpointBase
     {
-        private const string endpoint = "alliances";
+        #region Constructors
 
         public AllianceEndpoint(ApiOptions options) : base(options)
         {
@@ -21,45 +22,47 @@ namespace Eslib.Endpoints
             : base(dataService, requestFactory, responseFactory)
         {
         }
+        
+        #endregion
 
         public async Task<EsiResponse<int[]>> GetAllianceIds()
         {
-            var request = _requestFactory.Create()
-                .AddPaths(endpoint);
+            var url = new Url(_baseUrl)
+                .AppendPathSegment("alliances");
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<int[]>(result);
+            return _responseFactory.Create<int[]>(response);
         }
 
         public async Task<EsiResponse<Alliance>> GetAlliance(int allianceId)
         {
-            var request = _requestFactory.Create()
-                .AddPaths(endpoint, allianceId.ToString());
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("alliances", allianceId);
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<Alliance>(result);
+            return _responseFactory.Create<Alliance>(response);
         }
 
         public async Task<EsiResponse<int[]>> GetAllianceCorporationIds(int allianceId)
         {
-            var request = _requestFactory.Create()
-                .AddPaths(endpoint, allianceId.ToString(), "corporations");
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("alliances", allianceId, "corporations");
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<int[]>(result);
+            return _responseFactory.Create<int[]>(response);
         }
 
         public async Task<EsiResponse<Icon>> GetAllianceIcon(int allianceId)
         {
-            var request = _requestFactory.Create()
-                .AddPaths(endpoint, allianceId.ToString(), "icons");
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("alliances", allianceId, "icons");
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<Icon>(result);
+            return _responseFactory.Create<Icon>(response);
         }
     }
 }

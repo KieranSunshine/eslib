@@ -2,11 +2,14 @@
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 
 namespace Eslib.Endpoints
 {
     public class MetaEndpoint : EndpointBase
     {
+        #region Constructors
+
         public MetaEndpoint(ApiOptions options) : base(options) { }
 
         public MetaEndpoint(
@@ -15,14 +18,16 @@ namespace Eslib.Endpoints
             IResponseFactory responseFactory)
             : base(dataService, requestFactory, responseFactory) { }
 
+        #endregion
+
         public async Task<EsiResponse<string>> Ping()
         {
-            var request = _requestFactory.Create()
-                .AddPaths("ping");
+            var url = new Url(_baseUrl)
+                .AppendPathSegment("ping");
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<string>(result);
+            return _responseFactory.Create<string>(response);
         }
     }
 }

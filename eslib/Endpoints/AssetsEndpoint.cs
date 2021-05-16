@@ -5,11 +5,14 @@ using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 
 namespace Eslib.Endpoints
 {
     public class AssetsEndpoint : EndpointBase
     {
+        #region Constructors
+
         public AssetsEndpoint(ApiOptions options) : base(options)
         {
             Characters = new AssetOwner(this, "characters");
@@ -25,6 +28,8 @@ namespace Eslib.Endpoints
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
         }
+
+        #endregion
 
         // The same endpoint methods exist for both Characters and Corporations.
         public IAssetOwner Characters { get; }
@@ -44,43 +49,41 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<Asset[]>> GetAssets(int id, int pageNumber = 1)
             {
-                var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "assets")
-                    .Page(pageNumber);
+                var url = new Url(_parent._baseUrl)
+                    .AppendPathSegments(_ownerType, id, "assets")
+                    .SetQueryParam("page", pageNumber);
+                
+                var response = await _parent._dataService.GetAsync(url);
 
-                var result = await _parent._dataService.Get(request);
-
-                return _parent._responseFactory.Create<Asset[]>(result);
+                return _parent._responseFactory.Create<Asset[]>(response);
             }
 
             public async Task<EsiResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
             {
-                var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "assets", "locations");
+                var url = new Url(_parent._baseUrl)
+                    .AppendPathSegments(_ownerType, id, "assets", "locations");
 
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
                     throw new ArgumentException(
                         "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
-                request.Data = itemIds;
 
-                var result = await _parent._dataService.Post(request);
+                var response = await _parent._dataService.PostAsync(url, itemIds);
 
-                return _parent._responseFactory.Create<AssetLocation[]>(result);
+                return _parent._responseFactory.Create<AssetLocation[]>(response);
             }
 
             public async Task<EsiResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
             {
-                var request = _parent._requestFactory.Create()
-                    .AddPaths(_ownerType, id.ToString(), "assets", "names");
+                var url = new Url(_parent._baseUrl)
+                    .AppendPathSegments(_ownerType, id, "assets", "names");
 
-                if (itemIds.Count == 0 || itemIds.Count > 1000)
+                if (itemIds.Count is 0 or > 1000)
                     throw new ArgumentException(
                         "The parameter itemIds expects an array with at least 1 element and a maximum of 1000.");
-                request.Data = itemIds;
 
-                var result = await _parent._dataService.Post(request);
+                var response = await _parent._dataService.PostAsync(url, itemIds);
 
-                return _parent._responseFactory.Create<AssetName[]>(result);
+                return _parent._responseFactory.Create<AssetName[]>(response);
             }
         }
 

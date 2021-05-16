@@ -4,12 +4,13 @@ using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 
 namespace Eslib.Endpoints
 {
     public class CalendarEndpoint : EndpointBase
     {
-        private const string endpoint = "calendar";
+        #region Constructors
 
         public CalendarEndpoint(ApiOptions options) : base(options)
         {
@@ -23,57 +24,54 @@ namespace Eslib.Endpoints
         {
         }
 
+        #endregion
+
         public async Task<EsiResponse<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
         {
-            var request = _requestFactory.Create()
-                .AddPaths("characters", characterId.ToString(), endpoint);
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("characters", characterId, "calendar");
 
             if (fromEvent.HasValue)
-            {
-                request.AddQuery("from_event", fromEvent.Value.ToString());
-            }
+                url.SetQueryParam("from_event", fromEvent.Value);
+            
+            var response = await _dataService.GetAsync(url);
 
-            var result = await _dataService.Get(request);
-
-            return _responseFactory.Create<EventSummary[]>(result);
+            return _responseFactory.Create<EventSummary[]>(response);
         }
 
         public async Task<EsiResponse<Event>> GetEvent(int characterId, int eventId)
         {
-            var request = _requestFactory.Create()
-                .AddPaths("characters", characterId.ToString(), eventId.ToString());
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("characters", characterId, eventId);
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<Event>(result);
+            return _responseFactory.Create<Event>(response);
         }
 
-        public async Task<EsiResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses response)
+        public async Task<EsiResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses eventResponse)
         {
-            var request = _requestFactory.Create()
-                .AddPaths("characters", characterId.ToString(), eventId.ToString());
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("characters", characterId, eventId);
 
-            if (response == Enums.Calendar.EventResponses.NotResponded)
-            {
+            if (eventResponse is Enums.Calendar.EventResponses.NotResponded)
                 throw new ArgumentOutOfRangeException(
-                    nameof(response), 
+                    nameof(eventResponse), 
                     "Cannot respond to an event with the NotResponded response");
-            }
-            request.Data = response.ToString().ToLower();
+            
+            var response = await _dataService.PutAsync(url, eventResponse.ToString().ToLower());
 
-            var result = await _dataService.Put(request);
-
-            return _responseFactory.Create<string>(result);
+            return _responseFactory.Create<string>(response);
         }
 
         public async Task<EsiResponse<EventAttendee[]>> GetEventAttendees(int characterId, int eventId)
         {
-            var request = _requestFactory.Create()
-                .AddPaths("characters", characterId.ToString(), eventId.ToString(), "attendees");
+            var url = new Url(_baseUrl)
+                .AppendPathSegments("characters", characterId, eventId, "attendees");
 
-            var result = await _dataService.Get(request);
+            var response = await _dataService.GetAsync(url);
 
-            return _responseFactory.Create<EventAttendee[]>(result);
+            return _responseFactory.Create<EventAttendee[]>(response);
         }
     }
 }
