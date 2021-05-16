@@ -102,6 +102,28 @@ namespace Eslib.Services
             return response;
         }
 
+        public async Task<HttpResponseMessage> PutAsync(Url url, object data)
+        {
+            if (data is null)
+                throw new ArgumentNullException(nameof(data), "data cannot be null");
+
+            url = ValidateUrl(url);
+
+            var serializedData = JsonSerializer.Serialize(data);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = url.ToUri(),
+                Content = new StringContent(serializedData)
+            };
+
+            var response = await _httpClient
+                .SendAsync(request)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+        
         private Url ValidateUrl(Url url)
         {
             if (!url.QueryParams.Contains("datasource"))
@@ -117,5 +139,6 @@ namespace Eslib.Services
         public Task<HttpResponseMessage> PostAsync(Url url);
         public Task<HttpResponseMessage> PostAsync(Url url, object data);
         public Task<HttpResponseMessage> PutAsync(Url url);
+        public Task<HttpResponseMessage> PutAsync(Url url, object data);
     }
 }
