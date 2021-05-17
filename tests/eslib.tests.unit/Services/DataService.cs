@@ -1,8 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Eslib.Helpers.Wrappers;
 using Eslib.Models.Internals;
 using Eslib.Services;
+using Flurl;
 using Moq;
 using NUnit.Framework;
 
@@ -11,68 +13,66 @@ namespace Eslib.Tests.Unit.Services
     [TestFixture]
     internal class DataServiceTests
     {
+        private ApiOptions _options;
         private Mock<IHttpClientWrapper> _mockHttpClient;
 
         [SetUp]
         public void Init()
         {
+            _options = new ApiOptions();
             _mockHttpClient = new Mock<IHttpClientWrapper>();
         }
         
         [Test]
-        public async Task Get()
+        public async Task GetAsync()
         {
-            // Create a response and set the content property.
-            var request = new EsiRequest();
-            var data = "ok";
-            var response = new HttpResponseMessage()
+            var stubbedUrl = new Url();
+            var stubbedData = "ok";
+            var stubbedResponseMessage = new HttpResponseMessage
             {
-                Content = new StringContent(data)
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(stubbedData)
             };
-            var expected = Task.FromResult(response);
-
-            // Ensure that the call to GetAsync returns our prepared HttpResponseMessage.
+            
             _mockHttpClient
-                .Setup(m => m.GetAsync(It.IsAny<string>()))
-                .Returns(expected);
-
+                .Setup(m => m.SendAsync(It.IsAny<HttpRequestMessage>()))
+                .Returns(Task.FromResult(stubbedResponseMessage));
+        
             // Perform our test.
-            var dataService = new DataService(_mockHttpClient.Object);
-            var result = await dataService.Get(request);
-
+            var dataService = new DataService(_options, _mockHttpClient.Object);
+            var result = await dataService.GetAsync(stubbedUrl);
+        
             // Assert the outcomes.
-            Assert.AreEqual(response, result);
+            Assert.AreEqual(stubbedResponseMessage, result);
+            Assert.AreEqual(stubbedResponseMessage.Content, result.Content);
         }
 
         [Test]
-        public async Task Post()
+        public async Task PostAsync()
         {
             // Generate a fake object to post.
-            var data = new FakeObject() {
+            var stubbedUrl = new Url();
+            var stubbedData = new FakeObject() {
                 RandomString = "Random string",
                 RandomInt = 42
             };
-            var request = new EsiRequest() { Data = data };
-            
-            // Define the expected response from the post.
-            var postResponse = "object was posted";            
-            var response = new HttpResponseMessage()
+            var stubbedPostResponse = "object was posted";            
+            var stubbedResponse = new HttpResponseMessage()
             {
-                Content = new StringContent(postResponse)
+                Content = new StringContent(stubbedPostResponse)
             };
-            var expected = Task.FromResult(response);
-
-            // Ensure that PostAsync returns appropriately.
+            
             _mockHttpClient
-                .Setup(m => m.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
-                .Returns(expected);
+                .Setup(m => m.SendAsync(It.IsAny<HttpRequestMessage>()))
+                .Returns(Task.FromResult(stubbedResponse));
 
             // Conduct the test.
-            var dataService = new DataService(_mockHttpClient.Object);
-            var result = await dataService.Post(request);
+            var dataService = new DataService(_options, _mockHttpClient.Object);
+            var result = await dataService.PostAsync(stubbedUrl, stubbedData);
 
             // Evaluate the response.
-            Assert.AreEqual(response, result);
+            Assert.AreEqual(stubbedResponse, result);
+            Assert.AreEqual(stubbedResponse.Content, result.Content);
         }
 
         private class FakeObject 

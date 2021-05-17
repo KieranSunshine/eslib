@@ -9,6 +9,7 @@ using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 using Moq;
 using NUnit.Framework;
 
@@ -42,8 +43,8 @@ namespace Eslib.Tests.Unit.Endpoints
         {
             var stubbedData = new [] {
                 new Asset(
-                    Eslib.Enums.Locations.LocationFlags.Cargo.ToString(), 
-                    Eslib.Enums.Locations.LocationTypes.Item.ToString())
+                    Enums.Locations.LocationFlags.Cargo.ToString(), 
+                    Enums.Locations.LocationTypes.Item.ToString())
                 {
                     IsBlueprintCopy = true,
                     IsSingleton = true,
@@ -53,8 +54,8 @@ namespace Eslib.Tests.Unit.Endpoints
                     TypeId = 1234567
                 },
                 new Asset(
-                    Eslib.Enums.Locations.LocationFlags.Hangar.ToString(),
-                    Eslib.Enums.Locations.LocationTypes.Other.ToString())
+                    Enums.Locations.LocationFlags.Hangar.ToString(),
+                    Enums.Locations.LocationTypes.Other.ToString())
                 {
                     IsBlueprintCopy = false,
                     IsSingleton = false,
@@ -73,7 +74,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<Asset[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -118,7 +119,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<AssetLocation[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Post(It.IsAny<EsiRequest>()))
+                .Setup(m => m.PostAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -192,7 +193,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<AssetName[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Post(It.IsAny<EsiRequest>()))
+                .Setup(m => m.PostAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory

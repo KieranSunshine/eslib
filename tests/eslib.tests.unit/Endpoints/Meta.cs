@@ -6,6 +6,7 @@ using Eslib.Endpoints;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 using Moq;
 using NUnit.Framework;
 
@@ -48,7 +49,7 @@ namespace Eslib.Tests.Unit.Endpoints
 
             // Ensure that the call to Get returns our mocked response.
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory

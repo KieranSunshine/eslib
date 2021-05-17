@@ -8,6 +8,7 @@ using Eslib.Models;
 using Eslib.Models.Internals;
 using Eslib.Services;
 using Eslib.Factories;
+using Flurl;
 using Moq;
 using NUnit.Framework;
 
@@ -49,7 +50,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -89,7 +90,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<Alliance>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -120,7 +121,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<int[]>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
@@ -155,7 +156,7 @@ namespace Eslib.Tests.Unit.Endpoints
             var response = new EsiResponse<Icon>(HttpStatusCode.OK, stubbedData);
 
             _mockDataService
-                .Setup(m => m.Get(It.IsAny<EsiRequest>()))
+                .Setup(m => m.GetAsync(It.IsAny<Url>()))
                 .Returns(httpResponseTask);
 
             _mockResponseFactory
