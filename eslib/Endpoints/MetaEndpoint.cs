@@ -14,9 +14,8 @@ namespace Eslib.Endpoints
 
         public MetaEndpoint(
             IDataService dataService,
-            IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory) { }
+            : base(dataService, responseFactory) { }
 
         #endregion
 

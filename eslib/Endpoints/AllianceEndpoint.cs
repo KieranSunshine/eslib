@@ -17,9 +17,8 @@ namespace Eslib.Endpoints
 
         public AllianceEndpoint(
             IDataService dataService,
-            IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory)
+            : base(dataService, responseFactory)
         {
         }
         

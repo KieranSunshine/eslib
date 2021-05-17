@@ -21,9 +21,8 @@ namespace Eslib.Endpoints
 
         public AssetsEndpoint(
             IDataService dataService,
-            IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory)
+            : base(dataService, responseFactory)
         {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");

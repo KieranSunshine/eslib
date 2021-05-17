@@ -19,9 +19,8 @@ namespace Eslib.Endpoints
 
         public BookmarksEndpoint(
             IDataService dataService,
-            IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory)
+            : base(dataService, responseFactory)
         {
             Characters = new BookmarkOwner(this, "characters");
             Corporations = new BookmarkOwner(this, "corporations");

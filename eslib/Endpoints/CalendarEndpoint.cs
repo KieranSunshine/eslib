@@ -18,9 +18,8 @@ namespace Eslib.Endpoints
 
         public CalendarEndpoint(
             IDataService dataService,
-            IRequestFactory requestFactory,
             IResponseFactory responseFactory)
-            : base(dataService, requestFactory, responseFactory)
+            : base(dataService, responseFactory)
         {
         }
 
