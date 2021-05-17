@@ -17,24 +17,15 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class AllianceTests
     {
+        private Mock<IDataService> _mockDataService;
+        private Mock<IResponseFactory> _mockResponseFactory;
+        
         [SetUp]
         public void Init()
         {
-            _stubbedEsiRequest = new EsiRequest();
-
             _mockDataService = new Mock<IDataService>();
-            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockResponseFactory = new Mock<IResponseFactory>();
-
-            _mockRequestFactory.Setup(m => m.Create())
-                .Returns(_stubbedEsiRequest);
         }
-
-        private EsiRequest _stubbedEsiRequest;
-
-        private Mock<IDataService> _mockDataService;
-        private Mock<IRequestFactory> _mockRequestFactory;
-        private Mock<IResponseFactory> _mockResponseFactory;
 
         [Test]
         public async Task GetAllianceIds()
@@ -59,7 +50,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var allianceEndpoint = new AllianceEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await allianceEndpoint.GetAllianceIds();
@@ -99,7 +89,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var allianceEndpoint = new AllianceEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await allianceEndpoint.GetAlliance(1);
@@ -130,7 +119,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var allianceEndpoint = new AllianceEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await allianceEndpoint.GetAllianceCorporationIds(1);
@@ -165,7 +153,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var allianceEndpoint = new AllianceEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await allianceEndpoint.GetAllianceIcon(1);

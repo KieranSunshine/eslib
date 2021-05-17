@@ -16,24 +16,14 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class BookmarksTests
     {
-        private EsiRequest _stubbedEsiRequest;
-
-        private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IDataService> _mockDataService;
         private Mock<IResponseFactory> _mockResponseFactory;
 
         [SetUp]
         public void Init()
         {
-            _stubbedEsiRequest = new EsiRequest();
-
-            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
             _mockResponseFactory = new Mock<IResponseFactory>();
-
-            _mockRequestFactory
-                .Setup(m => m.Create())
-                .Returns(_stubbedEsiRequest);
         }
 
         [Test]
@@ -75,7 +65,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var bookmarksEndpoint = new BookmarksEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var characterResult = await bookmarksEndpoint.Characters.GetBookmarks(1);
@@ -110,7 +99,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var bookmarksEndpoint = new BookmarksEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var characterResult = await bookmarksEndpoint.Characters.GetBookmarkFolders(1);

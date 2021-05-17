@@ -17,23 +17,14 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class CalendarTests
     {
-        private EsiRequest _stubbedEsiRequest;
-
         private Mock<IDataService> _mockDataService;
-        private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IResponseFactory> _mockResponseFactory;
         
         [SetUp]
         public void Init()
         {
-            _stubbedEsiRequest = new EsiRequest();
-
             _mockDataService = new Mock<IDataService>();
-            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockResponseFactory = new Mock<IResponseFactory>();
-
-            _mockRequestFactory.Setup(m => m.Create())
-                .Returns(_stubbedEsiRequest);
         }
 
         [Test]
@@ -68,7 +59,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var calendarEndpoint = new CalendarEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await calendarEndpoint.GetEventSummaries(1);
@@ -114,7 +104,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var calendarEndpoint = new CalendarEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await calendarEndpoint.GetEvent(1, 1);
@@ -146,7 +135,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var calendarEndpoint = new CalendarEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await calendarEndpoint.RespondToEvent(
@@ -197,7 +185,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var calendarEndpoint = new CalendarEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await calendarEndpoint.GetEventAttendees(1, 1);

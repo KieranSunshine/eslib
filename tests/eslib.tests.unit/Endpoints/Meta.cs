@@ -15,25 +15,15 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class MetaTests
     {
+        private Mock<IDataService> _mockDataService;
+        private Mock<IResponseFactory> _mockResponseFactory;
+        
         [SetUp]
         public void Init()
         {
-            _stubbedEsiRequest = new EsiRequest();
-
-            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
             _mockResponseFactory = new Mock<IResponseFactory>();
-
-            _mockRequestFactory
-                .Setup(m => m.Create())
-                .Returns(_stubbedEsiRequest);
         }
-
-        private EsiRequest _stubbedEsiRequest;
-
-        private Mock<IRequestFactory> _mockRequestFactory;
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
 
         [Test]
         public async Task Ping()
@@ -59,7 +49,6 @@ namespace Eslib.Tests.Unit.Endpoints
             // Create our endpoint and call ping.
             var metaEndpoint = new MetaEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var result = await metaEndpoint.Ping();

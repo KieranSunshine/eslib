@@ -18,24 +18,14 @@ namespace Eslib.Tests.Unit.Endpoints
     [TestFixture]
     public class AssetsTests
     {
-        private EsiRequest _stubbedEsiRequest;
-
-        private Mock<IRequestFactory> _mockRequestFactory;
         private Mock<IDataService> _mockDataService;
         private Mock<IResponseFactory> _mockResponseFactory;
 
         [SetUp]
         public void Init()
         {
-            _stubbedEsiRequest = new EsiRequest();
-
-            _mockRequestFactory = new Mock<IRequestFactory>();
             _mockDataService = new Mock<IDataService>();
             _mockResponseFactory = new Mock<IResponseFactory>();
-
-            _mockRequestFactory
-                .Setup(m => m.Create())
-                .Returns(_stubbedEsiRequest);
         }
 
         [Test]
@@ -83,7 +73,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             // These use the same underlying code so we might as well test them all.
@@ -128,7 +117,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var characterResult = await assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds);
@@ -145,7 +133,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             Assert.ThrowsAsync<ArgumentException>(
@@ -166,7 +153,6 @@ namespace Eslib.Tests.Unit.Endpoints
             
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             Assert.ThrowsAsync<ArgumentException>(
@@ -202,7 +188,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             var characterResult = await assetsEndpoint.Characters.GetAssetNames(1, testIds);
@@ -219,7 +204,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             Assert.ThrowsAsync<ArgumentException>(
@@ -240,7 +224,6 @@ namespace Eslib.Tests.Unit.Endpoints
 
             var assetsEndpoint = new AssetsEndpoint(
                 _mockDataService.Object,
-                _mockRequestFactory.Object,
                 _mockResponseFactory.Object);
 
             Assert.ThrowsAsync<ArgumentException>(
