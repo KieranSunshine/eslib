@@ -12,21 +12,6 @@ namespace Eslib.Helpers.Wrappers
             _httpClient = new HttpClient();
         }
 
-        public async Task<HttpResponseMessage> GetAsync(string url)
-        {
-            return await _httpClient.GetAsync(url);
-        }
-
-        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent httpContent)
-        {
-            return await _httpClient.PostAsync(url, httpContent);
-        }
-
-        public async Task<HttpResponseMessage> PutAsync(string url, HttpContent httpContent)
-        {
-            return await _httpClient.PutAsync(url, httpContent);
-        }
-
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
             return await _httpClient.SendAsync(request);
@@ -35,12 +20,6 @@ namespace Eslib.Helpers.Wrappers
 
     public interface IHttpClientWrapper
     {
-        public Task<HttpResponseMessage> GetAsync(string url);
-
-        public Task<HttpResponseMessage> PostAsync(string url, HttpContent httpContent);
-
-        public Task<HttpResponseMessage> PutAsync(string url, HttpContent httpContent);
-
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
     }
 }
