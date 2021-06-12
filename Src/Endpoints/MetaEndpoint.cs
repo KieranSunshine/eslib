@@ -10,18 +10,24 @@ namespace Eslib.Endpoints
     {
         #region Constructors
 
-        public MetaEndpoint(ApiOptions options) : base(options) { }
+        public MetaEndpoint(IDataService dataService, IAuthenticationService authenticationService)
+            : base(dataService, authenticationService)
+        {
+        }
 
         public MetaEndpoint(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
-            : base(dataService, responseFactory) { }
+            : base(dataService, authenticationService, responseFactory)
+        {
+        }
 
         #endregion
-
+        
         public async Task<EsiResponse<string>> Ping()
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegment("ping");
 
             var response = await _dataService.GetAsync(url);

@@ -126,6 +126,12 @@ namespace Eslib.Services
         
         private Url ValidateUrl(Url url)
         {
+            if (!url.PathSegments.Contains(_options.ApiUrl))
+                url.PathSegments.Insert(0, _options.ApiUrl);
+            
+            if (!url.PathSegments.Contains(_options.Version))
+                url.PathSegments.Insert(1, _options.Version);
+            
             if (!url.QueryParams.Contains("datasource"))
                 url.SetQueryParam("datasource", _options.DataSource);
 

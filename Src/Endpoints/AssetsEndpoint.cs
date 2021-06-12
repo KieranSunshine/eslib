@@ -13,7 +13,8 @@ namespace Eslib.Endpoints
     {
         #region Constructors
 
-        public AssetsEndpoint(ApiOptions options) : base(options)
+        public AssetsEndpoint(IDataService dataService, IAuthenticationService authenticationService) 
+            : base(dataService, authenticationService)
         {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
@@ -21,8 +22,9 @@ namespace Eslib.Endpoints
 
         public AssetsEndpoint(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
-            : base(dataService, responseFactory)
+            : base(dataService, authenticationService, responseFactory)
         {
             Characters = new AssetOwner(this, "characters");
             Corporations = new AssetOwner(this, "corporations");
@@ -48,7 +50,7 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<Asset[]>> GetAssets(int id, int pageNumber = 1)
             {
-                var url = new Url(_parent._baseUrl)
+                var url = new Url()
                     .AppendPathSegments(_ownerType, id, "assets")
                     .SetQueryParam("page", pageNumber);
                 
@@ -59,7 +61,7 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<AssetLocation[]>> GetAssetLocations(int id, List<long> itemIds)
             {
-                var url = new Url(_parent._baseUrl)
+                var url = new Url()
                     .AppendPathSegments(_ownerType, id, "assets", "locations");
 
                 if (itemIds.Count == 0 || itemIds.Count > 1000)
@@ -73,7 +75,7 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<AssetName[]>> GetAssetNames(int id, List<long> itemIds)
             {
-                var url = new Url(_parent._baseUrl)
+                var url = new Url()
                     .AppendPathSegments(_ownerType, id, "assets", "names");
 
                 if (itemIds.Count is 0 or > 1000)

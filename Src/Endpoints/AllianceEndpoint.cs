@@ -11,14 +11,16 @@ namespace Eslib.Endpoints
     {
         #region Constructors
 
-        public AllianceEndpoint(ApiOptions options) : base(options)
+        public AllianceEndpoint(IDataService dataService, IAuthenticationService authenticationService) 
+            : base(dataService, authenticationService)
         {
         }
 
         public AllianceEndpoint(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
-            : base(dataService, responseFactory)
+            : base(dataService, authenticationService, responseFactory)
         {
         }
         
@@ -26,7 +28,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<int[]>> GetAllianceIds()
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegment("alliances");
 
             var response = await _dataService.GetAsync(url);
@@ -36,7 +38,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<Alliance>> GetAlliance(int allianceId)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("alliances", allianceId);
 
             var response = await _dataService.GetAsync(url);
@@ -46,7 +48,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<int[]>> GetAllianceCorporationIds(int allianceId)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("alliances", allianceId, "corporations");
 
             var response = await _dataService.GetAsync(url);
@@ -56,7 +58,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<Icon>> GetAllianceIcon(int allianceId)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("alliances", allianceId, "icons");
 
             var response = await _dataService.GetAsync(url);

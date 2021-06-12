@@ -6,25 +6,26 @@ namespace Eslib.Endpoints
 {
     public abstract class EndpointBase
     {
-        protected ApiOptions _options;
         protected readonly IDataService _dataService;
+        protected readonly IAuthenticationService _authenticationService;
         protected readonly IResponseFactory _responseFactory;
 
-        protected string _baseUrl => $"{_options.ApiUrl}/{_options.Version}";
-
-        protected EndpointBase(ApiOptions options)
+        protected EndpointBase(
+            IDataService dataService,
+            IAuthenticationService authenticationService)
         {
-            _options = options;
-            _dataService = new DataService(options);
+            _dataService = dataService;
+            _authenticationService = authenticationService;
             _responseFactory = new ResponseFactory();
         }
 
         protected EndpointBase(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
         {
-            _options = new ApiOptions();
             _dataService = dataService;
+            _authenticationService = authenticationService;
             _responseFactory = responseFactory;
         }
     }

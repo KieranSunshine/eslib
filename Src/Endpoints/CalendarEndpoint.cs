@@ -12,14 +12,16 @@ namespace Eslib.Endpoints
     {
         #region Constructors
 
-        public CalendarEndpoint(ApiOptions options) : base(options)
+        public CalendarEndpoint(IDataService dataService, IAuthenticationService authenticationService) 
+            : base(dataService, authenticationService)
         {
         }
 
         public CalendarEndpoint(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
-            : base(dataService, responseFactory)
+            : base(dataService, authenticationService, responseFactory)
         {
         }
 
@@ -27,7 +29,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<EventSummary[]>> GetEventSummaries(int characterId, int? fromEvent = null)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("characters", characterId, "calendar");
 
             if (fromEvent.HasValue)
@@ -40,7 +42,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<Event>> GetEvent(int characterId, int eventId)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("characters", characterId, eventId);
 
             var response = await _dataService.GetAsync(url);
@@ -50,7 +52,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<string>> RespondToEvent(int characterId, int eventId, Enums.Calendar.EventResponses eventResponse)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("characters", characterId, eventId);
 
             if (eventResponse is Enums.Calendar.EventResponses.NotResponded)
@@ -65,7 +67,7 @@ namespace Eslib.Endpoints
 
         public async Task<EsiResponse<EventAttendee[]>> GetEventAttendees(int characterId, int eventId)
         {
-            var url = new Url(_baseUrl)
+            var url = new Url()
                 .AppendPathSegments("characters", characterId, eventId, "attendees");
 
             var response = await _dataService.GetAsync(url);

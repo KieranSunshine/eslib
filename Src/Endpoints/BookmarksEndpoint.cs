@@ -11,7 +11,8 @@ namespace Eslib.Endpoints
     {
         #region Constructors
 
-        public BookmarksEndpoint(ApiOptions options) : base(options)
+        public BookmarksEndpoint(IDataService dataService, IAuthenticationService authenticationService) 
+            : base(dataService, authenticationService)
         {
             Characters = new BookmarkOwner(this, "characters");
             Corporations = new BookmarkOwner(this, "corporations");
@@ -19,8 +20,9 @@ namespace Eslib.Endpoints
 
         public BookmarksEndpoint(
             IDataService dataService,
+            IAuthenticationService authenticationService,
             IResponseFactory responseFactory)
-            : base(dataService, responseFactory)
+            : base(dataService, authenticationService, responseFactory)
         {
             Characters = new BookmarkOwner(this, "characters");
             Corporations = new BookmarkOwner(this, "corporations");
@@ -44,7 +46,7 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<Bookmark[]>> GetBookmarks(int id, int pageNumber = 1)
             {
-                var url = new Url(_parent._baseUrl)
+                var url = new Url()
                     .AppendPathSegments(_ownerType, id, "bookmarks")
                     .SetQueryParam("page", pageNumber);
 
@@ -55,7 +57,7 @@ namespace Eslib.Endpoints
 
             public async Task<EsiResponse<BookmarkFolder[]>> GetBookmarkFolders(int id, int pageNumber = 1)
             { 
-                var url = new Url(_parent._baseUrl)
+                var url = new Url()
                     .AppendPathSegments(_ownerType, id.ToString(), "bookmarks", "folders")
                     .SetQueryParam("page", pageNumber);
 
