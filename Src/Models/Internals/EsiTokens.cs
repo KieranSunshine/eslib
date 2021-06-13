@@ -6,29 +6,16 @@ namespace Eslib.Models.Internals
     {
         public EsiTokens()
         {
-            Access = new Token();
-            Refresh = new Token();
+            Access = new AccessToken();
+            Refresh = string.Empty;
         }
 
-        public Token Access { get; set; }
-        public Token Refresh { get; set; }
+        public AccessToken Access { get; set; }
+        public string Refresh { internal get; set; }
     }
 
-    public class Token
+    public class AccessToken
     {
-        private DateTime? _expiryDate;
-        public Token()
-        {
-            Value = string.Empty;
-            ExpiryDate = null;
-        }
-        
-        public string Value { get; set; }
-        public DateTime? ExpiryDate
-        {
-            get => _expiryDate;
-            set => _expiryDate = value?.ToUniversalTime();
-        }
-        public bool HasExpired => !ExpiryDate.HasValue || DateTime.UtcNow > ExpiryDate;
+
     }
 }
