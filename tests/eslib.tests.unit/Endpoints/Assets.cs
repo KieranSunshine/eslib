@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
-using Eslib.Services;
-using Eslib.Factories;
 using Flurl;
 using Moq;
 using NUnit.Framework;
@@ -16,18 +14,8 @@ using NUnit.Framework;
 namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
-    public class AssetsTests
+    public class AssetsTests : EndpointTestBase<AssetsEndpoint>
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-
-        [SetUp]
-        public void Init()
-        {
-            _mockDataService = new Mock<IDataService>();
-            _mockResponseFactory = new Mock<IResponseFactory>();
-        }
-
         [Test]
         public async Task GetAssets()
         {
@@ -71,13 +59,9 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<Asset[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
             // These use the same underlying code so we might as well test them all.
-            var characterResult = await assetsEndpoint.Characters.GetAssets(1);
-            var corporationResult = await assetsEndpoint.Corporations.GetAssets(2);
+            var characterResult = await Target.Characters.GetAssets(1);
+            var corporationResult = await Target.Corporations.GetAssets(2);
 
             Assert.AreEqual(response, characterResult);
             Assert.AreEqual(response, corporationResult);
@@ -115,12 +99,8 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<AssetLocation[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var characterResult = await assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds);
-            var corporationResult = await assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds);
+            var characterResult = await Target.Characters.GetAssetLocations(1, stubbedIds);
+            var corporationResult = await Target.Corporations.GetAssetLocations(2, stubbedIds);
 
             Assert.AreEqual(response, characterResult);
             Assert.AreEqual(response, corporationResult);
@@ -131,14 +111,10 @@ namespace Eslib.Tests.Unit.Endpoints
         {
             var stubbedIds = new List<long>();
 
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds));
+                async () => await Target.Characters.GetAssetLocations(1, stubbedIds));
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds));
+                async () => await Target.Corporations.GetAssetLocations(2, stubbedIds));
         }
 
         [Test]
@@ -150,15 +126,11 @@ namespace Eslib.Tests.Unit.Endpoints
             {
                 stubbedIds.Add(i);
             }
-            
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
 
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Characters.GetAssetLocations(1, stubbedIds));
+                async () => await Target.Characters.GetAssetLocations(1, stubbedIds));
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Corporations.GetAssetLocations(2, stubbedIds));
+                async () => await Target.Corporations.GetAssetLocations(2, stubbedIds));
         }
 
         [Test]
@@ -186,12 +158,8 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<AssetName[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var characterResult = await assetsEndpoint.Characters.GetAssetNames(1, testIds);
-            var corporationResult = await assetsEndpoint.Corporations.GetAssetNames(2, testIds);
+            var characterResult = await Target.Characters.GetAssetNames(1, testIds);
+            var corporationResult = await Target.Corporations.GetAssetNames(2, testIds);
 
             Assert.AreEqual(response, characterResult);
             Assert.AreEqual(response, corporationResult);
@@ -202,14 +170,10 @@ namespace Eslib.Tests.Unit.Endpoints
         {
             var stubbedIds = new List<long>();
 
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Characters.GetAssetNames(1, stubbedIds));
+                async () => await Target.Characters.GetAssetNames(1, stubbedIds));
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Corporations.GetAssetNames(2, stubbedIds));
+                async () => await Target.Corporations.GetAssetNames(2, stubbedIds));
         }
 
         [Test]
@@ -221,15 +185,11 @@ namespace Eslib.Tests.Unit.Endpoints
             {
                 stubbedIds.Add(i);
             }
-
-            var assetsEndpoint = new AssetsEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
+            
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Characters.GetAssetNames(1, stubbedIds));
+                async () => await Target.Characters.GetAssetNames(1, stubbedIds));
             Assert.ThrowsAsync<ArgumentException>(
-                async () => await assetsEndpoint.Corporations.GetAssetNames(2, stubbedIds));
+                async () => await Target.Corporations.GetAssetNames(2, stubbedIds));
         }
     }
 }

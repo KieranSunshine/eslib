@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
-using Eslib.Services;
-using Eslib.Factories;
 using Flurl;
 using Moq;
 using NUnit.Framework;
@@ -15,18 +13,8 @@ using NUnit.Framework;
 namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
-    public class AllianceTests
+    public class AllianceTests : EndpointTestBase<AllianceEndpoint>
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-        
-        [SetUp]
-        public void Init()
-        {
-            _mockDataService = new Mock<IDataService>();
-            _mockResponseFactory = new Mock<IResponseFactory>();
-        }
-
         [Test]
         public async Task GetAllianceIds()
         {
@@ -48,11 +36,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<int[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var allianceEndpoint = new AllianceEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await allianceEndpoint.GetAllianceIds();
+            var result = await Target.GetAllianceIds();
 
             Assert.AreEqual(response, result);
         }
@@ -86,12 +70,8 @@ namespace Eslib.Tests.Unit.Endpoints
             _mockResponseFactory
                 .Setup(m => m.Create<Alliance>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
-
-            var allianceEndpoint = new AllianceEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await allianceEndpoint.GetAlliance(1);
+            
+            var result = await Target.GetAlliance(1);
 
             Assert.AreEqual(response, result);
         }
@@ -117,11 +97,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<int[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var allianceEndpoint = new AllianceEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await allianceEndpoint.GetAllianceCorporationIds(1);
+            var result = await Target.GetAllianceCorporationIds(1);
 
             Assert.AreEqual(response, result);
         }
@@ -151,11 +127,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<Icon>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var allianceEndpoint = new AllianceEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await allianceEndpoint.GetAllianceIcon(1);
+            var result = await Target.GetAllianceIcon(1);
 
             Assert.AreEqual(response, result);
         }

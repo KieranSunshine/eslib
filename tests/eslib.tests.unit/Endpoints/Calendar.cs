@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
-using Eslib.Services;
-using Eslib.Factories;
 using Flurl;
 using Moq;
 using NUnit.Framework;
@@ -15,18 +13,8 @@ using NUnit.Framework;
 namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
-    public class CalendarTests
+    public class CalendarTests : EndpointTestBase<CalendarEndpoint>
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-        
-        [SetUp]
-        public void Init()
-        {
-            _mockDataService = new Mock<IDataService>();
-            _mockResponseFactory = new Mock<IResponseFactory>();
-        }
-
         [Test]
         public async Task GetEventSummaryTest()
         {
@@ -57,11 +45,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<EventSummary[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var calendarEndpoint = new CalendarEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await calendarEndpoint.GetEventSummaries(1);
+            var result = await Target.GetEventSummaries(1);
             
             Assert.IsTrue(result.Success);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -102,11 +86,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<Event>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var calendarEndpoint = new CalendarEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await calendarEndpoint.GetEvent(1, 1);
+            var result = await Target.GetEvent(1, 1);
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -132,12 +112,8 @@ namespace Eslib.Tests.Unit.Endpoints
             _mockResponseFactory
                 .Setup(m => m.Create<string>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
-
-            var calendarEndpoint = new CalendarEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await calendarEndpoint.RespondToEvent(
+            
+            var result = await Target.RespondToEvent(
                 1, 
                 1, 
                 Enums.Calendar.EventResponses.Accepted);
@@ -183,11 +159,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<EventAttendee[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var calendarEndpoint = new CalendarEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await calendarEndpoint.GetEventAttendees(1, 1);
+            var result = await Target.GetEventAttendees(1, 1);
             
             Assert.IsNull(result.Error);
             Assert.IsNull(result.Message);

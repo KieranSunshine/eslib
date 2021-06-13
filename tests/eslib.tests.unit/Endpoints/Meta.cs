@@ -4,8 +4,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Eslib.Endpoints;
 using Eslib.Models.Internals;
-using Eslib.Services;
-using Eslib.Factories;
 using Flurl;
 using Moq;
 using NUnit.Framework;
@@ -13,18 +11,8 @@ using NUnit.Framework;
 namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
-    public class MetaTests
+    public class MetaTests : EndpointTestBase<MetaEndpoint>
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-        
-        [SetUp]
-        public void Init()
-        {
-            _mockDataService = new Mock<IDataService>();
-            _mockResponseFactory = new Mock<IResponseFactory>();
-        }
-
         [Test]
         public async Task Ping()
         {
@@ -46,12 +34,7 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<string>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            // Create our endpoint and call ping.
-            var metaEndpoint = new MetaEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var result = await metaEndpoint.Ping();
+            var result = await Target.Ping();
 
             // Assert that the outcome is what was expected.
             Assert.AreEqual(response, result);

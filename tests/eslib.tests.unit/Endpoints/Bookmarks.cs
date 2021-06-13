@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Eslib.Endpoints;
 using Eslib.Models;
 using Eslib.Models.Internals;
-using Eslib.Services;
-using Eslib.Factories;
 using Flurl;
 using Moq;
 using NUnit.Framework;
@@ -14,18 +12,8 @@ using NUnit.Framework;
 namespace Eslib.Tests.Unit.Endpoints
 {
     [TestFixture]
-    public class BookmarksTests
+    public class BookmarksTests : EndpointTestBase<BookmarksEndpoint>
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IResponseFactory> _mockResponseFactory;
-
-        [SetUp]
-        public void Init()
-        {
-            _mockDataService = new Mock<IDataService>();
-            _mockResponseFactory = new Mock<IResponseFactory>();
-        }
-
         [Test]
         public async Task GetBookmarksTests()
         {            
@@ -63,12 +51,8 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<Bookmark[]>(httpResponse))
                 .Returns(response);
 
-            var bookmarksEndpoint = new BookmarksEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var characterResult = await bookmarksEndpoint.Characters.GetBookmarks(1);
-            var corporationResult = await bookmarksEndpoint.Corporations.GetBookmarks(2);
+            var characterResult = await Target.Characters.GetBookmarks(1);
+            var corporationResult = await Target.Corporations.GetBookmarks(2);
 
             Assert.AreEqual(response, characterResult);
             Assert.AreEqual(response, corporationResult);
@@ -97,12 +81,8 @@ namespace Eslib.Tests.Unit.Endpoints
                 .Setup(m => m.Create<BookmarkFolder[]>(It.IsAny<HttpResponseMessage>()))
                 .Returns(response);
 
-            var bookmarksEndpoint = new BookmarksEndpoint(
-                _mockDataService.Object,
-                _mockResponseFactory.Object);
-
-            var characterResult = await bookmarksEndpoint.Characters.GetBookmarkFolders(1);
-            var corporationResult = await bookmarksEndpoint.Corporations.GetBookmarkFolders(2);
+            var characterResult = await Target.Characters.GetBookmarkFolders(1);
+            var corporationResult = await Target.Corporations.GetBookmarkFolders(2);
 
             Assert.AreEqual(response, characterResult);
             Assert.AreEqual(response, corporationResult);
