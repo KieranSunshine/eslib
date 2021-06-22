@@ -47,7 +47,8 @@ namespace Eslib.Services
         #region Fields
 
         private readonly IHttpClientWrapper _httpClient;
-        private const string OAuthUrl = "https://login.eveonline.com/v2/oauth/";
+        private const string SSOUrl = "https://login.eveonline.com";
+        private readonly string OAuthUrl = $"{SSOUrl}/v2/oauth/";
 
         #endregion
         
@@ -87,6 +88,24 @@ namespace Eslib.Services
             };
             
             return true;
+        }
+
+        private async Task RetrieveTokenKeys()
+        {
+            var url = new Url(SSOUrl)
+                .AppendPathSegments("oauth", "jwks");
+
+            var request = new HttpRequestMessage
+            {
+                RequestUri = url.ToUri(),
+                Method = HttpMethod.Get
+            };
+
+            var result = await _httpClient.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+
+            var content = await result.Content.ReadAsStringAsync();
+            var keys = await JsonSerializer.DeserializeAsync<>(content);
         }
 
         private string GetEncodedCredentials()
