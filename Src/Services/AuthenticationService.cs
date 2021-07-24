@@ -21,6 +21,19 @@ namespace Eslib.Services
         public string ClientId { get; set; } = string.Empty;
         public string SecretKey { private get; set; } = string.Empty;
         public EsiTokens Tokens { get; set; } = new();
+        private string EncodedCredentials
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(SecretKey))
+                    throw new InvalidOperationException("No ClientId or Secret Key provided");
+
+                var credentials = $"{ClientId}:{SecretKey}";
+                var bytes = Encoding.UTF8.GetBytes(credentials);
+
+                return Convert.ToBase64String(bytes);
+            }
+        }
 
         #endregion
 
@@ -47,7 +60,8 @@ namespace Eslib.Services
         #region Fields
 
         private readonly IHttpClientWrapper _httpClient;
-        private const string OAuthUrl = "https://login.eveonline.com/v2/oauth/";
+        private const string SSOUrl = "https://login.eveonline.com";
+        private readonly string OAuthUrl = $"{SSOUrl}/v2/oauth/";
 
         #endregion
         
@@ -60,7 +74,7 @@ namespace Eslib.Services
             {
                 Headers =
                 {
-                    Authorization = new AuthenticationHeaderValue("Basic", GetEncodedCredentials()),
+                    Authorization = new AuthenticationHeaderValue("Basic", EncodedCredentials),
                     Host = "login.eveonline.com"
                 },
                 Method = HttpMethod.Post,
@@ -89,15 +103,22 @@ namespace Eslib.Services
             return true;
         }
 
-        private string GetEncodedCredentials()
+        private async Task RetrieveTokenKeys()
         {
-            if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(SecretKey))
-                throw new InvalidOperationException("No ClientId or Secret Key provided");
-            
-            var credentials = $"{ClientId}:{SecretKey}";
-            var bytes = Encoding.UTF8.GetBytes(credentials);
+            var url = new Url(SSOUrl)
+                .AppendPathSegments("oauth", "jwks");
 
-            return Convert.ToBase64String(bytes);
+            var request = new HttpRequestMessage
+            {
+                RequestUri = url.ToUri(),
+                Method = HttpMethod.Get
+            };
+
+            var result = await _httpClient.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+
+            var content = await result.Content.ReadAsStringAsync();
+            //var keys = await JsonSerializer.DeserializeAsync<>(content);
         }
 
         private AccessToken DecodeAccessToken(string accessToken)
